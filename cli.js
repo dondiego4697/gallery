@@ -7,27 +7,16 @@ const OUT_DIR = 'out';
 
 const argv = require('minimist')(process.argv.slice(2));
 
-let USE_COMPILED = !argv.c;
 const COMMAND = argv._[0];
 
-if ([
-    'lint',
-    'tests',
-    'server:compile'
-].includes(COMMAND)) {
-    USE_COMPILED = false;
-}
-
-if (!USE_COMPILED) {
-    require('ts-node').register({
-        compiler: 'ttypescript',
-        files: true,
-        project: path.resolve(ROOT_DIR, './server/tsconfig.json')
-    });
-}
+require('ts-node').register({
+    compiler: 'ttypescript',
+    files: true,
+    project: path.resolve(ROOT_DIR, './server/tsconfig.json')
+});
 
 const include = (moduleRelativePath) => {
-    const modulePath = path.resolve(ROOT_DIR, USE_COMPILED ? OUT_DIR : '', moduleRelativePath);
+    const modulePath = path.resolve(ROOT_DIR, moduleRelativePath);
     return require(modulePath);
 };
 
@@ -36,13 +25,12 @@ global.cliRuntime = () => ({
     ROOT_DIR,
     OUT_DIR,
     COMMAND,
-    USE_COMPILED,
     argv
 });
 
 (async () => {
     try {
-        const {commands} = include('server/@cli/commands');
+        const {commands} = include('server/cli/commands');
         const isCommandExist = COMMAND in commands;
 
         if (!isCommandExist) {

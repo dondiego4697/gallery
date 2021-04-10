@@ -30,7 +30,7 @@
     "include": [
         "types/**/*",
         "cli/**/*",
-        "db-entity/**/*",
+        "entity/**/*",
         "app/**/*",
         "tests/**/*",
         "service/**/*"

@@ -63,7 +63,7 @@ if (!module.parent) {
     assert(port, 'no port provided for the application to listen to');
 
     if (config['localtunnel.enable']) {
-        localtunnel({port, subdomain: 'petstore'}).then((tunnel) => {
+        localtunnel({port, subdomain: 'gallery'}).then((tunnel) => {
             console.log(`tunnel created ${tunnel.url}`);
         });
     }
