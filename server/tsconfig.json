@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es2017",
+        "lib": ["es2020"],
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noEmitOnError": true,
+        "resolveJsonModule": true,
+        "rootDir": "./",
+        "baseUrl": "./",
+        "outDir": "../out/server",
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "preserveWatchOutput": true,
+
+        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictPropertyInitialization": false,
+
+        "pretty": true,
+        "paths": {},
+        "types": ["node", "express", "jest"],
+        "plugins": [{"transform": "@zerollup/ts-transform-paths"}]
+    },
+    "include": [
+        "types/**/*",
+        "cli/**/*",
+        "db-entity/**/*",
+        "app/**/*",
+        "tests/**/*",
+        "service/**/*"
+    ],
+    "exclude": ["out", "node_modules", "tmp"]
+}

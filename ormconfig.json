@@ -1,0 +1,36 @@
+[
+    {
+       "name": "development",
+       "type": "postgres",
+       "host": "localhost",
+       "port": 6432,
+       "username": "postgres",
+       "password": "password",
+       "database": "gallery",
+       "synchronize": true,
+       "logging": false,
+       "migrations": [
+          "resources/database/migration/**/*.ts"
+       ],
+       "cli": {
+          "migrationsDir": "resources/database/migration"
+       }
+    },
+    {
+       "name": "tests",
+       "type": "postgres",
+       "host": "localhost",
+       "port": 6432,
+       "username": "postgres",
+       "password": "password",
+       "database": "gallery_test",
+       "synchronize": true,
+       "logging": false,
+       "migrations": [
+          "resources/database/migration/**/*.ts"
+       ],
+       "cli": {
+          "migrationsDir": "resources/database/migration"
+       }
+    }
+ ]
