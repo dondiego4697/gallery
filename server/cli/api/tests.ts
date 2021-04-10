@@ -1,11 +1,13 @@
 import execa from 'execa';
-import path from 'path';
 
 import {handle as compileServer} from 'cli/api/server/compile';
+import {handle as dbMigrate} from 'cli/api/db/migrate';
+import {handle as dbRestore} from 'cli/api/db/restore';
 
 export async function handle() {
     const {ROOT_DIR, argv} = cliRuntime();
     const {pattern} = argv;
+    const environment = 'tests';
 
     const jestParams = ['--config=jest.config.json', '--forceExit'];
 
@@ -17,26 +19,11 @@ export async function handle() {
 
     console.log('restore db running...');
 
-    await execa('node', [path.resolve(ROOT_DIR, './out/server/tests/test-restore-db')], {
-        stdout: 'inherit',
-        stderr: 'inherit',
-        cwd: ROOT_DIR,
-        env: {
-            ENVIRONMENT: 'tests'
-        }
-    });
+    await dbRestore(environment);
 
     console.log('migration db running...');
 
-    await execa(
-        'node_modules/.bin/ts-node',
-        [path.resolve(ROOT_DIR, './node_modules/typeorm/cli.js'), '-c', 'tests', 'migration:run'],
-        {
-            stdout: 'inherit',
-            stderr: 'inherit',
-            cwd: ROOT_DIR
-        }
-    );
+    await dbMigrate(environment);
 
     console.log('tests running...');
 
@@ -45,7 +32,7 @@ export async function handle() {
         stderr: 'inherit',
         cwd: ROOT_DIR,
         env: {
-            ENVIRONMENT: 'tests',
+            ENVIRONMENT: environment,
             DISABLE_LOGGING: '1'
         }
     });

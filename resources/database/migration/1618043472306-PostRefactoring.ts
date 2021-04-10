@@ -6,7 +6,9 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
         await queryRunner.query(`
             CREATE TABLE author (
                 id BIGSERIAL NOT NULL,
+                public_id UUID NOT NULL DEFAULT uuid_generate_v1(),
 
+                name TEXT NOT NULL,
                 avatar_url TEXT,
                 bio TEXT,
 
@@ -15,8 +17,11 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT pk__author PRIMARY KEY (id)
             );
 
+            CREATE INDEX idx__author__public_id ON author USING btree (public_id);
+
             CREATE TABLE picture (
                 id BIGSERIAL NOT NULL,
+                public_id UUID NOT NULL DEFAULT uuid_generate_v1(),
                 
                 name TEXT NOT NULL,
 
@@ -34,6 +39,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT pk__picture PRIMARY KEY (id),
                 CONSTRAINT fk__picture__author_id__author FOREIGN KEY (author_id) REFERENCES author (id)
             );
+
+            CREATE INDEX idx__picture__public_id ON picture USING btree (public_id);
 
             CREATE UNIQUE INDEX idx__picture__name ON picture (LOWER(name));  
 
@@ -76,7 +83,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
             );
 
             CREATE TABLE selection ( 
-                id BIGSERIAL NOT NULL,  
+                id BIGSERIAL NOT NULL, 
+                public_id UUID NOT NULL DEFAULT uuid_generate_v1(), 
           
                 name TEXT NOT NULL,
                 description TEXT,
@@ -89,6 +97,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT pk__selection PRIMARY KEY (id)
             );
 
+            CREATE INDEX idx__selection__public_id ON selection USING btree (public_id);
             CREATE UNIQUE INDEX idx__selection__name__is_show ON selection (LOWER(name), is_show);  
 
             CREATE TABLE selection_picture (  
@@ -135,6 +144,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             DROP TABLE selection_picture;
 
+            DROP INDEX idx__selection__public_id;
             DROP INDEX idx__selection__name__is_show;
             DROP TABLE selection;
 
@@ -144,9 +154,11 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
             DROP VIEW view__picture_view;
             DROP TABLE picture_view;
 
+            DROP INDEX idx__picture__public_id;
             DROP INDEX idx__picture__name;
             DROP TABLE picture;
 
+            DROP INDEX idx__author__public_id;
             DROP TABLE author;
         `);
     }

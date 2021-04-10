@@ -8,6 +8,9 @@ export class Selection {
     id: number;
 
     @Column({type: 'text'})
+    publicId: string;
+
+    @Column({type: 'text'})
     name: string;
 
     @Column({type: 'text', nullable: true})

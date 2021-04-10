@@ -2,13 +2,16 @@ import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'type
 import {Author} from 'entity/author';
 import {PicturePhoto} from 'entity/picture-photo';
 
-type Shape = '';
-type Style = '';
+export type Shape = 'round' | 'square';
+export type Style = 'modern' | 'classic';
 
 @Entity()
 export class Picture {
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
+
+    @Column({type: 'text'})
+    publicId: string;
 
     @Column({type: 'text'})
     name: string;

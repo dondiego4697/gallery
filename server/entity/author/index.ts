@@ -6,8 +6,14 @@ export class Author {
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 
+    @Column({type: 'text'})
+    publicId: string;
+
     @Column({type: 'text', nullable: true})
     avatarUrl?: string;
+
+    @Column({type: 'text'})
+    name: string;
 
     @Column({type: 'text', nullable: true})
     bio?: string;

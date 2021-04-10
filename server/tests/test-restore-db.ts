@@ -11,5 +11,7 @@ import {dbManager} from 'app/lib/db-manager';
     await connection.query(`
         DROP SCHEMA IF EXISTS public CASCADE;
         CREATE SCHEMA public;
+
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     `);
 })();

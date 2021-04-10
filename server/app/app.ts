@@ -8,12 +8,12 @@ import assert from 'assert';
 import path from 'path';
 import bodyParser from 'body-parser';
 import express from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import {renderHTML} from 'app/middleware/render-html';
 import {router as staticRouter} from 'app/middleware/static';
 import {ping} from 'app/middleware/ping';
 import {helmet} from 'app/middleware/helmet';
-import {cors} from 'app/middleware/cors';
 import {requestId} from 'app/middleware/request-id';
 import {logger as loggerMiddleware} from 'app/middleware/logger';
 import {router as v1} from 'app/api/v1';
@@ -30,8 +30,21 @@ export const app = express()
     .set('view engine', 'pug')
     .enable('trust proxy')
     .disable('x-powered-by')
-    .options('*', cors)
     .use(loggerMiddleware)
+    .use(
+        cors({
+            methods: ['GET, POST, PUT, PATCH, DELETE, OPTIONS'],
+            allowedHeaders: config['header.requestId'],
+            credentials: true,
+            origin: (origin, callback) => {
+                if (config['cors.allowedOrigins'] === null) {
+                    callback(null, true);
+                } else if (typeof origin === 'undefined' || !config['cors.allowedOrigins'].includes(origin)) {
+                    callback(Boom.forbidden('forbid by CORS'));
+                }
+            }
+        })
+    )
     .use(requestId)
     .use(helmet)
     .use(cookieParser())
