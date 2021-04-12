@@ -7,7 +7,7 @@ import {TransactionalTestContext} from 'typeorm-transactional-tests';
 import {app} from 'app/app';
 import {dbManager} from 'app/lib/db-manager';
 
-export class TestContext {
+class TestContext {
     protected server?: http.Server;
     protected url?: string;
     protected transactionalContext: TransactionalTestContext;
@@ -79,3 +79,21 @@ export class TestContext {
         this.server = undefined;
     }
 }
+
+const textContext = new TestContext();
+
+beforeEach(async () => {
+    await textContext.beforeEach();
+});
+
+afterEach(async () => {
+    await textContext.afterEach();
+});
+
+beforeAll(async () => {
+    await textContext.beforeAll();
+});
+
+afterAll(async () => {
+    await textContext.afterAll();
+});

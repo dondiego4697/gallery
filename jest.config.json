@@ -6,7 +6,18 @@
                 "name": "SRC",
                 "color": "cyan"
             },
-            "testMatch": ["<rootDir>/out/server/**/*.test.js"]
+            "testMatch": ["<rootDir>/out/server/**/*.test.js"],
+            "transformIgnorePatterns": [
+                "/node_modules/"
+            ],
+            "verbose": true,
+            "setupFiles": [
+                "<rootDir>out/server/tests/setup-env"
+            ],
+            "setupFilesAfterEnv": [
+                "<rootDir>out/server/tests/setup-tests"
+            ],
+            "globalSetup": "<rootDir>out/server/tests/restore-db"
         }
     ],
     "reporters": [

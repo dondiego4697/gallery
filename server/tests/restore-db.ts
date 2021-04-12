@@ -1,10 +1,6 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 import {dbManager} from 'app/lib/db-manager';
 
-(async () => {
+export default async function () {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     const connection = await dbManager.getConnection();
 
@@ -14,4 +10,4 @@ import {dbManager} from 'app/lib/db-manager';
 
         CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     `);
-})();
+}
