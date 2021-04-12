@@ -19,16 +19,34 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             CREATE INDEX idx__author__public_id ON author USING btree (public_id);
 
+            CREATE TABLE picture_shape (
+                id SMALLSERIAL NOT NULL,
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__picture_shape PRIMARY KEY (id),
+                CONSTRAINT uq__picture_shape__name UNIQUE (name)
+
+            );
+
+            CREATE TABLE picture_style (
+                id SMALLSERIAL NOT NULL,
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__picture_style PRIMARY KEY (id),
+                CONSTRAINT uq__picture_style__name UNIQUE (name)
+            );
+
             CREATE TABLE picture (
                 id BIGSERIAL NOT NULL,
                 public_id UUID NOT NULL DEFAULT uuid_generate_v1(),
                 
                 name TEXT NOT NULL,
 
-                width INTEGER,
-                height INTEGER,
-                shape TEXT,
-                style TEXT,
+                width INTEGER NOT NULL,
+                height INTEGER NOT NULL,
+                
+                shape_id SMALLINT NOT NULL,
+                style_id SMALLINT NOT NULL,
 
                 author_id BIGINT NOT NULL,
 
@@ -37,7 +55,9 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
         
                 CONSTRAINT pk__picture PRIMARY KEY (id),
-                CONSTRAINT fk__picture__author_id__author FOREIGN KEY (author_id) REFERENCES author (id)
+                CONSTRAINT fk__picture__author_id__author FOREIGN KEY (author_id) REFERENCES author (id),
+                CONSTRAINT fk__picture__shape_id__picture_shape FOREIGN KEY (shape_id) REFERENCES picture_shape (id),
+                CONSTRAINT fk__picture__style_id__picture_style FOREIGN KEY (style_id) REFERENCES picture_style (id)
             );
 
             CREATE INDEX idx__picture__public_id ON picture USING btree (public_id);
@@ -157,6 +177,9 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
             DROP INDEX idx__picture__public_id;
             DROP INDEX idx__picture__name;
             DROP TABLE picture;
+
+            DROP TABLE picture_shape;
+            DROP TABLE picture_style;
 
             DROP INDEX idx__author__public_id;
             DROP TABLE author;

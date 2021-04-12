@@ -1,8 +1,6 @@
 import execa from 'execa';
 
 import {handle as compileServer} from 'cli/api/server/compile';
-import {handle as dbMigrate} from 'cli/api/db/migrate';
-import {handle as dbRestore} from 'cli/api/db/restore';
 
 export async function handle() {
     const {ROOT_DIR, argv} = cliRuntime();
@@ -16,16 +14,6 @@ export async function handle() {
     }
 
     await compileServer();
-
-    console.log('restore db running...');
-
-    await dbRestore(environment);
-
-    console.log('migration db running...');
-
-    await dbMigrate(environment);
-
-    console.log('tests running...');
 
     await execa('node_modules/.bin/jest', jestParams, {
         stdout: 'inherit',

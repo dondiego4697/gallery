@@ -1,9 +1,8 @@
 import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Author} from 'entity/author';
 import {PicturePhoto} from 'entity/picture-photo';
-
-export type Shape = 'round' | 'square';
-export type Style = 'modern' | 'classic';
+import {PictureShape} from 'entity/picture-shape';
+import {PictureStyle} from 'entity/picture-style';
 
 @Entity()
 export class Picture {
@@ -16,17 +15,23 @@ export class Picture {
     @Column({type: 'text'})
     name: string;
 
-    @Column({type: 'integer', nullable: true})
-    width?: number;
+    @Column({type: 'integer'})
+    width: number;
 
-    @Column({type: 'integer', nullable: true})
-    height?: number;
+    @Column({type: 'integer'})
+    height: number;
 
-    @Column({type: 'text', nullable: true})
-    shape?: Shape;
+    @Column({type: 'smallint'})
+    shapeId: number;
 
-    @Column({type: 'text', nullable: true})
-    style?: Style;
+    @ManyToOne(() => PictureShape, (pictureShape) => pictureShape.pictures)
+    shape: PictureShape;
+
+    @Column({type: 'smallint'})
+    styleId: number;
+
+    @ManyToOne(() => PictureStyle, (pictureStyle) => pictureStyle.pictures)
+    style: PictureStyle;
 
     @Column({type: 'bigint'})
     authorId: number;

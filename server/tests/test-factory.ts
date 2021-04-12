@@ -8,6 +8,8 @@ import {PictureView} from 'entity/picture-view';
 import {PicturePhoto} from 'entity/picture-photo';
 import {Selection} from 'entity/selection';
 import {SelectionPicture} from 'entity/selection-picture';
+import {PictureStyle} from 'entity/picture-style';
+import {PictureShape} from 'entity/picture-shape';
 import {Interior} from 'entity/interior';
 
 async function createAuthor() {
@@ -24,20 +26,49 @@ async function createAuthor() {
     return manager.findOneOrFail(Author, author.id);
 }
 
-async function createPicture(authorId: number) {
+async function createPictureShape() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(PictureShape);
+
+    const shape = manager.create(PictureShape, {
+        name: faker.lorem.word()
+    });
+
+    await manager.save(shape);
+
+    return manager.findOneOrFail(PictureShape, shape.id);
+}
+
+async function createPictureStyle() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(PictureStyle);
+
+    const style = manager.create(PictureStyle, {
+        name: faker.lorem.word()
+    });
+
+    await manager.save(style);
+
+    return manager.findOneOrFail(PictureStyle, style.id);
+}
+
+interface CreatePictureParams {
+    authorId: number;
+    styleId?: number;
+    shapeId?: number;
+}
+
+async function createPicture(params: CreatePictureParams) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Picture);
-
-    const shape = ['round', 'square', 'other'];
-    const style = ['modern', 'classic', 'other'];
 
     const picture = manager.create(Picture, {
         name: faker.random.words(random(5, 10)),
         width: faker.random.number(),
         height: faker.random.number(),
-        shape: shape[random(shape.length - 1)] as any,
-        style: style[random(style.length - 1)] as any,
-        authorId
+        shapeId: params.shapeId || (await createPictureShape()).id,
+        styleId: params.styleId || (await createPictureStyle()).id,
+        authorId: params.authorId
     });
 
     await manager.save(picture);
@@ -126,6 +157,8 @@ async function createInterior(params: CreateInteriorParams) {
 export const TestFactory = {
     createAuthor,
     createPicture,
+    createPictureShape,
+    createPictureStyle,
     createPictureView,
     createPicturePhoto,
     createSelection,
