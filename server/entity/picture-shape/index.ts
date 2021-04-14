@@ -7,6 +7,9 @@ export class PictureShape {
     id: number;
 
     @Column({type: 'text'})
+    code: string;
+
+    @Column({type: 'text'})
     name: string;
 
     @OneToMany(() => Picture, (picture) => picture.shape)

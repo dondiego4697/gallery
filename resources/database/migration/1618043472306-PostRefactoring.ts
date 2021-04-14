@@ -21,18 +21,22 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             CREATE TABLE picture_shape (
                 id SMALLSERIAL NOT NULL,
+                code TEXT NOT NULL,
                 name TEXT NOT NULL,
 
                 CONSTRAINT pk__picture_shape PRIMARY KEY (id),
+                CONSTRAINT uq__picture_shape__code UNIQUE (code),
                 CONSTRAINT uq__picture_shape__name UNIQUE (name)
 
             );
 
             CREATE TABLE picture_style (
                 id SMALLSERIAL NOT NULL,
+                code TEXT NOT NULL,
                 name TEXT NOT NULL,
 
                 CONSTRAINT pk__picture_style PRIMARY KEY (id),
+                CONSTRAINT uq__picture_style__code UNIQUE (code),
                 CONSTRAINT uq__picture_style__name UNIQUE (name)
             );
 
