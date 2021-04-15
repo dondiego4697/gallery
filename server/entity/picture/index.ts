@@ -1,11 +1,17 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, ManyToOne, BeforeInsert, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Author} from 'entity/author';
 import {PicturePhoto} from 'entity/picture-photo';
 import {PictureShape} from 'entity/picture-shape';
 import {PictureStyle} from 'entity/picture-style';
+import {nanoid} from 'nanoid';
 
 @Entity()
 export class Picture {
+    @BeforeInsert()
+    _beforeInsert() {
+        this.publicId = nanoid();
+    }
+
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 

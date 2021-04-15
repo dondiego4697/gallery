@@ -6,7 +6,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
         await queryRunner.query(`
             CREATE TABLE author (
                 id BIGSERIAL NOT NULL,
-                public_id UUID NOT NULL DEFAULT uuid_generate_v1(),
+                public_id TEXT NOT NULL,
 
                 name TEXT NOT NULL,
                 avatar_url TEXT,
@@ -14,7 +14,10 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
                 is_gallery BOOLEAN NOT NULL DEFAULT FALSE,
 
-                CONSTRAINT pk__author PRIMARY KEY (id)
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+
+                CONSTRAINT pk__author PRIMARY KEY (id),
+                CONSTRAINT uk__author__public_id UNIQUE (public_id)
             );
 
             CREATE INDEX idx__author__public_id ON author USING btree (public_id);
@@ -42,7 +45,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             CREATE TABLE picture (
                 id BIGSERIAL NOT NULL,
-                public_id UUID NOT NULL DEFAULT uuid_generate_v1(),
+                public_id TEXT NOT NULL,
                 
                 name TEXT NOT NULL,
 
@@ -61,12 +64,11 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT pk__picture PRIMARY KEY (id),
                 CONSTRAINT fk__picture__author_id__author FOREIGN KEY (author_id) REFERENCES author (id),
                 CONSTRAINT fk__picture__shape_id__picture_shape FOREIGN KEY (shape_id) REFERENCES picture_shape (id),
-                CONSTRAINT fk__picture__style_id__picture_style FOREIGN KEY (style_id) REFERENCES picture_style (id)
+                CONSTRAINT fk__picture__style_id__picture_style FOREIGN KEY (style_id) REFERENCES picture_style (id),
+                CONSTRAINT uk__picture__public_id UNIQUE (public_id)
             );
 
             CREATE INDEX idx__picture__public_id ON picture USING btree (public_id);
-
-            CREATE UNIQUE INDEX idx__picture__name ON picture (LOWER(name));  
 
             CREATE TABLE picture_view (
                 id BIGSERIAL NOT NULL,  
@@ -108,7 +110,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             CREATE TABLE selection ( 
                 id BIGSERIAL NOT NULL, 
-                public_id UUID NOT NULL DEFAULT uuid_generate_v1(), 
+                public_id TEXT NOT NULL,
           
                 name TEXT NOT NULL,
                 description TEXT,
@@ -118,7 +120,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
         
-                CONSTRAINT pk__selection PRIMARY KEY (id)
+                CONSTRAINT pk__selection PRIMARY KEY (id),
+                CONSTRAINT uk__selection__public_id UNIQUE (public_id)
             );
 
             CREATE INDEX idx__selection__public_id ON selection USING btree (public_id);
@@ -140,6 +143,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 id BIGSERIAL NOT NULL,  
           
                 email TEXT NOT NULL,
+
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
         
                 CONSTRAINT pk__users PRIMARY KEY (id)
             );

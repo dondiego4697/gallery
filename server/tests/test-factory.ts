@@ -31,7 +31,8 @@ async function createPictureShape() {
     const {manager} = connection.getRepository(PictureShape);
 
     const shape = manager.create(PictureShape, {
-        name: faker.lorem.word()
+        code: faker.random.uuid(),
+        name: faker.random.word() + '_' + Math.random()
     });
 
     await manager.save(shape);
@@ -44,7 +45,8 @@ async function createPictureStyle() {
     const {manager} = connection.getRepository(PictureStyle);
 
     const style = manager.create(PictureStyle, {
-        name: faker.lorem.word()
+        code: faker.random.uuid(),
+        name: faker.random.word() + '_' + Math.random()
     });
 
     await manager.save(style);

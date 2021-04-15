@@ -1,9 +1,15 @@
 import {DbTable} from 'entity/const';
 import {Picture} from 'entity/picture';
-import {Column, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, BeforeInsert, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn} from 'typeorm';
+import {nanoid} from 'nanoid';
 
 @Entity()
 export class Selection {
+    @BeforeInsert()
+    _beforeInsert() {
+        this.publicId = nanoid();
+    }
+
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 

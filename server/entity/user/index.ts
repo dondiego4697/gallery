@@ -8,4 +8,7 @@ export class User {
 
     @Column({type: 'text'})
     email: string;
+
+    @Column({type: 'timestamp with time zone'})
+    createdAt: Date;
 }

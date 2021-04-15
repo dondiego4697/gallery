@@ -9,7 +9,7 @@ interface Params {
     meta?: Record<string, any>;
 }
 
-type ClientErrorCode = '';
+type ClientErrorCode = 'ENTITY_NOT_FOUND';
 
 export class LoggableError extends Error {
     constructor(params: Params) {
@@ -33,7 +33,7 @@ export class LoggableError extends Error {
 export class ClientError extends LoggableError {
     public clientErrorCode: ClientErrorCode;
 
-    constructor(clientErrorCode: ClientErrorCode, params: Params) {
+    constructor(clientErrorCode: ClientErrorCode, params: Params = {}) {
         super(params);
 
         this.clientErrorCode = clientErrorCode;

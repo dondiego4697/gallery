@@ -1,18 +1,10 @@
 import pMap from 'p-map';
 import {range, random, shuffle} from 'lodash';
 import {TestFactory} from 'tests/test-factory';
-import {handle as compileServer} from 'cli/api/server/compile';
-import {handle as dbMigrate} from 'cli/api/db/migrate';
-import {handle as dbRestore} from 'cli/api/db/restore';
+import {restoreDb} from 'tests/restore-db';
 
 export async function handle() {
-    const {argv} = cliRuntime();
-    const {environment: argvEnvironment} = argv;
-    const environment = argvEnvironment || 'development';
-
-    await compileServer();
-    await dbRestore(environment);
-    await dbMigrate(environment);
+    await restoreDb('development');
 
     // Авторы
     const authors = await pMap(
@@ -29,7 +21,9 @@ export async function handle() {
     const pictures = await pMap(
         range(100),
         async () => {
-            const {id} = await TestFactory.createPicture(authors[random(authors.length - 1)]);
+            const {id} = await TestFactory.createPicture({
+                authorId: authors[random(authors.length - 1)]
+            });
 
             return id;
         },

@@ -6,6 +6,8 @@ import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 import {Author} from 'entity/author';
 import {Interior} from 'entity/interior';
 import {Picture} from 'entity/picture';
+import {PictureShape} from 'entity/picture-shape';
+import {PictureStyle} from 'entity/picture-style';
 import {PicturePhoto} from 'entity/picture-photo';
 import {PictureView} from 'entity/picture-view';
 import {Selection} from 'entity/selection';
@@ -43,6 +45,8 @@ class DbManager {
                 Author,
                 Interior,
                 Picture,
+                PictureShape,
+                PictureStyle,
                 PicturePhoto,
                 PictureView,
                 Selection,
@@ -66,6 +70,10 @@ class DbManager {
 
     public async getConnection() {
         await this.connectionDeffered;
+
+        if (!this.connection.isConnected) {
+            this.connection.connect();
+        }
 
         return this.connection;
     }
