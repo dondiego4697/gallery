@@ -5,6 +5,8 @@ export enum DbTable {
     SELECTION_PICTURE = 'selection_picture',
     INTERIOR = 'interior',
     PICTURE_PHOTO = 'picture_photo',
+    PICTURE_SHAPE = 'picture_shape',
+    PICTURE_STYLE = 'picture_style',
     PICTURE_VIEW = 'picture_view',
     PICTURE = 'picture',
     AUTHOR = 'author'
