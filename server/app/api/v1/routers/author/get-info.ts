@@ -12,5 +12,5 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         throw new ClientError('ENTITY_NOT_FOUND', {request: req, group: 'application'});
     }
 
-    res.json({author: omit(author, 'id')});
+    res.json(omit(author, 'id'));
 });

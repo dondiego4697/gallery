@@ -69,7 +69,7 @@ const development: Config = {
     }
 };
 
-const tests: Config = {
+const test: Config = {
     ...development,
     'logger.db.level': ['error'],
     'localtunnel.enable': false,
@@ -85,7 +85,7 @@ const configs = new Map<string, Readonly<Config>>([
     ['production', production],
     ['testing', testing],
     ['development', development],
-    ['tests', tests]
+    ['test', test]
 ]);
 
 const env = process.env.ENVIRONMENT || 'development';

@@ -5,7 +5,7 @@ import {handle as compileServer} from 'cli/api/server/compile';
 export async function handle() {
     const {ROOT_DIR, argv} = cliRuntime();
     const {pattern} = argv;
-    const environment = 'tests';
+    const environment = 'test';
 
     const jestParams = ['--config=jest.config.json', '--forceExit'];
 

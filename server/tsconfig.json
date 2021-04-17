@@ -32,7 +32,7 @@
         "cli/**/*",
         "entity/**/*",
         "app/**/*",
-        "tests/**/*",
+        "test/**/*",
         "service/**/*"
     ],
     "exclude": ["out", "node_modules", "tmp"]

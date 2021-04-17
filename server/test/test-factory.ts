@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import faker from 'faker';
-import {random} from 'lodash';
+import {keyBy, random} from 'lodash';
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
 import {Picture} from 'entity/picture';
@@ -11,6 +11,7 @@ import {SelectionPicture} from 'entity/selection-picture';
 import {PictureStyle} from 'entity/picture-style';
 import {PictureShape} from 'entity/picture-shape';
 import {Interior} from 'entity/interior';
+import {DbTable} from 'entity/const';
 
 async function createAuthor() {
     const connection = await dbManager.getConnection();
@@ -156,6 +157,34 @@ async function createInterior(params: CreateInteriorParams) {
     return manager.findOneOrFail(Interior, interior.id);
 }
 
+async function getPictureShapesHash() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(PictureShape).createQueryBuilder(DbTable.PICTURE_SHAPE);
+
+    const rows = await qb.getMany();
+
+    return keyBy(rows, 'id');
+}
+
+async function getPictureStylesHash() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(PictureStyle).createQueryBuilder(DbTable.PICTURE_STYLE);
+
+    const rows = await qb.getMany();
+
+    return keyBy(rows, 'id');
+}
+
+async function getPictures() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(Picture).createQueryBuilder(DbTable.PICTURE);
+
+    return qb.getMany();
+}
+
 export const TestFactory = {
     createAuthor,
     createPicture,
@@ -165,5 +194,8 @@ export const TestFactory = {
     createPicturePhoto,
     createSelection,
     createSelectionPicture,
-    createInterior
+    createInterior,
+    getPictureShapesHash,
+    getPictureStylesHash,
+    getPictures
 };

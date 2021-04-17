@@ -12,12 +12,12 @@
             ],
             "verbose": true,
             "setupFiles": [
-                "<rootDir>out/server/tests/setup-env"
+                "<rootDir>out/server/test/setup-env"
             ],
             "setupFilesAfterEnv": [
-                "<rootDir>out/server/tests/setup-tests"
+                "<rootDir>out/server/test/setup-tests"
             ],
-            "globalSetup": "<rootDir>out/server/tests/restore-db"
+            "globalSetup": "<rootDir>out/server/test/restore-db"
         }
     ],
     "reporters": [

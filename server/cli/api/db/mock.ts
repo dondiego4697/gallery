@@ -1,7 +1,7 @@
 import pMap from 'p-map';
 import {range, random, shuffle} from 'lodash';
-import {TestFactory} from 'tests/test-factory';
-import {restoreDb} from 'tests/restore-db';
+import {TestFactory} from 'test/test-factory';
+import {restoreDb} from 'test/restore-db';
 
 export async function handle() {
     await restoreDb('development');
