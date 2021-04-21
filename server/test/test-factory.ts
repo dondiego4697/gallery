@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import faker from 'faker';
-import {keyBy, random} from 'lodash';
+import {v4 as uuidv4} from 'uuid';
+import casual from 'casual';
+import {keyBy} from 'lodash';
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
 import {Picture} from 'entity/picture';
@@ -18,8 +19,8 @@ async function createAuthor() {
     const {manager} = connection.getRepository(Author);
 
     const author = manager.create(Author, {
-        name: faker.name.firstName() + ' ' + faker.name.lastName(),
-        avatarUrl: faker.internet.avatar()
+        name: casual.full_name,
+        avatarUrl: casual.url
     });
 
     await manager.save(author);
@@ -32,8 +33,8 @@ async function createPictureShape() {
     const {manager} = connection.getRepository(PictureShape);
 
     const shape = manager.create(PictureShape, {
-        code: faker.random.uuid(),
-        name: faker.random.word() + '_' + Math.random()
+        code: uuidv4(),
+        name: casual.words(10)
     });
 
     await manager.save(shape);
@@ -46,8 +47,8 @@ async function createPictureStyle() {
     const {manager} = connection.getRepository(PictureStyle);
 
     const style = manager.create(PictureStyle, {
-        code: faker.random.uuid(),
-        name: faker.random.word() + '_' + Math.random()
+        code: uuidv4(),
+        name: casual.words(10)
     });
 
     await manager.save(style);
@@ -66,9 +67,9 @@ async function createPicture(params: CreatePictureParams) {
     const {manager} = connection.getRepository(Picture);
 
     const picture = manager.create(Picture, {
-        name: faker.random.words(random(5, 10)),
-        width: faker.random.number(),
-        height: faker.random.number(),
+        name: casual.words(10),
+        width: casual.integer(10, 100),
+        height: casual.integer(10, 100),
         shapeId: params.shapeId || (await createPictureShape()).id,
         styleId: params.styleId || (await createPictureStyle()).id,
         authorId: params.authorId
@@ -85,7 +86,7 @@ async function createPictureView(pictureId: number) {
 
     const pictureView = manager.create(PictureView, {
         pictureId,
-        fingerprint: faker.random.uuid()
+        fingerprint: uuidv4()
     });
 
     await manager.save(pictureView);
@@ -99,7 +100,7 @@ async function createPicturePhoto(pictureId: number) {
 
     const picturePhoto = manager.create(PicturePhoto, {
         pictureId,
-        photoUrl: faker.random.image()
+        photoUrl: casual.url
     });
 
     await manager.save(picturePhoto);
@@ -112,9 +113,9 @@ async function createSelection() {
     const {manager} = connection.getRepository(Selection);
 
     const selection = manager.create(Selection, {
-        name: faker.lorem.words(6),
-        description: faker.lorem.sentences(),
-        imageUrl: faker.random.image()
+        name: casual.words(6),
+        description: casual.sentences(10),
+        imageUrl: casual.url
     });
 
     await manager.save(selection);
@@ -148,7 +149,7 @@ async function createInterior(params: CreateInteriorParams) {
     const {manager} = connection.getRepository(Interior);
 
     const interior = manager.create(Interior, {
-        photoUrl: faker.random.image(),
+        photoUrl: casual.url,
         ...params
     });
 
