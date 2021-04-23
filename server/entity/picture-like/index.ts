@@ -1,7 +1,7 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
-export class UserLike {
+export class PictureLike {
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 

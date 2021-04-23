@@ -13,7 +13,7 @@ import {PictureView} from 'entity/picture-view';
 import {Selection} from 'entity/selection';
 import {SelectionPicture} from 'entity/selection-picture';
 import {User} from 'entity/user';
-import {UserLike} from 'entity/user-like';
+import {PictureLike} from 'entity/picture-like';
 import {ViewOfPictureView} from 'entity/view-of-picture-view';
 
 pgTypes.setTypeParser(20, toFinite);
@@ -52,7 +52,7 @@ class DbManager {
                 Selection,
                 SelectionPicture,
                 User,
-                UserLike,
+                PictureLike,
                 ViewOfPictureView
             ],
             logging: config['logger.db.level'],

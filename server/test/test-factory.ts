@@ -3,16 +3,31 @@ import {v4 as uuidv4} from 'uuid';
 import casual from 'casual';
 import {keyBy} from 'lodash';
 import {dbManager} from 'app/lib/db-manager';
+import {User} from 'entity/user';
 import {Author} from 'entity/author';
 import {Picture} from 'entity/picture';
 import {PictureView} from 'entity/picture-view';
+import {ViewOfPictureView} from 'entity/view-of-picture-view';
 import {PicturePhoto} from 'entity/picture-photo';
 import {Selection} from 'entity/selection';
 import {SelectionPicture} from 'entity/selection-picture';
 import {PictureStyle} from 'entity/picture-style';
 import {PictureShape} from 'entity/picture-shape';
 import {Interior} from 'entity/interior';
-import {DbTable} from 'entity/const';
+import {PictureLike} from 'entity/picture-like';
+
+async function createUser() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(User);
+
+    const user = manager.create(User, {
+        email: casual.email
+    });
+
+    await manager.save(user);
+
+    return manager.findOneOrFail(User, user.id);
+}
 
 async function createAuthor() {
     const connection = await dbManager.getConnection();
@@ -161,7 +176,7 @@ async function createInterior(params: CreateInteriorParams) {
 async function getPictureShapesHash() {
     const connection = await dbManager.getConnection();
 
-    const qb = connection.getRepository(PictureShape).createQueryBuilder(DbTable.PICTURE_SHAPE);
+    const qb = connection.getRepository(PictureShape).createQueryBuilder('picShape');
 
     const rows = await qb.getMany();
 
@@ -171,7 +186,7 @@ async function getPictureShapesHash() {
 async function getPictureStylesHash() {
     const connection = await dbManager.getConnection();
 
-    const qb = connection.getRepository(PictureStyle).createQueryBuilder(DbTable.PICTURE_STYLE);
+    const qb = connection.getRepository(PictureStyle).createQueryBuilder('picStyle');
 
     const rows = await qb.getMany();
 
@@ -181,12 +196,37 @@ async function getPictureStylesHash() {
 async function getPictures() {
     const connection = await dbManager.getConnection();
 
-    const qb = connection.getRepository(Picture).createQueryBuilder(DbTable.PICTURE);
+    const qb = connection.getRepository(Picture).createQueryBuilder('pic');
+
+    return qb.getMany();
+}
+
+async function getPicturesLikes() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(PictureLike).createQueryBuilder('like');
+
+    return qb.getMany();
+}
+
+async function getPicturesViews() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(PictureView).createQueryBuilder('view');
+
+    return qb.getMany();
+}
+
+async function getPicturesViewsCount() {
+    const connection = await dbManager.getConnection();
+
+    const qb = connection.getRepository(ViewOfPictureView).createQueryBuilder('viewOfPictureView');
 
     return qb.getMany();
 }
 
 export const TestFactory = {
+    createUser,
     createAuthor,
     createPicture,
     createPictureShape,
@@ -198,5 +238,8 @@ export const TestFactory = {
     createInterior,
     getPictureShapesHash,
     getPictureStylesHash,
-    getPictures
+    getPictures,
+    getPicturesLikes,
+    getPicturesViews,
+    getPicturesViewsCount
 };

@@ -1,11 +1,16 @@
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
-import {DbTable} from 'entity/const';
+
+interface GetAuthorPicturesParams {
+    id: string;
+    limit: number;
+    offset: number;
+}
 
 export async function getAuthorByPublicId(id: string) {
     const connection = await dbManager.getConnection();
 
-    const qb = connection.getRepository(Author).createQueryBuilder(DbTable.AUTHOR).where({
+    const qb = connection.getRepository(Author).createQueryBuilder('athr').where({
         publicId: id
     });
 
@@ -14,19 +19,21 @@ export async function getAuthorByPublicId(id: string) {
     return author;
 }
 
-export async function getAuthorByPublicIdWithPictures(id: string, limit: number, offset: number) {
+export async function getAuthorByPublicIdWithPictures(params: GetAuthorPicturesParams) {
+    const {limit, offset, id} = params;
+
     const connection = await dbManager.getConnection();
 
     const qb = connection
         .getRepository(Author)
-        .createQueryBuilder(DbTable.AUTHOR)
-        .leftJoinAndSelect(`${DbTable.AUTHOR}.pictures`, DbTable.PICTURE)
-        .innerJoinAndSelect(`${DbTable.PICTURE}.shape`, DbTable.PICTURE_SHAPE)
-        .innerJoinAndSelect(`${DbTable.PICTURE}.style`, DbTable.PICTURE_STYLE)
-        .where(`${DbTable.AUTHOR}.publicId = :id`, {id})
+        .createQueryBuilder('athr')
+        .leftJoinAndSelect('athr.pictures', 'pic')
+        .innerJoinAndSelect('pic.shape', 'picShape')
+        .innerJoinAndSelect('pic.style', 'picStyle')
+        .where('athr.publicId = :id', {id})
         .limit(limit)
         .offset(offset)
-        .orderBy(`${DbTable.PICTURE}.createdAt`, 'DESC');
+        .orderBy('pic.createdAt', 'DESC');
 
     const author = await qb.getOne();
 

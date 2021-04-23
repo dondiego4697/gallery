@@ -20,6 +20,9 @@ export interface Config {
     'app.cache.enable': boolean;
     'app.host': string;
     'localtunnel.enable': boolean;
+    'private.key': string;
+    'cookie.key.userToken': string;
+    'cookie.key.fingerprint': string;
     db: DB;
 }
 
@@ -34,6 +37,9 @@ const production: Config = {
     'csrf.token.ttl': 60 * 60 * 1000, // 1h
     'app.cache.enable': true,
     'app.host': 'https://some_host.ru',
+    'private.key': process.env.PRIVATE_KEY!,
+    'cookie.key.userToken': 'user_token',
+    'cookie.key.fingerprint': 'client_fingerprint',
     db: {
         hosts: ['localhost'],
         port: 6432,
@@ -94,3 +100,4 @@ const configForEnv = configs.get(env);
 export const config = configForEnv!;
 
 assert(config, `there is no configuration for environment "${env}"`);
+assert(config['private.key'], 'there is no private key');

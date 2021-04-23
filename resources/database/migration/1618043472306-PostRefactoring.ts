@@ -151,15 +151,15 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             CREATE UNIQUE INDEX idx__users__email ON users (LOWER(email));
 
-            CREATE TABLE user_like (   
+            CREATE TABLE picture_like (   
                 id BIGSERIAL NOT NULL,
 
                 user_id BIGINT NOT NULL,
                 picture_id BIGINT NOT NULL,
 
-                CONSTRAINT pk__user_like PRIMARY KEY (id),
-                CONSTRAINT fk__user_like__user_id__user FOREIGN KEY (user_id) REFERENCES users (id),
-                CONSTRAINT fk__user_like__picture_id__picture FOREIGN KEY (picture_id) REFERENCES picture (id)
+                CONSTRAINT pk__picture_like PRIMARY KEY (id),
+                CONSTRAINT fk__picture_like__user_id__user FOREIGN KEY (user_id) REFERENCES users (id),
+                CONSTRAINT fk__picture_like__picture_id__picture FOREIGN KEY (picture_id) REFERENCES picture (id)
             );
         `);
     }

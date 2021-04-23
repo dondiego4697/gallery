@@ -38,13 +38,13 @@ describe(`GET ${PATH}`, () => {
         });
     });
 
-    it('should throw 400', async () => {
+    it('should throw 404', async () => {
         const {statusCode, body} = await got.get(`${url}${PATH.replace(':id', uuidv4())}`, {
             responseType: 'json',
             throwHttpErrors: false
         });
 
-        expect(statusCode).toBe(400);
+        expect(statusCode).toBe(404);
         expect(body).toMatchObject({
             message: 'ENTITY_NOT_FOUND'
         });

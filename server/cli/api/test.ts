@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 import execa from 'execa';
 
 import {handle as compileServer} from 'cli/api/server/compile';
@@ -20,6 +24,7 @@ export async function handle() {
         stderr: 'inherit',
         cwd: ROOT_DIR,
         env: {
+            ...process.env,
             ENVIRONMENT: environment,
             DISABLE_LOGGING: '1'
         }

@@ -13,7 +13,7 @@ export const getPictures = wrap<Request, Response>(async (req, res) => {
     const {limit, offset} = (req.query as unknown) as Query;
     const {id} = req.params;
 
-    const author = await getAuthorByPublicIdWithPictures(id, limit, offset);
+    const author = await getAuthorByPublicIdWithPictures({id, limit, offset});
 
     if (!author) {
         throw new ClientError('ENTITY_NOT_FOUND', {request: req, group: 'application'});

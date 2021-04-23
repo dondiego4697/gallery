@@ -59,7 +59,13 @@ export const app = express()
         if (error.isBoom) {
             sendError(req, res, error);
         } else if (error instanceof ClientError) {
-            sendError(req, res, Boom.badRequest(error.clientErrorCode));
+            if (error.clientErrorCode === 'UNAUTHORIZED') {
+                sendError(req, res, Boom.unauthorized(error.clientErrorCode));
+            } else if (error.clientErrorCode === 'ENTITY_NOT_FOUND') {
+                sendError(req, res, Boom.notFound(error.clientErrorCode));
+            } else {
+                sendError(req, res, Boom.badRequest(error.clientErrorCode));
+            }
         } else {
             sendError(req, res, Boom.boomify(error));
         }
