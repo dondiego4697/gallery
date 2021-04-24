@@ -28,6 +28,15 @@ export class Selection {
     @Column({type: 'boolean'})
     isShow: boolean;
 
+    @Column({type: 'bigint', nullable: true})
+    parentId?: number;
+
+    @Column({type: 'ltree', generated: true})
+    tpath: string;
+
+    @Column({type: 'boolean', generated: true})
+    isRoot: boolean;
+
     @Column({type: 'timestamp with time zone'})
     createdAt: Date;
 

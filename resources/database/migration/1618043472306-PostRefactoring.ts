@@ -118,11 +118,53 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
                 is_show BOOLEAN NOT NULL DEFAULT TRUE,
 
+                parent_id BIGINT,
+                tpath LTREE NOT NULL,
+
+                is_root BOOLEAN NOT NULL GENERATED ALWAYS AS (nlevel(tpath) = 1) STORED,
+
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
         
                 CONSTRAINT pk__selection PRIMARY KEY (id),
-                CONSTRAINT uk__selection__public_id UNIQUE (public_id)
+                CONSTRAINT uq__selection__public_id UNIQUE (public_id),
+                CONSTRAINT uq__selection__tpath UNIQUE (tpath),
+                CONSTRAINT fk__selection__parent_id__selection FOREIGN KEY (parent_id) REFERENCES selection (id)
             );
+
+            CREATE OR REPLACE FUNCTION selection__generate_tpath()
+                RETURNS TRIGGER AS $$
+                DECLARE
+                    parent_tpath LTREE;
+                BEGIN
+                    IF NEW.parent_id IS NULL THEN
+                        NEW.tpath = text2ltree(NEW.id::text);
+                    ELSE
+                        SELECT tpath INTO parent_tpath FROM selection WHERE id = NEW.parent_id;
+                            NEW.tpath = parent_tpath || NEW.id::text;
+                    END IF;
+
+                    IF index(parent_tpath, text2ltree(NEW.id::text)) >= 0 THEN
+                        RAISE EXCEPTION 'CYCLIC_MOVE_IS_FORBIDDEN';
+                    END IF;
+
+                    UPDATE selection
+                    SET tpath = NEW.tpath || (subpath(tpath, nlevel(OLD.tpath)))
+                    WHERE TRUE
+                        AND tpath ~ (ltree2text(OLD.tpath) || '.*')::lquery
+                        AND OLD.tpath != tpath;
+
+                    RETURN NEW;
+                END;
+                $$ language 'plpgsql';
+
+            CREATE TRIGGER
+                trigger__selection__generate_tpath
+            BEFORE INSERT OR UPDATE ON
+                selection
+            FOR EACH ROW
+                WHEN (pg_trigger_depth() = 0)
+            EXECUTE PROCEDURE
+                selection__generate_tpath();
 
             CREATE INDEX idx__selection__public_id ON selection USING btree (public_id);
             CREATE UNIQUE INDEX idx__selection__name__is_show ON selection (LOWER(name), is_show);  
@@ -192,6 +234,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
             DROP INDEX idx__author__public_id;
             DROP TABLE author;
+
+            DROP FUNCTION selection__generate_tpath;
         `);
     }
 

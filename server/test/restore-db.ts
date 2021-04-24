@@ -10,6 +10,7 @@ async function restoreSchema() {
         CREATE SCHEMA public;
 
         CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE EXTENSION IF NOT EXISTS LTREE;
     `);
 }
 

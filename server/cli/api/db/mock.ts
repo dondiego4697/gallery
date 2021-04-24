@@ -1,5 +1,5 @@
 import pMap from 'p-map';
-import {range, random, shuffle} from 'lodash';
+import {range, random, shuffle, flatten} from 'lodash';
 import {TestFactory} from 'test/test-factory';
 import {restoreDb} from 'test/restore-db';
 
@@ -49,14 +49,26 @@ export async function handle() {
     );
 
     // Подборки
-    const selections = await pMap(
-        range(50),
-        async () => {
-            const {id} = await TestFactory.createSelection();
+    const selections = flatten(
+        await pMap(
+            range(50),
+            async () => {
+                const result = [];
 
-            return id;
-        },
-        {concurrency: 10}
+                const {id} = await TestFactory.createSelection();
+
+                result.push(id);
+
+                if (Math.random() > 0.5) {
+                    const {id: childId} = await TestFactory.createSelection(id);
+
+                    result.push(childId);
+                }
+
+                return result;
+            },
+            {concurrency: 10}
+        )
     );
 
     // Фото в подборках

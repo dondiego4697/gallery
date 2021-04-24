@@ -137,14 +137,15 @@ async function createPicturePhoto(pictureId: number) {
     return manager.findOneOrFail(PicturePhoto, picturePhoto.id);
 }
 
-async function createSelection() {
+async function createSelection(parentId?: number) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Selection);
 
     const selection = manager.create(Selection, {
         name: casual.words(6),
         description: casual.sentences(10),
-        imageUrl: casual.url
+        imageUrl: casual.url,
+        parentId
     });
 
     await manager.save(selection);
