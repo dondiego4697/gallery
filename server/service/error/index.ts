@@ -23,7 +23,7 @@ export class LoggableError extends Error {
         };
 
         if (request) {
-            request.logger.error(message, log);
+            request.context.logger.error(message, log);
         } else {
             logger.error(message, log);
         }

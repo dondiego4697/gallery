@@ -1,19 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
-import {Logger} from 'winston';
-
-interface User {
-    id: number;
-}
+import {Context} from 'app/middleware/request-context';
 
 declare global {
     namespace Express {
         interface Request {
             nonce: string;
-            requestId: string;
-            logger: Logger;
-            user?: User;
-            browserFingerprint?: string;
+            context: Context;
         }
     }
 }

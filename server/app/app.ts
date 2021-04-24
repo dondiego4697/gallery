@@ -14,8 +14,6 @@ import {renderHTML} from 'app/middleware/render-html';
 import {router as staticRouter} from 'app/middleware/static';
 import {ping} from 'app/middleware/ping';
 import {helmet} from 'app/middleware/helmet';
-import {requestId} from 'app/middleware/request-id';
-import {logger as loggerMiddleware} from 'app/middleware/logger';
 import {router as v1} from 'app/api/v1';
 import {ClientError} from 'service/error';
 import {config} from 'app/config';
@@ -30,7 +28,6 @@ export const app = express()
     .set('view engine', 'pug')
     .enable('trust proxy')
     .disable('x-powered-by')
-    .use(loggerMiddleware)
     .use(
         cors({
             methods: ['GET, POST, PUT, PATCH, DELETE, OPTIONS'],
@@ -45,7 +42,6 @@ export const app = express()
             }
         })
     )
-    .use(requestId)
     .use(helmet)
     .use(cookieParser())
     .use(bodyParserJson)
@@ -72,7 +68,7 @@ export const app = express()
     });
 
 function sendError(req: express.Request, res: express.Response, error: Boom.Boom): void {
-    req.logger.error(`error: ${error.message}`);
+    req.context.logger.error(`error: ${error.message}`);
     res.status(error.output.statusCode).json(error.output.payload);
 }
 

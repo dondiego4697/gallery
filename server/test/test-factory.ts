@@ -109,6 +109,20 @@ async function createPictureView(pictureId: number) {
     return manager.findOneOrFail(PictureView, pictureView.id);
 }
 
+async function createPictureLike(pictureId: number, userId: number) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(PictureLike);
+
+    const pictureLike = manager.create(PictureLike, {
+        pictureId,
+        userId
+    });
+
+    await manager.save(pictureLike);
+
+    return manager.findOneOrFail(PictureLike, pictureLike.id);
+}
+
 async function createPicturePhoto(pictureId: number) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(PicturePhoto);
@@ -232,6 +246,7 @@ export const TestFactory = {
     createPictureShape,
     createPictureStyle,
     createPictureView,
+    createPictureLike,
     createPicturePhoto,
     createSelection,
     createSelectionPicture,
