@@ -10,7 +10,7 @@ export const login = wrap<Request, Response>(async (_req, res) => {
 
     const userData: CookieUserData = {id: user.id};
 
-    res.cookie(config['cookie.key.userToken'], JWT.encode(userData), {maxAge: 2 * 60 * 60 * 1000});
+    res.cookie(config['cookie.key.userToken'], JWT.encode(userData), {maxAge: 2 * 60 * 60 * 1000}); // 2h
 
     res.json({});
 });

@@ -4,19 +4,25 @@ import typeorm, {createConnection} from 'typeorm';
 import {config} from 'app/config';
 import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 import {Author} from 'entity/author';
+import {City} from 'entity/city';
+import {Country} from 'entity/country';
+import {AuthorProfession} from 'entity/author-profession';
 import {Interior} from 'entity/interior';
-import {Picture} from 'entity/picture';
-import {PictureShape} from 'entity/picture-shape';
-import {PictureStyle} from 'entity/picture-style';
-import {PicturePhoto} from 'entity/picture-photo';
-import {PictureView} from 'entity/picture-view';
+import {Product} from 'entity/product';
+import {ProductCategory} from 'entity/product-category';
+import {ProductLike} from 'entity/product-like';
+import {ProductPhoto} from 'entity/product-photo';
+import {ProductTag} from 'entity/product-tag';
+import {ProductView} from 'entity/product-view';
+import {Profession} from 'entity/profession';
 import {Selection} from 'entity/selection';
-import {SelectionPicture} from 'entity/selection-picture';
+import {ProductSelection} from 'entity/product-selection';
+import {Tag} from 'entity/tag';
 import {User} from 'entity/user';
-import {PictureLike} from 'entity/picture-like';
-import {ViewOfPictureView} from 'entity/view-of-picture-view';
+import {ViewOfProductView} from 'entity/view-of-product-view';
 
 pgTypes.setTypeParser(20, toFinite);
+pgTypes.setTypeParser(1700, toFinite);
 
 class DbManager {
     protected connection: typeorm.Connection;
@@ -42,20 +48,25 @@ class DbManager {
                 }))
             },
             entities: [
+                City,
+                Country,
                 Author,
+                AuthorProfession,
                 Interior,
-                Picture,
-                PictureShape,
-                PictureStyle,
-                PicturePhoto,
-                PictureView,
+                Product,
+                ProductCategory,
+                ProductLike,
+                ProductSelection,
+                ProductPhoto,
+                ProductTag,
+                ProductView,
+                Profession,
                 Selection,
-                SelectionPicture,
+                Tag,
                 User,
-                PictureLike,
-                ViewOfPictureView
+                ViewOfProductView
             ],
-            logging: config['logger.db.level'],
+            logging: config['logger.silent'] ? false : config['logger.db.level'],
             maxQueryExecutionTime: 5000,
             namingStrategy: new SnakeNamingStrategy(),
             extra: {

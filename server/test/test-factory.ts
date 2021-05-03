@@ -1,261 +1,362 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {v4 as uuidv4} from 'uuid';
+import {DeepPartial} from 'typeorm';
 import casual from 'casual';
-import {keyBy} from 'lodash';
 import {dbManager} from 'app/lib/db-manager';
-import {User} from 'entity/user';
+
 import {Author} from 'entity/author';
-import {Picture} from 'entity/picture';
-import {PictureView} from 'entity/picture-view';
-import {ViewOfPictureView} from 'entity/view-of-picture-view';
-import {PicturePhoto} from 'entity/picture-photo';
-import {Selection} from 'entity/selection';
-import {SelectionPicture} from 'entity/selection-picture';
-import {PictureStyle} from 'entity/picture-style';
-import {PictureShape} from 'entity/picture-shape';
 import {Interior} from 'entity/interior';
-import {PictureLike} from 'entity/picture-like';
+import {Profession} from 'entity/profession';
+import {Selection} from 'entity/selection';
+import {Tag} from 'entity/tag';
+import {User} from 'entity/user';
+import {Product} from 'entity/product';
+import {ProductCategory} from 'entity/product-category';
+import {Country} from 'entity/country';
+import {City} from 'entity/city';
+import {AuthorProfession} from 'entity/author-profession';
+import {ProductLike} from 'entity/product-like';
+import {ProductPhoto} from 'entity/product-photo';
+import {ProductTag} from 'entity/product-tag';
+import {ProductView} from 'entity/product-view';
+import {ProductSelection} from 'entity/product-selection';
+import {ViewOfProductView} from 'entity/view-of-product-view';
+
+async function createCountry() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Country);
+
+    const entity = manager.create(Country, {
+        code: `${casual.country_code}_${casual.random}`,
+        name: `${casual.country}_${casual.random}`
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Country, entity.id);
+}
+
+interface CreateCityParams {
+    countryId: number;
+}
+
+async function createCity(params: CreateCityParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(City);
+
+    const city = casual.city;
+    const entity = manager.create(City, {
+        code: `${city}_${casual.random}`,
+        name: `${city}_${casual.random}`,
+        countryId: params.countryId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(City, entity.id);
+}
 
 async function createUser() {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(User);
 
-    const user = manager.create(User, {
+    const entity = manager.create(User, {
         email: casual.email
     });
 
-    await manager.save(user);
+    await manager.save(entity);
 
-    return manager.findOneOrFail(User, user.id);
+    return manager.findOneOrFail(User, entity.id);
 }
 
-async function createAuthor() {
+interface CreateAuthorParams {
+    cityId?: number;
+    author?: DeepPartial<Author>;
+}
+
+async function createAuthor(params: CreateAuthorParams = {}) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Author);
 
-    const author = manager.create(Author, {
-        name: casual.full_name,
-        avatarUrl: casual.url
+    const entity = manager.create(Author, {
+        firstName: casual.first_name,
+        lastName: casual.last_name,
+        avatarUrl: casual.url + uuidv4(),
+        bio: casual.sentences(3),
+        cityId: params.cityId,
+        ...(params.author || {})
     });
 
-    await manager.save(author);
+    await manager.save(entity);
 
-    return manager.findOneOrFail(Author, author.id);
-}
-
-async function createPictureShape() {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(PictureShape);
-
-    const shape = manager.create(PictureShape, {
-        code: uuidv4(),
-        name: casual.words(10)
-    });
-
-    await manager.save(shape);
-
-    return manager.findOneOrFail(PictureShape, shape.id);
-}
-
-async function createPictureStyle() {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(PictureStyle);
-
-    const style = manager.create(PictureStyle, {
-        code: uuidv4(),
-        name: casual.words(10)
-    });
-
-    await manager.save(style);
-
-    return manager.findOneOrFail(PictureStyle, style.id);
-}
-
-interface CreatePictureParams {
-    authorId: number;
-    styleId?: number;
-    shapeId?: number;
-}
-
-async function createPicture(params: CreatePictureParams) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(Picture);
-
-    const picture = manager.create(Picture, {
-        name: casual.words(10),
-        width: casual.integer(10, 100),
-        height: casual.integer(10, 100),
-        shapeId: params.shapeId || (await createPictureShape()).id,
-        styleId: params.styleId || (await createPictureStyle()).id,
-        authorId: params.authorId
-    });
-
-    await manager.save(picture);
-
-    return manager.findOneOrFail(Picture, picture.id);
-}
-
-async function createPictureView(pictureId: number) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(PictureView);
-
-    const pictureView = manager.create(PictureView, {
-        pictureId,
-        fingerprint: uuidv4()
-    });
-
-    await manager.save(pictureView);
-
-    return manager.findOneOrFail(PictureView, pictureView.id);
-}
-
-async function createPictureLike(pictureId: number, userId: number) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(PictureLike);
-
-    const pictureLike = manager.create(PictureLike, {
-        pictureId,
-        userId
-    });
-
-    await manager.save(pictureLike);
-
-    return manager.findOneOrFail(PictureLike, pictureLike.id);
-}
-
-async function createPicturePhoto(pictureId: number) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(PicturePhoto);
-
-    const picturePhoto = manager.create(PicturePhoto, {
-        pictureId,
-        photoUrl: casual.url
-    });
-
-    await manager.save(picturePhoto);
-
-    return manager.findOneOrFail(PicturePhoto, picturePhoto.id);
-}
-
-async function createSelection(parentId?: number) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(Selection);
-
-    const selection = manager.create(Selection, {
-        name: casual.words(6),
-        description: casual.sentences(10),
-        imageUrl: casual.url,
-        parentId
-    });
-
-    await manager.save(selection);
-
-    return manager.findOneOrFail(Selection, selection.id);
-}
-
-async function createSelectionPicture(selectionId: number, pictureId: number) {
-    const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(SelectionPicture);
-
-    const selectionPicture = manager.create(SelectionPicture, {
-        selectionId,
-        pictureId
-    });
-
-    await manager.save(selectionPicture);
-
-    return manager.findOneOrFail(SelectionPicture, selectionPicture.id);
+    return manager.findOneOrFail(Author, entity.id);
 }
 
 interface CreateInteriorParams {
-    x: number;
-    y: number;
-    maxPictureHeight: number;
-    maxPictureWidth: number;
+    interior?: DeepPartial<Interior>;
 }
 
-async function createInterior(params: CreateInteriorParams) {
+async function createInterior(params: CreateInteriorParams = {}) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Interior);
 
-    const interior = manager.create(Interior, {
-        photoUrl: casual.url,
-        ...params
+    const entity = manager.create(Interior, {
+        photoUrl: casual.url + uuidv4(),
+        x: casual.integer(1, 100),
+        y: casual.integer(1, 100),
+        maxPictureHeightPercent: casual.integer(1, 100),
+        maxPictureWidthPercent: casual.integer(1, 100),
+        ...(params.interior || {})
     });
 
-    await manager.save(interior);
+    await manager.save(entity);
 
-    return manager.findOneOrFail(Interior, interior.id);
+    return manager.findOneOrFail(Interior, entity.id);
 }
 
-async function getPictureShapesHash() {
+async function createProfession() {
     const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Profession);
 
-    const qb = connection.getRepository(PictureShape).createQueryBuilder('picShape');
+    const entity = manager.create(Profession, {
+        name: casual.words(4)
+    });
 
-    const rows = await qb.getMany();
+    await manager.save(entity);
 
-    return keyBy(rows, 'id');
+    return manager.findOneOrFail(Profession, entity.id);
 }
 
-async function getPictureStylesHash() {
+async function createTag() {
     const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Tag);
 
-    const qb = connection.getRepository(PictureStyle).createQueryBuilder('picStyle');
+    const entity = manager.create(Tag, {
+        name: `${casual.word}_${casual.random}`
+    });
 
-    const rows = await qb.getMany();
+    await manager.save(entity);
 
-    return keyBy(rows, 'id');
+    return manager.findOneOrFail(Tag, entity.id);
 }
 
-async function getPictures() {
-    const connection = await dbManager.getConnection();
-
-    const qb = connection.getRepository(Picture).createQueryBuilder('pic');
-
-    return qb.getMany();
+interface CreateProductParams {
+    product?: DeepPartial<Product>;
+    authorId: number;
+    productCategoryId: number;
 }
 
-async function getPicturesLikes() {
+async function createProduct(params: CreateProductParams) {
     const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Product);
 
-    const qb = connection.getRepository(PictureLike).createQueryBuilder('like');
+    const entity = manager.create(Product, {
+        name: casual.words(3),
+        price: casual.integer(5000, 10000000),
+        authorId: params.authorId,
+        productCategoryId: params.productCategoryId,
+        size: {
+            width: casual.integer(10, 100),
+            height: casual.integer(10, 100),
+            length: Math.random() > 0.5 ? casual.integer(10, 100) : undefined
+        },
+        ...(params.product || {})
+    });
 
-    return qb.getMany();
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Product, entity.id);
 }
 
-async function getPicturesViews() {
-    const connection = await dbManager.getConnection();
-
-    const qb = connection.getRepository(PictureView).createQueryBuilder('view');
-
-    return qb.getMany();
+interface CreateSelectionParams {
+    parentId?: number;
 }
 
-async function getPicturesViewsCount() {
+async function createSelection(params: CreateSelectionParams = {}) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Selection);
+
+    const entity = manager.create(Selection, {
+        name: casual.words(6),
+        description: casual.sentences(10),
+        imageUrl: casual.url + uuidv4(),
+        parentId: params.parentId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Selection, entity.id);
+}
+
+async function createProductCategory() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductCategory);
+
+    const entity = manager.create(ProductCategory, {
+        name: casual.words(3)
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductCategory, entity.id);
+}
+
+interface CreateAuthorProfessionParams {
+    authorId: number;
+    professionId: number;
+}
+
+async function createAuthorProfession(params: CreateAuthorProfessionParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(AuthorProfession);
+
+    const entity = manager.create(AuthorProfession, {
+        authorId: params.authorId,
+        professionId: params.professionId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(AuthorProfession, entity.id);
+}
+
+interface CreateProductLikeParams {
+    productId: number;
+    userId: number;
+}
+
+async function createProductLike(params: CreateProductLikeParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductLike);
+
+    const entity = manager.create(ProductLike, {
+        productId: params.productId,
+        userId: params.userId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductLike, entity.id);
+}
+
+interface CreateProductPhotoParams {
+    productId: number;
+}
+
+async function createProductPhoto(params: CreateProductPhotoParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductPhoto);
+
+    const entity = manager.create(ProductPhoto, {
+        productId: params.productId,
+        photoUrl: casual.url + uuidv4()
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductPhoto, entity.id);
+}
+
+interface CreateProductTagParams {
+    productId: number;
+    tagId: number;
+}
+
+async function createProductTag(params: CreateProductTagParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductTag);
+
+    const entity = manager.create(ProductTag, {
+        productId: params.productId,
+        tagId: params.tagId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductTag, entity.id);
+}
+
+interface CreateProductViewParams {
+    productId: number;
+    fingerprint?: string;
+}
+
+async function createProductView(params: CreateProductViewParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductView);
+
+    const entity = manager.create(ProductView, {
+        productId: params.productId,
+        fingerprint: params.fingerprint || uuidv4()
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductView, entity.id);
+}
+
+interface CreateProductSelectionParams {
+    productId: number;
+    selectionId: number;
+}
+
+async function createProductSelection(params: CreateProductSelectionParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductSelection);
+
+    const entity = manager.create(ProductSelection, {
+        productId: params.productId,
+        selectionId: params.selectionId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductSelection, entity.id);
+}
+
+async function getAuthors() {
     const connection = await dbManager.getConnection();
 
-    const qb = connection.getRepository(ViewOfPictureView).createQueryBuilder('viewOfPictureView');
+    return connection.getRepository(Author).createQueryBuilder().getMany();
+}
 
-    return qb.getMany();
+async function getProductsLikes() {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(ProductLike).createQueryBuilder().getMany();
+}
+
+async function getProductsViews() {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(ProductView).createQueryBuilder().getMany();
+}
+
+async function getProductsViewsCount() {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(ViewOfProductView).createQueryBuilder().getMany();
 }
 
 export const TestFactory = {
+    createCountry,
+    createCity,
     createUser,
     createAuthor,
-    createPicture,
-    createPictureShape,
-    createPictureStyle,
-    createPictureView,
-    createPictureLike,
-    createPicturePhoto,
-    createSelection,
-    createSelectionPicture,
     createInterior,
-    getPictureShapesHash,
-    getPictureStylesHash,
-    getPictures,
-    getPicturesLikes,
-    getPicturesViews,
-    getPicturesViewsCount
+    createProfession,
+    createTag,
+    createProduct,
+    createSelection,
+    createProductCategory,
+    createAuthorProfession,
+    createProductLike,
+    createProductPhoto,
+    createProductTag,
+    createProductView,
+    createProductSelection,
+    getAuthors,
+    getProductsLikes,
+    getProductsViews,
+    getProductsViewsCount
 };

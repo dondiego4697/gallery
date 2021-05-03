@@ -6,15 +6,17 @@ import {omit} from 'lodash';
 interface Query {
     limit: number;
     offset: number;
+    searchFirstLetter?: string;
+    searchQuery?: string;
 }
 
 export const getList = wrap<Request, Response>(async (req, res) => {
-    const {limit, offset} = (req.query as unknown) as Query;
+    const {limit, offset, searchFirstLetter, searchQuery} = (req.query as unknown) as Query;
 
-    const {authors, totalCount} = await getAuthors({limit, offset});
+    const {authors, totalCount} = await getAuthors({limit, offset, searchFirstLetter, searchQuery});
 
     res.json({
-        authors: authors.map((it) => omit(it, 'id')),
+        authors: authors.map((it) => omit(it, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id'])),
         totalCount
     });
 });

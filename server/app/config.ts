@@ -12,6 +12,7 @@ interface DB {
 export interface Config {
     'logger.colorize': boolean;
     'logger.level': string;
+    'logger.silent'?: boolean;
     'logger.db.level': boolean | 'all' | 'error'[];
     'csrf.enable': boolean;
     'csrf.token.ttl': number;
@@ -61,6 +62,7 @@ const development: Config = {
     'localtunnel.enable': true,
     'logger.colorize': true,
     'logger.level': 'silly',
+    'logger.silent': process.env.DISABLE_LOGGING === '1',
     'logger.db.level': 'all',
     'cors.allowedOrigins': null,
     'csrf.enable': false,

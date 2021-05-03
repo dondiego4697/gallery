@@ -27,7 +27,7 @@ const loggerFormat = printf((rawData) => {
 });
 
 export const logger = createLogger({
-    silent: process.env.DISABLE_LOGGING === '1',
+    silent: config['logger.silent'],
     level: config['logger.level'],
     format: format.combine(
         config['logger.colorize'] ? format.colorize() : format.uncolorize(),

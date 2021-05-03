@@ -1,5 +1,5 @@
 import {DbTable} from 'entity/const';
-import {Picture} from 'entity/picture';
+import {Product} from 'entity/product';
 import {Column, BeforeInsert, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn} from 'typeorm';
 import {nanoid} from 'nanoid';
 
@@ -7,14 +7,14 @@ import {nanoid} from 'nanoid';
 export class Selection {
     @BeforeInsert()
     _beforeInsert() {
-        this.publicId = nanoid();
+        this.code = this.code || nanoid();
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 
     @Column({type: 'text'})
-    publicId: string;
+    code: string;
 
     @Column({type: 'text'})
     name: string;
@@ -26,13 +26,16 @@ export class Selection {
     imageUrl: string;
 
     @Column({type: 'boolean'})
-    isShow: boolean;
+    isActive: boolean;
 
     @Column({type: 'bigint', nullable: true})
     parentId?: number;
 
     @Column({type: 'ltree', generated: true})
-    tpath: string;
+    path: string;
+
+    @Column({type: 'integer', generated: true})
+    level: number;
 
     @Column({type: 'boolean', generated: true})
     isRoot: boolean;
@@ -40,17 +43,17 @@ export class Selection {
     @Column({type: 'timestamp with time zone'})
     createdAt: Date;
 
-    @ManyToMany(() => Picture)
+    @ManyToMany(() => Product)
     @JoinTable({
-        name: DbTable.SELECTION_PICTURE,
+        name: DbTable.SELECTION_PRODUCT,
         joinColumn: {
             name: 'selection_id',
             referencedColumnName: 'id'
         },
         inverseJoinColumn: {
-            name: 'picture_id',
+            name: 'product_id',
             referencedColumnName: 'id'
         }
     })
-    pictures: Picture[];
+    products: Product[];
 }
