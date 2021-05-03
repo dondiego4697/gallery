@@ -16,7 +16,10 @@ export const getList = wrap<Request, Response>(async (req, res) => {
     const {authors, totalCount} = await getAuthors({limit, offset, searchFirstLetter, searchQuery});
 
     res.json({
-        authors: authors.map((it) => omit(it, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id'])),
+        authors: authors.map((athr) => ({
+            ...omit(athr, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id', 'products']),
+            productsPhotos: (athr.products || []).map((pr) => pr.photos[0]?.photoUrl).filter(Boolean)
+        })),
         totalCount
     });
 });

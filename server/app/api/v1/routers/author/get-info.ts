@@ -13,6 +13,7 @@ interface Query {
 export const getInfo = wrap<Request, Response>(async (req, res) => {
     const {poor} = (req.query as unknown) as Query;
     const {code} = req.params;
+
     const author = await getAuthorByCode(code, {poor});
 
     if (!author) {

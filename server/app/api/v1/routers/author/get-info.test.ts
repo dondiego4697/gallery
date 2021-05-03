@@ -79,7 +79,7 @@ describe(`GET ${PATH}`, () => {
 
         const products = await pMap(
             range(0, 10),
-            async (_, i) => {
+            async (i) => {
                 const productCategory = await TestFactory.createProductCategory();
                 const product = await TestFactory.createProduct({
                     productCategoryId: productCategory.id,
@@ -156,6 +156,7 @@ describe(`GET ${PATH}`, () => {
                 name: product.name,
                 photos: expect.anything(),
                 price: product.price,
+                shapeFormat: product.shapeFormat,
                 productCategory: {
                     code: productCategory.code,
                     name: productCategory.name

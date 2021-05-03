@@ -27,7 +27,9 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 name TEXT NOT NULL,
 
                 style TEXT,
-                material TEXT,             
+                material TEXT,      
+                shape_format TEXT,
+
                 size JSONB NOT NULL DEFAULT '{}',
                 data JSONB NOT NULL DEFAULT '{}',
                 price NUMERIC(9, 2) NOT NULL,
@@ -59,28 +61,35 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 CONSTRAINT fk__product_photo__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
 
-            CREATE VIEW view__product_style AS (
-                SELECT
-                       pc.id,
-                       pc.code,
-                       pc.name,
-                       style
-                FROM product
-                INNER JOIN product_category pc on pc.id = product.product_category_id
-                GROUP BY (style, pc.id)
-                ORDER BY pc.id
-            );
-
-            CREATE VIEW view__product_material AS (
-                SELECT
-                       pc.id,
-                       pc.code,
-                       pc.name,
-                       material
-                FROM product
-                INNER JOIN product_category pc on pc.id = product.product_category_id
-                GROUP BY (material, pc.id)
-                ORDER BY pc.id
+            CREATE VIEW view__product_filters AS (
+                SELECT * FROM (
+                    SELECT
+                        pc.id as product_category_id,
+                        pc.code as product_category_code,
+                        style   as value,
+                        'style' as type
+                    FROM product
+                        INNER JOIN product_category pc on pc.id = product.product_category_id
+                    UNION
+                    (
+                        SELECT pc.id as product_category_id,
+                            pc.code as product_category_code,
+                            material   as value,
+                            'material' as type
+                        FROM product
+                            INNER JOIN product_category pc on pc.id = product.product_category_id
+                    )
+                    UNION
+                    (
+                        SELECT pc.id as product_category_id,
+                            pc.code as product_category_code,
+                            shape_format  as value,
+                            'shapeFormat' as type
+                        FROM product
+                            INNER JOIN product_category pc on pc.id = product.product_category_id
+                    )
+                ) as foo
+                GROUP BY (type, value, product_category_id, product_category_code)
             );
         `);
 

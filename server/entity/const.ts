@@ -20,5 +20,6 @@ export enum DbTable {
 }
 
 export enum DbView {
-    PRODUCT_VIEW = 'view__product_view'
+    PRODUCT_VIEW = 'view__product_view',
+    PRODUCT_FILTERS = 'view__product_filters'
 }

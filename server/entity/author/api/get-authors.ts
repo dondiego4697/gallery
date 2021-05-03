@@ -1,5 +1,6 @@
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
+import {ILike} from 'typeorm';
 
 interface Params {
     limit: number;
@@ -11,26 +12,19 @@ interface Params {
 export async function getAuthors({limit, offset, searchFirstLetter, searchQuery}: Params) {
     const connection = await dbManager.getConnection();
 
-    const qb = connection
-        .getRepository(Author)
-        .createQueryBuilder('athr')
-        .leftJoinAndSelect('athr.city', 'city')
-        .leftJoinAndSelect('city.country', 'country')
-        .limit(limit)
-        .offset(offset)
-        .orderBy('athr.firstName', 'ASC');
-
-    if (searchQuery) {
-        const query = `%${searchQuery}%`;
-
-        qb.where('athr.firstName ILIKE :query', {query}).orWhere('athr.lastName ILIKE :query', {query});
-    } else if (searchFirstLetter) {
-        const query = `${searchFirstLetter}%`;
-
-        qb.where('athr.lastName ILIKE :query', {query});
-    }
-
-    const [authors, totalCount] = await qb.getManyAndCount();
+    const [authors, totalCount] = await connection.getRepository(Author).findAndCount({
+        relations: ['city', 'city.country', 'products', 'products.photos'],
+        where: searchQuery
+            ? [{firstName: ILike(`%${searchQuery}%`)}, {lastName: ILike(`%${searchQuery}%`)}]
+            : searchFirstLetter
+            ? [{lastName: ILike(`${searchFirstLetter}%`)}]
+            : undefined,
+        skip: offset,
+        take: limit,
+        order: {
+            firstName: 'ASC'
+        }
+    });
 
     return {authors, totalCount};
 }

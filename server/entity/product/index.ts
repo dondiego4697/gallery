@@ -1,8 +1,19 @@
-import {Column, OneToMany, ManyToOne, Entity, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
+import {
+    Column,
+    ManyToMany,
+    JoinTable,
+    OneToMany,
+    ManyToOne,
+    Entity,
+    BeforeInsert,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 import {nanoid} from 'nanoid';
 import {Author} from 'entity/author';
 import {ProductCategory} from 'entity/product-category';
 import {ProductPhoto} from 'entity/product-photo';
+import {Tag} from 'entity/tag';
+import {DbTable} from 'entity/const';
 
 interface ProductSize {
     width: number;
@@ -59,6 +70,23 @@ export class Product {
     @Column({type: 'text', nullable: true})
     material: string;
 
+    @Column({type: 'text', nullable: true})
+    shapeFormat: string;
+
     @OneToMany(() => ProductPhoto, (productPhoto) => productPhoto.product)
     photos: ProductPhoto[];
+
+    @ManyToMany(() => Tag)
+    @JoinTable({
+        name: DbTable.PRODUCT_TAG,
+        joinColumn: {
+            name: 'product_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'tag_id',
+            referencedColumnName: 'id'
+        }
+    })
+    tags: Tag[];
 }

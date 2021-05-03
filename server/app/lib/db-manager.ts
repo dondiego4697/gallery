@@ -20,6 +20,7 @@ import {ProductSelection} from 'entity/product-selection';
 import {Tag} from 'entity/tag';
 import {User} from 'entity/user';
 import {ViewOfProductView} from 'entity/view-of-product-view';
+import {ViewOfProductFilters} from 'entity/view-of-product-filters';
 
 pgTypes.setTypeParser(20, toFinite);
 pgTypes.setTypeParser(1700, toFinite);
@@ -64,7 +65,8 @@ class DbManager {
                 Selection,
                 Tag,
                 User,
-                ViewOfProductView
+                ViewOfProductView,
+                ViewOfProductFilters
             ],
             logging: config['logger.silent'] ? false : config['logger.db.level'],
             maxQueryExecutionTime: 5000,

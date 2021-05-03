@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
 import casual from 'casual';
-import {range, sortBy} from 'lodash';
+import {range, sortBy, random} from 'lodash';
 import pMap from 'p-map';
 
 import {TestServer} from 'test/test-server';
@@ -24,10 +24,35 @@ describe(`GET ${PATH}`, () => {
     it('should return authors', async () => {
         const country = await TestFactory.createCountry();
         const city = await TestFactory.createCity({countryId: country.id});
+        const productCategory = await TestFactory.createProductCategory();
 
-        const authors = await pMap(range(0, 4), async () => TestFactory.createAuthor({cityId: city.id}), {
-            concurrency: 1
-        });
+        const authors = await pMap(
+            range(0, 4),
+            async () => {
+                const author = await TestFactory.createAuthor({cityId: city.id});
+
+                const products = await Promise.all(
+                    range(0, random(2, 5)).map(() =>
+                        TestFactory.createProduct({
+                            authorId: author.id,
+                            productCategoryId: productCategory.id
+                        })
+                    )
+                );
+
+                // Создаем по одной фотографии на продукт
+                const photos = await Promise.all(
+                    products.map((it) =>
+                        TestFactory.createProductPhoto({
+                            productId: it.id
+                        })
+                    )
+                );
+
+                return {author, photos};
+            },
+            {concurrency: 1}
+        );
 
         const {statusCode, body} = await got.get<any>(`${url}${PATH}`, {
             responseType: 'json',
@@ -38,27 +63,32 @@ describe(`GET ${PATH}`, () => {
             }
         });
 
+        const expectedAuthors = sortBy(authors, ({author}) => author.firstName.toLowerCase()).slice(1, 3);
+
         expect(statusCode).toBe(200);
         expect(body.totalCount).toBe(4);
         expect(body.authors).toEqual(
-            sortBy(authors, (it) => it.firstName.toLowerCase())
-                .slice(1, 3)
-                .map((it) => ({
-                    code: it.code,
-                    avatarUrl: it.avatarUrl,
-                    firstName: it.firstName,
-                    lastName: it.lastName,
-                    bio: it.bio,
-                    city: {
-                        code: city.code,
-                        name: city.name,
-                        country: {
-                            code: country.code,
-                            name: country.name
-                        }
-                    },
-                    createdAt: it.createdAt.toISOString()
-                }))
+            expectedAuthors.map(({author}) => ({
+                code: author.code,
+                avatarUrl: author.avatarUrl,
+                firstName: author.firstName,
+                lastName: author.lastName,
+                bio: author.bio,
+                city: {
+                    code: city.code,
+                    name: city.name,
+                    country: {
+                        code: country.code,
+                        name: country.name
+                    }
+                },
+                createdAt: author.createdAt.toISOString(),
+                productsPhotos: expect.anything()
+            }))
+        );
+
+        expect(body.authors.map((athr: any) => athr.productsPhotos.sort())).toEqual(
+            expectedAuthors.map(({photos}) => photos.map((it) => it.photoUrl).sort())
         );
     });
 
@@ -112,7 +142,8 @@ describe(`GET ${PATH}`, () => {
                     lastName: it.lastName,
                     bio: it.bio,
                     city: null,
-                    createdAt: it.createdAt.toISOString()
+                    createdAt: it.createdAt.toISOString(),
+                    productsPhotos: []
                 }))
         );
     });
@@ -165,7 +196,8 @@ describe(`GET ${PATH}`, () => {
                     lastName: it.lastName,
                     bio: it.bio,
                     city: null,
-                    createdAt: it.createdAt.toISOString()
+                    createdAt: it.createdAt.toISOString(),
+                    productsPhotos: []
                 }))
         );
     });

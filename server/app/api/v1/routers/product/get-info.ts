@@ -35,6 +35,10 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         },
         views: views[product.id]?.count || 0,
         photos: product.photos.map((it) => it.photoUrl),
-        isLike: likes.has(product.id)
+        isLike: likes.has(product.id),
+        tags: product.tags.map((it) => ({
+            code: it.code,
+            name: it.name
+        }))
     });
 });

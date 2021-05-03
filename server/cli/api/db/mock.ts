@@ -86,8 +86,9 @@ export async function handle() {
         {concurrency}
     );
 
-    const styles = uniq(range(20).map(() => casual.word));
-    const materials = uniq(range(20).map(() => casual.word));
+    const styles = uniq(range(10).map(() => casual.word));
+    const materials = uniq(range(10).map(() => casual.word));
+    const shapeFormats = uniq(range(10).map(() => casual.word));
 
     // Продукты
     console.log('products...');
@@ -103,7 +104,8 @@ export async function handle() {
                 productCategoryId: category,
                 product: {
                     style: styles[random(0, styles.length - 1)],
-                    material: materials[random(0, materials.length - 1)]
+                    material: materials[random(0, materials.length - 1)],
+                    shapeFormat: shapeFormats[random(0, shapeFormats.length - 1)]
                 }
             });
 

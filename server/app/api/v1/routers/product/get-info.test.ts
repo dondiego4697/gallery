@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range, random} from 'lodash';
+import {range, random, sortBy} from 'lodash';
 import {v4 as uuidv4} from 'uuid';
 
 import {TestServer} from 'test/test-server';
@@ -44,6 +44,16 @@ describe(`GET ${PATH}`, () => {
             authorId: author.id,
             productCategoryId: productCategory.id
         });
+        const tags = await Promise.all(range(0, 5).map(() => TestFactory.createTag()));
+
+        await Promise.all(
+            tags.map((tag) =>
+                TestFactory.createProductTag({
+                    productId: product.id,
+                    tagId: tag.id
+                })
+            )
+        );
 
         const viewsCount = random(5, 12);
 
@@ -77,6 +87,7 @@ describe(`GET ${PATH}`, () => {
             isSold: product.isSold,
             createdAt: product.createdAt.toISOString(),
             style: product.style,
+            shapeFormat: product.shapeFormat,
             material: product.material,
             author: {
                 professions: [
@@ -102,9 +113,16 @@ describe(`GET ${PATH}`, () => {
             },
             views: viewsCount,
             isLike,
-            photos: expect.anything()
+            photos: expect.anything(),
+            tags: expect.anything()
         });
         expect(body.photos.sort()).toEqual(photos.map((it) => it.photoUrl).sort());
+        expect(sortBy(body.tags, 'code')).toEqual(
+            sortBy(tags, 'code').map((tag) => ({
+                code: tag.code,
+                name: tag.name
+            }))
+        );
     });
 
     it('should throw 404', async () => {
