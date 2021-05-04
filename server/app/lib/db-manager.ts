@@ -5,12 +5,16 @@ import {config} from 'app/config';
 import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 import {Author} from 'entity/author';
 import {City} from 'entity/city';
+import {Color} from 'entity/color';
 import {Country} from 'entity/country';
 import {AuthorProfession} from 'entity/author-profession';
 import {Interior} from 'entity/interior';
 import {Product} from 'entity/product';
-import {ProductCategory} from 'entity/product-category';
+import {Category} from 'entity/category';
 import {ProductLike} from 'entity/product-like';
+import {Style} from 'entity/style';
+import {Material} from 'entity/material';
+import {ShapeFormat} from 'entity/shape-format';
 import {ProductPhoto} from 'entity/product-photo';
 import {ProductTag} from 'entity/product-tag';
 import {ProductView} from 'entity/product-view';
@@ -21,6 +25,7 @@ import {Tag} from 'entity/tag';
 import {User} from 'entity/user';
 import {ViewOfProductView} from 'entity/view-of-product-view';
 import {ViewOfProductFilters} from 'entity/view-of-product-filters';
+import {ProductColor} from 'entity/product-color';
 
 pgTypes.setTypeParser(20, toFinite);
 pgTypes.setTypeParser(1700, toFinite);
@@ -50,13 +55,18 @@ class DbManager {
             },
             entities: [
                 City,
+                Color,
                 Country,
                 Author,
                 AuthorProfession,
                 Interior,
                 Product,
-                ProductCategory,
+                ProductColor,
+                Category,
                 ProductLike,
+                Style,
+                Material,
+                ShapeFormat,
                 ProductSelection,
                 ProductPhoto,
                 ProductTag,

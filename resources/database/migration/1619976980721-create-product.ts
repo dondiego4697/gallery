@@ -4,31 +4,85 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE product_category (
+            CREATE TABLE category (
                 id BIGSERIAL NOT NULL,
                 code TEXT NOT NULL,
 
                 name TEXT NOT NULL,
 
-                CONSTRAINT pk__product_category PRIMARY KEY (id),
+                CONSTRAINT pk__category PRIMARY KEY (id),
 
-                CONSTRAINT uk__product_category__code UNIQUE (code)
+                CONSTRAINT uk__category__code UNIQUE (code)
             );
 
-            CREATE INDEX idx__product_category__code ON product_category USING btree (code);
+            CREATE INDEX idx__category__code ON category USING btree (code);
+
+            CREATE TABLE color (
+                id BIGSERIAL NOT NULL,
+                code TEXT NOT NULL,
+                
+                hex TEXT NOT NULL,
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__color PRIMARY KEY (id),
+
+                CONSTRAINT uk__color__code UNIQUE (code),
+                CONSTRAINT uk__color__hex UNIQUE (hex)
+            );
+
+            CREATE INDEX idx__color__code ON color USING btree (code);
+
+            CREATE TABLE style (
+                id BIGSERIAL NOT NULL,
+                code TEXT NOT NULL,
+
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__style PRIMARY KEY (id),
+
+                CONSTRAINT uk__style__code UNIQUE (code)
+            );
+
+            CREATE INDEX idx__style__code ON style USING btree (code);
+
+            CREATE TABLE material (
+                id BIGSERIAL NOT NULL,
+                code TEXT NOT NULL,
+
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__material PRIMARY KEY (id),
+
+                CONSTRAINT uk__material__code UNIQUE (code)
+            );
+
+            CREATE INDEX idx__material__code ON material USING btree (code);
+
+            CREATE TABLE shape_format (
+                id BIGSERIAL NOT NULL,
+                code TEXT NOT NULL,
+
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__shape_format PRIMARY KEY (id),
+
+                CONSTRAINT uk__shape_format__code UNIQUE (code)
+            );
+
+            CREATE INDEX idx__shape_format__code ON shape_format USING btree (code);
 
             CREATE TABLE product (
                 id BIGSERIAL NOT NULL,
                 code TEXT NOT NULL,
 
                 author_id BIGINT NOT NULL,
-                product_category_id BIGINT NOT NULL,
+                category_id BIGINT NOT NULL,
+
+                style_id BIGINT,
+                material_id BIGINT,
+                shape_format_id BIGINT,
 
                 name TEXT NOT NULL,
-
-                style TEXT,
-                material TEXT,      
-                shape_format TEXT,
 
                 size JSONB NOT NULL DEFAULT '{}',
                 data JSONB NOT NULL DEFAULT '{}',
@@ -41,12 +95,29 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 CONSTRAINT pk__product PRIMARY KEY (id),
 
                 CONSTRAINT fk__product__author_id__author FOREIGN KEY (author_id) REFERENCES author (id),
-                CONSTRAINT fk__product__product_category_id__category FOREIGN KEY (product_category_id) REFERENCES product_category (id),
+                CONSTRAINT fk__product__category_id__category FOREIGN KEY (category_id) REFERENCES category (id),
+                CONSTRAINT fk__product__style_id__style FOREIGN KEY (style_id) REFERENCES style (id),
+                CONSTRAINT fk__product__material_id__material FOREIGN KEY (material_id) REFERENCES material (id),
+                CONSTRAINT fk__product__shape_format_id__shape_format FOREIGN KEY (shape_format_id) REFERENCES shape_format (id),
 
                 CONSTRAINT uq__product__code UNIQUE (code)
             );
 
             CREATE INDEX idx__product__code ON product USING btree (code);
+
+            CREATE TABLE product_color (
+                id BIGSERIAL NOT NULL,
+            
+                product_id BIGINT NOT NULL,
+                color_id BIGINT NOT NULL,
+            
+                CONSTRAINT pk__product_color PRIMARY KEY (id),
+            
+                CONSTRAINT uq__product_color__product_id__color_id UNIQUE (product_id, color_id),
+            
+                CONSTRAINT fk__product_color__product_id__product FOREIGN KEY (product_id) REFERENCES product (id),
+                CONSTRAINT fk__product_color__color_id__color FOREIGN KEY (color_id) REFERENCES color (id)
+            );
 
             CREATE TABLE product_photo (  
                 id BIGSERIAL NOT NULL,
@@ -62,34 +133,34 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
             );
 
             CREATE VIEW view__product_filters AS (
-                SELECT * FROM (
+                SELECT
+                    'material' as type,
+                    ct.code as category_code,
+                    m.code as code,
+                    m.name as name
+                FROM product pr
+                    INNER JOIN category ct on ct.id = pr.category_id
+                    LEFT JOIN material m ON m.id = pr.material_id GROUP BY (ct.id, m.id)
+                UNION (
                     SELECT
-                        pc.id as product_category_id,
-                        pc.code as product_category_code,
-                        style   as value,
-                        'style' as type
-                    FROM product
-                        INNER JOIN product_category pc on pc.id = product.product_category_id
-                    UNION
-                    (
-                        SELECT pc.id as product_category_id,
-                            pc.code as product_category_code,
-                            material   as value,
-                            'material' as type
-                        FROM product
-                            INNER JOIN product_category pc on pc.id = product.product_category_id
-                    )
-                    UNION
-                    (
-                        SELECT pc.id as product_category_id,
-                            pc.code as product_category_code,
-                            shape_format  as value,
-                            'shapeFormat' as type
-                        FROM product
-                            INNER JOIN product_category pc on pc.id = product.product_category_id
-                    )
-                ) as foo
-                GROUP BY (type, value, product_category_id, product_category_code)
+                        'style' as type,
+                        ct.code as category_code,
+                        st.code as code,
+                        st.name as name
+                    FROM product pr
+                        INNER JOIN category ct on ct.id = pr.category_id
+                        LEFT JOIN style st ON st.id = pr.style_id GROUP BY (ct.id, st.id)
+                )
+                UNION (
+                    SELECT
+                        'shapeFormat' as type,
+                        ct.code as category_code,
+                        sf.code as code,
+                        sf.name as name
+                    FROM product pr
+                        INNER JOIN category ct on ct.id = pr.category_id
+                        LEFT JOIN shape_format sf ON sf.id = pr.shape_format_id GROUP BY (ct.id, sf.id)
+                )
             );
         `);
 

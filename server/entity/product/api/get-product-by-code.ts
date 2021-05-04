@@ -7,7 +7,9 @@ export async function getProductByCode(code: string) {
     const qb = connection
         .getRepository(Product)
         .createQueryBuilder('p')
-        .innerJoin('p.productCategory', 'pc')
+        .leftJoinAndSelect('p.style', 'pstyle')
+        .leftJoinAndSelect('p.material', 'pmaterial')
+        .leftJoinAndSelect('p.shapeFormat', 'pshapeformat')
         .innerJoinAndSelect('p.author', 'athr')
         .leftJoinAndSelect('p.photos', 'photo')
         .leftJoinAndSelect('p.tags', 'tag')

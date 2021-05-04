@@ -40,10 +40,10 @@ describe(`GET ${PATH}`, () => {
             professionId: profession.id
         });
 
-        const productCategory = await TestFactory.createProductCategory();
+        const category = await TestFactory.createCategory();
         const product = await TestFactory.createProduct({
             authorId: author.id,
-            productCategoryId: productCategory.id
+            categoryId: category.id
         });
 
         const tags = await Promise.all(range(0, 5).map(() => TestFactory.createTag()));
@@ -99,9 +99,9 @@ describe(`GET ${PATH}`, () => {
                 price: product.price,
                 isSold: product.isSold,
                 createdAt: product.createdAt.toISOString(),
-                style: product.style,
-                shapeFormat: product.shapeFormat,
-                material: product.material,
+                style: null,
+                shapeFormat: null,
+                material: null,
                 photos: expect.anything(),
                 tags: expect.anything()
             }

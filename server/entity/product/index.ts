@@ -10,10 +10,14 @@ import {
 } from 'typeorm';
 import {nanoid} from 'nanoid';
 import {Author} from 'entity/author';
-import {ProductCategory} from 'entity/product-category';
+import {Category} from 'entity/category';
 import {ProductPhoto} from 'entity/product-photo';
 import {Tag} from 'entity/tag';
 import {DbTable} from 'entity/const';
+import {Color} from 'entity/color';
+import {Style} from 'entity/style';
+import {Material} from 'entity/material';
+import {ShapeFormat} from 'entity/shape-format';
 
 interface ProductSize {
     width: number;
@@ -59,19 +63,28 @@ export class Product {
     author: Author;
 
     @Column({type: 'bigint'})
-    productCategoryId: number;
+    categoryId: number;
 
-    @ManyToOne(() => ProductCategory, (category) => category.products)
-    productCategory: ProductCategory;
+    @ManyToOne(() => Category, (category) => category.products)
+    category: Category;
 
-    @Column({type: 'text', nullable: true})
-    style: string;
+    @Column({type: 'bigint', nullable: true})
+    styleId: number;
 
-    @Column({type: 'text', nullable: true})
-    material: string;
+    @ManyToOne(() => Style, (style) => style.products)
+    style: Style;
 
-    @Column({type: 'text', nullable: true})
-    shapeFormat: string;
+    @Column({type: 'bigint', nullable: true})
+    materialId: number;
+
+    @ManyToOne(() => Material, (material) => material.products)
+    material: Material;
+
+    @Column({type: 'bigint', nullable: true})
+    shapeFormatId: number;
+
+    @ManyToOne(() => ShapeFormat, (shapeFormat) => shapeFormat.products)
+    shapeFormat: ShapeFormat;
 
     @OneToMany(() => ProductPhoto, (productPhoto) => productPhoto.product)
     photos: ProductPhoto[];
@@ -89,4 +102,18 @@ export class Product {
         }
     })
     tags: Tag[];
+
+    @ManyToMany(() => Color)
+    @JoinTable({
+        name: DbTable.PRODUCT_COLOR,
+        joinColumn: {
+            name: 'product_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'color_id',
+            referencedColumnName: 'id'
+        }
+    })
+    colors: Color[];
 }

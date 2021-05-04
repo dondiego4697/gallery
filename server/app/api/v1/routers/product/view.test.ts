@@ -36,8 +36,8 @@ describe(`PUT ${PATH}`, () => {
 
     it('should add view once', async () => {
         const author = await TestFactory.createAuthor();
-        const productCategory = await TestFactory.createProductCategory();
-        const product = await TestFactory.createProduct({authorId: author.id, productCategoryId: productCategory.id});
+        const category = await TestFactory.createCategory();
+        const product = await TestFactory.createProduct({authorId: author.id, categoryId: category.id});
 
         const responseForView1 = await got.put<any>(`${url}${PATH.replace(':code', product.code)}`, {
             responseType: 'json',
@@ -70,8 +70,8 @@ describe(`PUT ${PATH}`, () => {
 
     it('should not add view if fingerprint does not exists', async () => {
         const author = await TestFactory.createAuthor();
-        const productCategory = await TestFactory.createProductCategory();
-        const product = await TestFactory.createProduct({authorId: author.id, productCategoryId: productCategory.id});
+        const category = await TestFactory.createCategory();
+        const product = await TestFactory.createProduct({authorId: author.id, categoryId: category.id});
 
         const viewsRawBefore = await TestFactory.getProductsViews();
         const viewsBefore = viewsRawBefore.filter((it) => it.productId === product.id);
@@ -97,9 +97,9 @@ describe(`PUT ${PATH}`, () => {
 
     it('should update "view__product_view"', async () => {
         const author = await TestFactory.createAuthor();
-        const productCategory = await TestFactory.createProductCategory();
-        const product1 = await TestFactory.createProduct({authorId: author.id, productCategoryId: productCategory.id});
-        const product2 = await TestFactory.createProduct({authorId: author.id, productCategoryId: productCategory.id});
+        const category = await TestFactory.createCategory();
+        const product1 = await TestFactory.createProduct({authorId: author.id, categoryId: category.id});
+        const product2 = await TestFactory.createProduct({authorId: author.id, categoryId: category.id});
 
         await pMap(range(12), async () => TestFactory.createProductView({productId: product1.id}), {concurrency: 4});
         await pMap(range(8), async () => TestFactory.createProductView({productId: product2.id}), {concurrency: 4});

@@ -11,7 +11,7 @@ import {Selection} from 'entity/selection';
 import {Tag} from 'entity/tag';
 import {User} from 'entity/user';
 import {Product} from 'entity/product';
-import {ProductCategory} from 'entity/product-category';
+import {Category} from 'entity/category';
 import {Country} from 'entity/country';
 import {City} from 'entity/city';
 import {AuthorProfession} from 'entity/author-profession';
@@ -21,6 +21,11 @@ import {ProductTag} from 'entity/product-tag';
 import {ProductView} from 'entity/product-view';
 import {ProductSelection} from 'entity/product-selection';
 import {ViewOfProductView} from 'entity/view-of-product-view';
+import {Style} from 'entity/style';
+import {Material} from 'entity/material';
+import {ShapeFormat} from 'entity/shape-format';
+import {Color} from 'entity/color';
+import {ProductColor} from 'entity/product-color';
 
 interface CreateCountryParams {
     country?: DeepPartial<Country>;
@@ -147,7 +152,7 @@ async function createTag() {
 interface CreateProductParams {
     product?: DeepPartial<Product>;
     authorId: number;
-    productCategoryId: number;
+    categoryId: number;
 }
 
 async function createProduct(params: CreateProductParams) {
@@ -158,7 +163,7 @@ async function createProduct(params: CreateProductParams) {
         name: casual.words(3),
         price: casual.integer(5000, 10000000),
         authorId: params.authorId,
-        productCategoryId: params.productCategoryId,
+        categoryId: params.categoryId,
         size: {
             width: casual.integer(10, 100),
             height: casual.integer(10, 100),
@@ -174,6 +179,7 @@ async function createProduct(params: CreateProductParams) {
 
 interface CreateSelectionParams {
     parentId?: number;
+    selection?: DeepPartial<Selection>;
 }
 
 async function createSelection(params: CreateSelectionParams = {}) {
@@ -181,8 +187,8 @@ async function createSelection(params: CreateSelectionParams = {}) {
     const {manager} = connection.getRepository(Selection);
 
     const entity = manager.create(Selection, {
-        name: casual.words(2),
-        description: casual.sentences(10),
+        name: params.selection?.name || casual.words(2),
+        description: params.selection?.description || casual.sentences(10),
         imageUrl: casual.url + uuidv4(),
         parentId: params.parentId
     });
@@ -192,21 +198,21 @@ async function createSelection(params: CreateSelectionParams = {}) {
     return manager.findOneOrFail(Selection, entity.id);
 }
 
-interface CreateProductCategoryParams {
-    productCategory?: DeepPartial<ProductCategory>;
+interface CreateCategoryParams {
+    category?: DeepPartial<Category>;
 }
 
-async function createProductCategory(params: CreateProductCategoryParams = {}) {
+async function createCategory(params: CreateCategoryParams = {}) {
     const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(ProductCategory);
+    const {manager} = connection.getRepository(Category);
 
-    const entity = manager.create(ProductCategory, {
-        name: params.productCategory?.name || casual.words(3)
+    const entity = manager.create(Category, {
+        name: params.category?.name || casual.words(3)
     });
 
     await manager.save(entity);
 
-    return manager.findOneOrFail(ProductCategory, entity.id);
+    return manager.findOneOrFail(Category, entity.id);
 }
 
 interface CreateAuthorProfessionParams {
@@ -245,6 +251,93 @@ async function createProductLike(params: CreateProductLikeParams) {
     await manager.save(entity);
 
     return manager.findOneOrFail(ProductLike, entity.id);
+}
+
+async function createColor() {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Color);
+
+    const entity = manager.create(Color, {
+        name: `${casual.color_name}_${casual.random}`,
+        hex: casual.rgb_hex
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Color, entity.id);
+}
+
+interface CreateProductColorParams {
+    productId: number;
+    colorId: number;
+}
+
+async function createProductColor(params: CreateProductColorParams) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ProductColor);
+
+    const entity = manager.create(ProductColor, {
+        productId: params.productId,
+        colorId: params.colorId
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ProductColor, entity.id);
+}
+
+interface CreateStyleParams {
+    style?: DeepPartial<Style>;
+}
+
+async function createStyle(params: CreateStyleParams = {}) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Style);
+
+    const entity = manager.create(Style, {
+        name: casual.words(3),
+        ...(params.style || {})
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Style, entity.id);
+}
+
+interface CreateMaterialParams {
+    material?: DeepPartial<Material>;
+}
+
+async function createMaterial(params: CreateMaterialParams = {}) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Material);
+
+    const entity = manager.create(Material, {
+        name: casual.words(3),
+        ...(params.material || {})
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Material, entity.id);
+}
+
+interface CreateShapeFormatParams {
+    shapeFormat?: DeepPartial<ShapeFormat>;
+}
+
+async function createShapeFormat(params: CreateShapeFormatParams = {}) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(ShapeFormat);
+
+    const entity = manager.create(ShapeFormat, {
+        name: casual.words(3),
+        ...(params.shapeFormat || {})
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(ShapeFormat, entity.id);
 }
 
 interface CreateProductPhotoParams {
@@ -360,11 +453,16 @@ export const TestFactory = {
     createInterior,
     createProfession,
     createTag,
+    createColor,
+    createProductColor,
     createProduct,
     createSelection,
-    createProductCategory,
+    createCategory,
     createAuthorProfession,
     createProductLike,
+    createStyle,
+    createMaterial,
+    createShapeFormat,
     createProductPhoto,
     createProductTag,
     createProductView,

@@ -11,7 +11,7 @@ export async function getAuthorByCode(code: string) {
         .leftJoinAndSelect('city.country', 'country')
         .leftJoinAndSelect('athr.professions', 'prof')
         .leftJoinAndSelect('athr.products', 'product')
-        .leftJoinAndSelect('product.productCategory', 'productCategory')
+        .leftJoinAndSelect('product.category', 'category')
         .leftJoinAndSelect('product.photos', 'productPhoto')
         .where('athr.code = :code', {code})
         .andWhere('product.isSold IS FALSE');

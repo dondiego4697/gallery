@@ -42,17 +42,14 @@ describe(`GET ${PATH}`, () => {
             professionId: profession.id
         });
 
-        const productCategories = await Promise.all([
-            TestFactory.createProductCategory(),
-            TestFactory.createProductCategory()
-        ]);
+        const categories = await Promise.all([TestFactory.createCategory(), TestFactory.createCategory()]);
 
         const products = await pMap(
             range(0, 10),
             async (i) => {
-                const productCategory = productCategories[i % productCategories.length];
+                const category = categories[i % categories.length];
                 const product = await TestFactory.createProduct({
-                    productCategoryId: productCategory.id,
+                    categoryId: category.id,
                     authorId: author.id
                 });
 
@@ -80,10 +77,10 @@ describe(`GET ${PATH}`, () => {
         await pMap(
             range(0, 10),
             async () => {
-                const category = await TestFactory.createProductCategory();
+                const category = await TestFactory.createCategory();
 
                 return TestFactory.createProduct({
-                    productCategoryId: category.id,
+                    categoryId: category.id,
                     authorId: otherAuthor.id
                 });
             },

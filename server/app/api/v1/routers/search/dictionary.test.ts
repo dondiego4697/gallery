@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range} from 'lodash';
+import {range, sortBy} from 'lodash';
 
 import {TestServer} from 'test/test-server';
 import {TestFactory} from 'test/test-factory';
@@ -22,20 +22,28 @@ describe(`GET ${PATH}`, () => {
 
     it('should return dictionary for search', async () => {
         const author = await TestFactory.createAuthor();
-        const productCategories = await Promise.all(range(0, 3).map(() => TestFactory.createProductCategory()));
+        const categories = await Promise.all(range(0, 3).map(() => TestFactory.createCategory()));
+
+        const filters = await Promise.all(
+            range(0, 3).map(async () => ({
+                style: await TestFactory.createStyle(),
+                material: await TestFactory.createMaterial(),
+                shapeFormat: await TestFactory.createShapeFormat()
+            }))
+        );
 
         await pMap(
-            productCategories,
-            async (productCategory) => {
+            categories,
+            async (category) => {
                 return Promise.all(
-                    range(0, 3).map((i) =>
+                    filters.map((filter) =>
                         TestFactory.createProduct({
-                            productCategoryId: productCategory.id,
+                            categoryId: category.id,
                             authorId: author.id,
                             product: {
-                                style: 'style' + i,
-                                shapeFormat: 'shapeFormat' + i,
-                                material: 'material' + i
+                                styleId: filter.style.id,
+                                materialId: filter.material.id,
+                                shapeFormatId: filter.shapeFormat.id
                             }
                         })
                     )
@@ -51,13 +59,22 @@ describe(`GET ${PATH}`, () => {
 
         expect(statusCode).toBe(200);
         expect(body).toEqual(
-            productCategories.reduce(
+            categories.reduce(
                 (acc, category) => ({
                     ...acc,
                     [category.code]: {
-                        material: range(0, 3).map((i) => `material${i}`),
-                        shapeFormat: range(0, 3).map((i) => `shapeFormat${i}`),
-                        style: range(0, 3).map((i) => `style${i}`)
+                        material: sortBy(
+                            filters.map((it) => ({name: it.material.name, code: it.material.code})),
+                            'code'
+                        ),
+                        shapeFormat: sortBy(
+                            filters.map((it) => ({name: it.shapeFormat.name, code: it.shapeFormat.code})),
+                            'code'
+                        ),
+                        style: sortBy(
+                            filters.map((it) => ({name: it.style.name, code: it.style.code})),
+                            'code'
+                        )
                     }
                 }),
                 {}

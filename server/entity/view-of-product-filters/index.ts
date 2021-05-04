@@ -4,13 +4,13 @@ import {ViewColumn, ViewEntity} from 'typeorm';
 @ViewEntity({name: DbView.PRODUCT_FILTERS})
 export class ViewOfProductFilters {
     @ViewColumn()
-    productCategoryId: number;
+    categoryCode: string;
 
     @ViewColumn()
-    productCategoryCode: string;
+    code: string;
 
     @ViewColumn()
-    value: string;
+    name: string;
 
     @ViewColumn()
     type: 'style' | 'material' | 'shapeFormat';

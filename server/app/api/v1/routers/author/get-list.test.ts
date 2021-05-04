@@ -24,7 +24,7 @@ describe(`GET ${PATH}`, () => {
     it('should return authors', async () => {
         const country = await TestFactory.createCountry();
         const city = await TestFactory.createCity({countryId: country.id});
-        const productCategory = await TestFactory.createProductCategory();
+        const category = await TestFactory.createCategory();
 
         const authors = await pMap(
             range(0, 4),
@@ -34,11 +34,11 @@ describe(`GET ${PATH}`, () => {
                 const products = await Promise.all([
                     TestFactory.createProduct({
                         authorId: author.id,
-                        productCategoryId: productCategory.id
+                        categoryId: category.id
                     }),
                     TestFactory.createProduct({
                         authorId: author.id,
-                        productCategoryId: productCategory.id
+                        categoryId: category.id
                     })
                 ]);
 

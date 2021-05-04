@@ -3,10 +3,10 @@ import slugify from 'slugify';
 import {Product} from 'entity/product';
 
 @Entity()
-export class ProductCategory {
+export class Style {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = slugify(this.name, '_');
+        this.code = slugify(this.name.toLowerCase(), '_');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})
@@ -18,6 +18,6 @@ export class ProductCategory {
     @Column({type: 'text'})
     name: string;
 
-    @OneToMany(() => Product, (product) => product.productCategory)
+    @OneToMany(() => Product, (product) => product.style)
     products: Product[];
 }

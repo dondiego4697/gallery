@@ -38,7 +38,7 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
             CREATE OR REPLACE FUNCTION selection__generate_path()
                 RETURNS TRIGGER AS $$
                 DECLARE
-                    parent_path LTREE;
+                    _parent_path LTREE;
                 BEGIN
                     IF TG_OP = 'UPDATE' THEN
                         IF NEW.parent_id <> OLD.parent_id THEN
@@ -52,8 +52,8 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                         IF NEW.parent_id IS NULL THEN
                             NEW.path = text2ltree(NEW.id::text);
                         ELSE
-                            SELECT path INTO parent_path FROM selection WHERE id = NEW.parent_id;
-                            NEW.path = parent_path || NEW.id::text;
+                            SELECT path INTO _parent_path FROM selection WHERE id = NEW.parent_id;
+                            NEW.path = _parent_path || NEW.id::text;
                         END IF;
                     END IF;
             
@@ -66,9 +66,35 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
             BEFORE INSERT OR UPDATE ON
                 selection
             FOR EACH ROW
-                WHEN (pg_trigger_depth() = 0)
             EXECUTE PROCEDURE
                 selection__generate_path();
+
+            CREATE OR REPLACE FUNCTION selection__check_constraints()
+            RETURNS TRIGGER AS $$
+            DECLARE
+                _product_count BIGINT;
+            BEGIN        
+                IF TG_OP = 'INSERT' THEN
+                    IF NEW.parent_id IS NOT NULL THEN
+                        SELECT COUNT(*) INTO _product_count FROM product_selection WHERE selection_id = NEW.parent_id;
+
+                        IF _product_count > 0 THEN
+                            RAISE EXCEPTION 'SELECTION_ALREADY_HAS_PRODUCTS_IN_PARENT';
+                        END IF;
+                    END IF;
+                END IF;
+        
+                RETURN NEW;
+            END;
+            $$ language 'plpgsql';
+
+            CREATE TRIGGER
+                trigger__selection__check_constraints
+            BEFORE INSERT OR UPDATE ON
+                selection
+            FOR EACH ROW
+            EXECUTE PROCEDURE
+                selection__check_constraints();
             
             CREATE TABLE product_selection (  
                 id BIGSERIAL NOT NULL,
@@ -84,14 +110,27 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                 CONSTRAINT uq__product_selection__product_id__selection_id UNIQUE (product_id, selection_id)
             );
             
-            CREATE OR REPLACE FUNCTION product_selection__check_only_selection_leaf()
+            CREATE OR REPLACE FUNCTION product_selection__check_constraints()
                 RETURNS TRIGGER AS $$
                 DECLARE
                     _level INTEGER;
+                    _path LTREE;
+                    _child_count BIGINT;
                 BEGIN
                     SELECT level INTO _level FROM selection WHERE id = NEW.selection_id;
-                    IF _level != 2 THEN
-                        RAISE EXCEPTION 'PRODUCT_CAN_BE_ATTACHED_ONLY_ON_LEAF';
+                    SELECT path INTO _path FROM selection WHERE id = NEW.selection_id;
+
+                    -- Если есть дочерние листы, то только на дочерние листы устанавливаем продукты
+                    IF _level = 1 THEN
+                        SELECT COUNT(*) INTO _child_count
+                        FROM selection
+                        WHERE TRUE
+                            AND path ~ (ltree2text(_path) || '.*')::lquery
+                            AND path != _path;
+
+                        IF _child_count > 0 THEN
+                            RAISE EXCEPTION 'PRODUCT_CAN_BE_ATTACHED_TO_ROOT_WITH_LEAF';
+                        END IF;
                     END IF;
             
                     RETURN NEW;
@@ -99,12 +138,12 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                 $$ language 'plpgsql';
             
             CREATE TRIGGER
-                trigger__product_selection__check_only_selection_leaf
+                trigger__product_selection__check_constraints
             BEFORE INSERT OR UPDATE ON
                 product_selection
             FOR EACH ROW
             EXECUTE PROCEDURE
-                product_selection__check_only_selection_leaf();
+                product_selection__check_constraints();
         `);
     }   
 

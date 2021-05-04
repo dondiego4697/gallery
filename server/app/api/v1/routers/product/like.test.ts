@@ -30,8 +30,8 @@ describe(`PUT ${PATH}`, () => {
 
     it('should toggle like', async () => {
         const author = await TestFactory.createAuthor();
-        const productCategory = await TestFactory.createProductCategory();
-        const product = await TestFactory.createProduct({authorId: author.id, productCategoryId: productCategory.id});
+        const category = await TestFactory.createCategory();
+        const product = await TestFactory.createProduct({authorId: author.id, categoryId: category.id});
 
         const responseForLike = await got.put<any>(`${url}${PATH.replace(':code', product.code)}`, {
             responseType: 'json',

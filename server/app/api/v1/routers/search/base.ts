@@ -10,14 +10,14 @@ interface Body {
     limit: number;
     offset: number;
     filter?: {
-        productCategoryCode?: string;
         price?: MinMax;
         width?: MinMax;
         height?: MinMax;
         length?: MinMax;
+        categoryCode?: string;
         selectionCode?: string;
-        style?: string;
-        shapeFormat?: string;
+        styleCode?: string;
+        shapeFormatCode?: string;
     };
 }
 

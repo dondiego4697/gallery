@@ -14,14 +14,14 @@ const baseSchema = Joi.object({
     limit: Joi.number().integer().positive().default(20),
     offset: Joi.number().integer().positive().default(0),
     filter: Joi.object({
-        productCategoryCode: Joi.string(),
         price: minMaxSchema,
         width: minMaxSchema,
         height: minMaxSchema,
         length: minMaxSchema,
+        categoryCode: Joi.string(),
         selectionCode: Joi.string(),
-        style: Joi.string(),
-        shapeFormat: Joi.string()
+        styleCode: Joi.string(),
+        shapeFormatCode: Joi.string()
     })
 });
 

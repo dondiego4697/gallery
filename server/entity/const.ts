@@ -15,6 +15,8 @@ export enum DbTable {
     SELECTION_PRODUCT = 'selection_product',
     USER = 'users',
     PRODUCT_LIKE = 'product_like',
+    COLOR = 'color',
+    PRODUCT_COLOR = 'product_color',
     TAG = 'tag',
     PRODUCT_TAG = 'product_tag'
 }

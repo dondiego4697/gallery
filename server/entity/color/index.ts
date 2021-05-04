@@ -1,8 +1,8 @@
+import {Column, Entity, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
 import slugify from 'slugify';
-import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
-export class Profession {
+export class Color {
     @BeforeInsert()
     _beforeInsert() {
         this.code = slugify(this.name.toLowerCase(), '_');
@@ -16,4 +16,7 @@ export class Profession {
 
     @Column({type: 'text'})
     name: string;
+
+    @Column({type: 'text'})
+    hex: string;
 }
