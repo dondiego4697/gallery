@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
 import {v4 as uuidv4} from 'uuid';
+import {range, reverse} from 'lodash';
 
 import {TestServer} from 'test/test-server';
 import {TestFactory} from 'test/test-factory';
 import pMap from 'p-map';
-import {range} from 'lodash';
 import {User} from 'entity/user';
 import {config} from 'app/config';
 import {JWT} from 'app/lib/jwt';
@@ -30,66 +30,37 @@ describe(`GET ${PATH}`, () => {
         await testServer.stopServer();
     });
 
-    it('should return poor author', async () => {
+    it('should return author', async () => {
         const country = await TestFactory.createCountry();
         const city = await TestFactory.createCity({countryId: country.id});
         const author = await TestFactory.createAuthor({cityId: city.id});
-
-        const {statusCode, body} = await got.get<any>(`${url}${PATH.replace(':code', author.code)}`, {
-            responseType: 'json',
-            throwHttpErrors: false,
-            headers,
-            searchParams: {
-                poor: true
-            }
-        });
-
-        expect(statusCode).toBe(200);
-        expect(body).toEqual({
-            avatarUrl: author.avatarUrl,
-            bio: author.bio,
-            firstName: author.firstName,
-            lastName: author.lastName,
-            code: author.code,
-            createdAt: author.createdAt.toISOString(),
-            city: {
-                code: city.code,
-                name: city.name,
-                country: {
-                    code: country.code,
-                    name: country.name
-                }
-            },
-            products: [],
-            professions: []
-        });
-    });
-
-    it('should return full author', async () => {
-        const country = await TestFactory.createCountry();
-        const city = await TestFactory.createCity({countryId: country.id});
-        const author = await TestFactory.createAuthor({cityId: city.id});
+        const otherAuthor = await TestFactory.createAuthor();
         const profession = await TestFactory.createProfession();
 
         await TestFactory.createAuthorProfession({
             authorId: author.id,
             professionId: profession.id
         });
-        const otherAuthor = await TestFactory.createAuthor();
+
+        const productCategories = await Promise.all([
+            TestFactory.createProductCategory(),
+            TestFactory.createProductCategory()
+        ]);
 
         const products = await pMap(
             range(0, 10),
             async (i) => {
-                const productCategory = await TestFactory.createProductCategory();
+                const productCategory = productCategories[i % productCategories.length];
                 const product = await TestFactory.createProduct({
                     productCategoryId: productCategory.id,
                     authorId: author.id
                 });
 
                 await Promise.all(range(0, i + 1).map(() => TestFactory.createProductView({productId: product.id})));
-                const photos = await Promise.all(
-                    range(0, 5).map(() => TestFactory.createProductPhoto({productId: product.id}))
-                );
+                const photos = await Promise.all([
+                    TestFactory.createProductPhoto({productId: product.id}),
+                    TestFactory.createProductPhoto({productId: product.id})
+                ]);
 
                 const isLike = Math.random() > 0.5 ? true : false;
 
@@ -100,11 +71,12 @@ describe(`GET ${PATH}`, () => {
                     });
                 }
 
-                return {productCategory, product, photos, isLike};
+                return {product, photos, isLike};
             },
             {concurrency: 4}
         );
 
+        // Добавляем шум
         await pMap(
             range(0, 10),
             async () => {
@@ -124,51 +96,52 @@ describe(`GET ${PATH}`, () => {
             headers
         });
 
+        reverse(products);
+
         expect(statusCode).toBe(200);
         expect(body).toEqual({
-            avatarUrl: author.avatarUrl,
-            bio: author.bio,
-            firstName: author.firstName,
-            lastName: author.lastName,
-            code: author.code,
-            createdAt: author.createdAt.toISOString(),
-            city: {
-                code: city.code,
-                name: city.name,
+            author: {
+                firstName: author.firstName,
+                lastName: author.lastName,
+                code: author.code,
+                avatarUrl: author.avatarUrl,
+                bio: author.bio,
+                createdAt: author.createdAt.toISOString(),
+                city: {
+                    code: city.code,
+                    name: city.name
+                },
                 country: {
                     code: country.code,
                     name: country.name
-                }
-            },
-            professions: [
-                {
-                    code: profession.code,
-                    name: profession.name
-                }
-            ],
-            products: products.reverse().map(({product, isLike, productCategory}, i) => ({
-                code: product.code,
-                createdAt: product.createdAt.toISOString(),
-                data: {},
-                isLike,
-                isSold: product.isSold,
-                material: product.material,
-                name: product.name,
-                photos: expect.anything(),
-                price: product.price,
-                shapeFormat: product.shapeFormat,
-                productCategory: {
-                    code: productCategory.code,
-                    name: productCategory.name
                 },
+                professions: [
+                    {
+                        code: profession.code,
+                        name: profession.name
+                    }
+                ]
+            },
+            products: products.map(({product, isLike}, i) => ({
+                code: product.code,
+                name: product.name,
+                price: product.price,
                 size: product.size,
-                style: product.style,
-                views: products.length - i
+                isSold: product.isSold,
+                meta: {
+                    isLike,
+                    views: products.length - i
+                },
+                photo: expect.anything()
             }))
         });
-        expect(body.products.map((it: any) => it.photos.sort())).toEqual(
-            products.map(({photos}) => photos.map((it) => it.photoUrl).sort())
-        );
+
+        const productsPhotos = products.map(({photos}) => photos.map((it) => it.photoUrl));
+        const isAllPhotoIncluded = productsPhotos
+            .map((photos, i) => photos.includes(body.products[i].photo))
+            .every((it) => it === true);
+
+        expect(isAllPhotoIncluded).toBe(true);
     });
 
     it('should throw 404', async () => {

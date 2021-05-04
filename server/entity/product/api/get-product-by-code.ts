@@ -10,9 +10,6 @@ export async function getProductByCode(code: string) {
         .innerJoin('p.productCategory', 'pc')
         .innerJoinAndSelect('p.author', 'athr')
         .leftJoinAndSelect('p.photos', 'photo')
-        .leftJoinAndSelect('athr.professions', 'prof')
-        .leftJoinAndSelect('athr.city', 'city')
-        .leftJoinAndSelect('city.country', 'country')
         .leftJoinAndSelect('p.tags', 'tag')
         .where('p.code = :code', {code});
 

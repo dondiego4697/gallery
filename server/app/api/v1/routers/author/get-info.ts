@@ -1,4 +1,4 @@
-import {omit, sortBy} from 'lodash';
+import {pick, sortBy} from 'lodash';
 import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
 import {getAuthorByCode} from 'entity/author/api/get-author-by-code';
@@ -6,15 +6,10 @@ import {ClientError} from 'service/error';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
 import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
 
-interface Query {
-    poor: boolean;
-}
-
 export const getInfo = wrap<Request, Response>(async (req, res) => {
-    const {poor} = (req.query as unknown) as Query;
     const {code} = req.params;
 
-    const author = await getAuthorByCode(code, {poor});
+    const author = await getAuthorByCode(code);
 
     if (!author) {
         throw new ClientError('ENTITY_NOT_FOUND', {
@@ -35,23 +30,28 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
     ]);
 
     res.json({
-        ...omit(author, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id']),
-        professions: (author.professions || []).map((it) => omit(it, 'id')),
+        author: {
+            ...pick(author, ['code', 'firstName', 'lastName', 'bio', 'avatarUrl', 'createdAt']),
+            city: {
+                code: author.city.code,
+                name: author.city.name
+            },
+            country: {
+                code: author.city.country.code,
+                name: author.city.country.name
+            },
+            professions: (author.professions || []).map((it) => pick(it, ['code', 'name']))
+        },
         products: sortBy(
-            products.map((it) => {
-                const product = omit(it, ['id', 'authorId', 'productCategoryId', 'productCategory.id']);
-
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (product as any).views = views[it.id]?.count || 0;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (product as any).photos = it.photos.map((it: any) => it.photoUrl);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (product as any).isLike = likes.has(it.id);
-
-                return product;
-            }),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (it: any) => -it.views
+            products.map((product) => ({
+                ...pick(product, ['code', 'name', 'price', 'isSold', 'size']),
+                photo: (product.photos || []).map((it) => it.photoUrl)[0],
+                meta: {
+                    views: views[product.id]?.count || 0,
+                    isLike: likes.has(product.id)
+                }
+            })),
+            (it) => -it.meta.views
         )
     });
 });

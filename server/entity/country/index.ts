@@ -1,14 +1,8 @@
-import {Column, OneToMany, Entity, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
-import {nanoid} from 'nanoid';
+import {Column, OneToMany, Entity, PrimaryGeneratedColumn} from 'typeorm';
 import {City} from 'entity/city';
 
 @Entity()
 export class Country {
-    @BeforeInsert()
-    _beforeInsert() {
-        this.code = this.code || nanoid();
-    }
-
     @PrimaryGeneratedColumn({type: 'bigint'})
     id: number;
 

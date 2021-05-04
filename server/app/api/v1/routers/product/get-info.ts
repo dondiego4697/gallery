@@ -1,4 +1,4 @@
-import {omit} from 'lodash';
+import {pick} from 'lodash';
 import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
 import {getProductByCode} from 'entity/product/api/get-product-by-code';
@@ -28,17 +28,34 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
     const {author} = product;
 
     res.json({
-        ...omit(product, ['id', 'authorId', 'productCategoryId']),
-        author: {
-            ...omit(author, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id']),
-            professions: (author.professions || []).map((it) => omit(it, 'id'))
+        meta: {
+            views: views[product.id]?.count || 0,
+            isLike: likes.has(product.id)
         },
-        views: views[product.id]?.count || 0,
-        photos: product.photos.map((it) => it.photoUrl),
-        isLike: likes.has(product.id),
-        tags: product.tags.map((it) => ({
-            code: it.code,
-            name: it.name
-        }))
+        product: {
+            ...pick(product, [
+                'code',
+                'name',
+                'size',
+                'data',
+                'price',
+                'isSold',
+                'style',
+                'material',
+                'shapeFormat',
+                'createdAt'
+            ]),
+            photos: (product.photos || []).map((it) => it.photoUrl).sort(),
+            tags: (product.tags || []).map((it) => ({
+                code: it.code,
+                name: it.name
+            }))
+        },
+        author: {
+            avatarUrl: author.avatarUrl,
+            firstName: author.firstName,
+            lastName: author.lastName,
+            code: author.code
+        }
     });
 });

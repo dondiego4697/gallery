@@ -1,11 +1,11 @@
+import slugify from 'slugify';
 import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {nanoid} from 'nanoid';
 
 @Entity()
 export class Profession {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = nanoid();
+        this.code = slugify(this.name, '_');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})

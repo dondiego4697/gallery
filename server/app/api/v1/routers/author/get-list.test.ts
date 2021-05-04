@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
 import casual from 'casual';
-import {range, sortBy, random} from 'lodash';
+import {range, sortBy, xorBy} from 'lodash';
 import pMap from 'p-map';
 
 import {TestServer} from 'test/test-server';
@@ -31,25 +31,30 @@ describe(`GET ${PATH}`, () => {
             async () => {
                 const author = await TestFactory.createAuthor({cityId: city.id});
 
-                const products = await Promise.all(
-                    range(0, random(2, 5)).map(() =>
-                        TestFactory.createProduct({
-                            authorId: author.id,
-                            productCategoryId: productCategory.id
-                        })
-                    )
-                );
+                const products = await Promise.all([
+                    TestFactory.createProduct({
+                        authorId: author.id,
+                        productCategoryId: productCategory.id
+                    }),
+                    TestFactory.createProduct({
+                        authorId: author.id,
+                        productCategoryId: productCategory.id
+                    })
+                ]);
 
-                // Создаем по одной фотографии на продукт
-                const photos = await Promise.all(
-                    products.map((it) =>
-                        TestFactory.createProductPhoto({
-                            productId: it.id
-                        })
-                    )
-                );
+                const photos = await pMap(products, async (product) => {
+                    const result = await Promise.all(
+                        range(0, 3).map(() =>
+                            TestFactory.createProductPhoto({
+                                productId: product.id
+                            })
+                        )
+                    );
 
-                return {author, photos};
+                    return result.map((it) => it.photoUrl);
+                });
+
+                return {author, products, photos};
             },
             {concurrency: 1}
         );
@@ -73,23 +78,23 @@ describe(`GET ${PATH}`, () => {
                 avatarUrl: author.avatarUrl,
                 firstName: author.firstName,
                 lastName: author.lastName,
-                bio: author.bio,
                 city: {
                     code: city.code,
-                    name: city.name,
-                    country: {
-                        code: country.code,
-                        name: country.name
-                    }
+                    name: city.name
                 },
-                createdAt: author.createdAt.toISOString(),
-                productsPhotos: expect.anything()
+                country: {
+                    code: country.code,
+                    name: country.name
+                },
+                products: expect.anything()
             }))
         );
 
-        expect(body.authors.map((athr: any) => athr.productsPhotos.sort())).toEqual(
-            expectedAuthors.map(({photos}) => photos.map((it) => it.photoUrl).sort())
+        const productsDiff = expectedAuthors.map(
+            ({products}, i) => xorBy(products, body.authors[i].products, 'code').length
         );
+
+        expect(productsDiff).toStrictEqual([0, 0]);
     });
 
     it('should search by query', async () => {
@@ -132,19 +137,18 @@ describe(`GET ${PATH}`, () => {
         expect(statusCode).toBe(200);
         expect(body.totalCount).toBe(8);
 
+        const expectedAuthors = sortBy(authors, (it) => it.firstName.toLowerCase()).slice(2, 7);
+
         expect(body.authors).toEqual(
-            sortBy(authors, (it) => it.firstName.toLowerCase())
-                .slice(2, 7)
-                .map((it) => ({
-                    code: it.code,
-                    avatarUrl: it.avatarUrl,
-                    firstName: it.firstName,
-                    lastName: it.lastName,
-                    bio: it.bio,
-                    city: null,
-                    createdAt: it.createdAt.toISOString(),
-                    productsPhotos: []
-                }))
+            expectedAuthors.map((it) => ({
+                code: it.code,
+                avatarUrl: it.avatarUrl,
+                firstName: it.firstName,
+                lastName: it.lastName,
+                city: null,
+                country: null,
+                products: []
+            }))
         );
     });
 
@@ -186,19 +190,18 @@ describe(`GET ${PATH}`, () => {
         expect(statusCode).toBe(200);
         expect(body.totalCount).toBe(4);
 
+        const expectedAuthors = sortBy(authors, (it) => it.firstName.toLowerCase()).slice(2, 7);
+
         expect(body.authors).toEqual(
-            sortBy(authors, (it) => it.firstName.toLowerCase())
-                .slice(2, 7)
-                .map((it) => ({
-                    code: it.code,
-                    avatarUrl: it.avatarUrl,
-                    firstName: it.firstName,
-                    lastName: it.lastName,
-                    bio: it.bio,
-                    city: null,
-                    createdAt: it.createdAt.toISOString(),
-                    productsPhotos: []
-                }))
+            expectedAuthors.map((it) => ({
+                code: it.code,
+                avatarUrl: it.avatarUrl,
+                firstName: it.firstName,
+                lastName: it.lastName,
+                city: null,
+                country: null,
+                products: []
+            }))
         );
     });
 });

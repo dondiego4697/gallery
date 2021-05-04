@@ -22,13 +22,17 @@ import {ProductView} from 'entity/product-view';
 import {ProductSelection} from 'entity/product-selection';
 import {ViewOfProductView} from 'entity/view-of-product-view';
 
-async function createCountry() {
+interface CreateCountryParams {
+    country?: DeepPartial<Country>;
+}
+
+async function createCountry(params: CreateCountryParams = {}) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Country);
 
     const entity = manager.create(Country, {
-        code: `${casual.country_code}_${casual.random}`,
-        name: `${casual.country}_${casual.random}`
+        code: params.country?.code || `${casual.country_code}_${casual.random}`,
+        name: params.country?.name || `${casual.country}_${casual.random}`
     });
 
     await manager.save(entity);
@@ -38,6 +42,7 @@ async function createCountry() {
 
 interface CreateCityParams {
     countryId: number;
+    city?: DeepPartial<City>;
 }
 
 async function createCity(params: CreateCityParams) {
@@ -46,8 +51,7 @@ async function createCity(params: CreateCityParams) {
 
     const city = casual.city;
     const entity = manager.create(City, {
-        code: `${city}_${casual.random}`,
-        name: `${city}_${casual.random}`,
+        name: params.city?.name || `${city}_${casual.random}`,
         countryId: params.countryId
     });
 
@@ -82,7 +86,7 @@ async function createAuthor(params: CreateAuthorParams = {}) {
         firstName: casual.first_name,
         lastName: casual.last_name,
         avatarUrl: casual.url + uuidv4(),
-        bio: casual.sentences(3),
+        bio: casual.sentences(10),
         cityId: params.cityId,
         ...(params.author || {})
     });
@@ -177,7 +181,7 @@ async function createSelection(params: CreateSelectionParams = {}) {
     const {manager} = connection.getRepository(Selection);
 
     const entity = manager.create(Selection, {
-        name: casual.words(6),
+        name: casual.words(2),
         description: casual.sentences(10),
         imageUrl: casual.url + uuidv4(),
         parentId: params.parentId
@@ -188,12 +192,16 @@ async function createSelection(params: CreateSelectionParams = {}) {
     return manager.findOneOrFail(Selection, entity.id);
 }
 
-async function createProductCategory() {
+interface CreateProductCategoryParams {
+    productCategory?: DeepPartial<ProductCategory>;
+}
+
+async function createProductCategory(params: CreateProductCategoryParams = {}) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(ProductCategory);
 
     const entity = manager.create(ProductCategory, {
-        name: casual.words(3)
+        name: params.productCategory?.name || casual.words(3)
     });
 
     await manager.save(entity);
@@ -338,6 +346,12 @@ async function getProductsViewsCount() {
     return connection.getRepository(ViewOfProductView).createQueryBuilder().getMany();
 }
 
+async function getCities() {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(City).createQueryBuilder().getMany();
+}
+
 export const TestFactory = {
     createCountry,
     createCity,
@@ -358,5 +372,6 @@ export const TestFactory = {
     getAuthors,
     getProductsLikes,
     getProductsViews,
-    getProductsViewsCount
+    getProductsViewsCount,
+    getCities
 };

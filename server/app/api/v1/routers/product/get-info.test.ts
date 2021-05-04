@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range, random, sortBy} from 'lodash';
+import {range, random, xor, xorBy} from 'lodash';
 import {v4 as uuidv4} from 'uuid';
 
 import {TestServer} from 'test/test-server';
@@ -39,11 +39,13 @@ describe(`GET ${PATH}`, () => {
             authorId: author.id,
             professionId: profession.id
         });
+
         const productCategory = await TestFactory.createProductCategory();
         const product = await TestFactory.createProduct({
             authorId: author.id,
             productCategoryId: productCategory.id
         });
+
         const tags = await Promise.all(range(0, 5).map(() => TestFactory.createTag()));
 
         await Promise.all(
@@ -79,50 +81,39 @@ describe(`GET ${PATH}`, () => {
 
         expect(statusCode).toBe(200);
         expect(body).toEqual({
-            code: product.code,
-            name: product.name,
-            size: product.size,
-            data: product.data,
-            price: product.price,
-            isSold: product.isSold,
-            createdAt: product.createdAt.toISOString(),
-            style: product.style,
-            shapeFormat: product.shapeFormat,
-            material: product.material,
+            meta: {
+                views: viewsCount,
+                isLike
+            },
             author: {
-                professions: [
-                    {
-                        code: profession.code,
-                        name: profession.name
-                    }
-                ],
-                avatarUrl: author.avatarUrl,
-                bio: author.bio,
                 firstName: author.firstName,
                 lastName: author.lastName,
                 code: author.code,
-                createdAt: author.createdAt.toISOString(),
-                city: {
-                    code: city.code,
-                    name: city.name,
-                    country: {
-                        code: country.code,
-                        name: country.name
-                    }
-                }
+                avatarUrl: author.avatarUrl
             },
-            views: viewsCount,
-            isLike,
-            photos: expect.anything(),
-            tags: expect.anything()
+            product: {
+                code: product.code,
+                name: product.name,
+                size: product.size,
+                data: product.data,
+                price: product.price,
+                isSold: product.isSold,
+                createdAt: product.createdAt.toISOString(),
+                style: product.style,
+                shapeFormat: product.shapeFormat,
+                material: product.material,
+                photos: expect.anything(),
+                tags: expect.anything()
+            }
         });
-        expect(body.photos.sort()).toEqual(photos.map((it) => it.photoUrl).sort());
-        expect(sortBy(body.tags, 'code')).toEqual(
-            sortBy(tags, 'code').map((tag) => ({
-                code: tag.code,
-                name: tag.name
-            }))
-        );
+
+        expect(xorBy(body.product.tags, tags, 'code').length).toBe(0);
+        expect(
+            xor(
+                body.product.photos,
+                photos.map((it) => it.photoUrl)
+            ).length
+        ).toBe(0);
     });
 
     it('should throw 404', async () => {

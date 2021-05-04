@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
 import {getAuthors} from 'entity/author/api/get-authors';
-import {omit} from 'lodash';
+import {pick} from 'lodash';
 
 interface Query {
     limit: number;
@@ -17,8 +17,23 @@ export const getList = wrap<Request, Response>(async (req, res) => {
 
     res.json({
         authors: authors.map((athr) => ({
-            ...omit(athr, ['id', 'cityId', 'city.id', 'city.countryId', 'city.country.id', 'products']),
-            productsPhotos: (athr.products || []).map((pr) => pr.photos[0]?.photoUrl).filter(Boolean)
+            ...pick(athr, ['code', 'firstName', 'lastName', 'avatarUrl']),
+            city: athr.city
+                ? {
+                      code: athr.city.code,
+                      name: athr.city.name
+                  }
+                : null,
+            country: athr.city
+                ? {
+                      code: athr.city.country.code,
+                      name: athr.city.country.name
+                  }
+                : null,
+            products: (athr.products || []).map((it) => ({
+                code: it.code,
+                photos: (it.photos || []).map((it) => it.photoUrl).sort()
+            }))
         })),
         totalCount
     });

@@ -13,19 +13,19 @@ type ClientErrorCode = 'ENTITY_NOT_FOUND' | 'UNAUTHORIZED' | 'BAD_USER_TOKEN';
 
 export class LoggableError extends Error {
     constructor(params: Params, clientErrorCode: ClientErrorCode) {
-        const {message = clientErrorCode, group = 'unknown', meta = {}, request} = params;
+        const {message, group, meta = {}, request} = params;
 
-        super(message);
+        super(message || clientErrorCode);
 
         const log = {
             ...meta,
-            group
+            group: group || 'unknown'
         };
 
         if (request) {
-            request.context.logger.error(message, log);
+            request.context.logger.error(message || clientErrorCode, log);
         } else {
-            logger.error(message, log);
+            logger.error(message || clientErrorCode, log);
         }
     }
 }

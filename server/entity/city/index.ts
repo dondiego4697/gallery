@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, OneToMany, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
-import {nanoid} from 'nanoid';
+import slugify from 'slugify';
 import {Author} from 'entity/author';
 import {Country} from 'entity/country';
 
@@ -7,7 +7,7 @@ import {Country} from 'entity/country';
 export class City {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = this.code || nanoid();
+        this.code = slugify(this.name, '_');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})

@@ -1,6 +1,5 @@
 import pMap from 'p-map';
-import casual from 'casual';
-import {range, random, shuffle, uniq, flatten} from 'lodash';
+import {range, random, shuffle} from 'lodash';
 import {TestFactory} from 'test/test-factory';
 import {restoreDb} from 'test/restore-db';
 
@@ -11,27 +10,23 @@ export async function handle() {
 
     // Страны
     console.log('countries...');
-    const countries = await pMap(
-        range(20),
-        async () => {
-            const {id} = await TestFactory.createCountry();
-
-            return id;
-        },
-        {concurrency}
-    );
+    const RU = await TestFactory.createCountry({
+        country: {
+            code: 'RU',
+            name: 'Россия'
+        }
+    });
 
     // Города
     console.log('cities...');
-    const cities = flatten(
-        await pMap(
-            countries,
-            async (countryId) => {
-                const items = await Promise.all(range(10).map(() => TestFactory.createCity({countryId})));
-
-                return items.map((it) => it.id);
-            },
-            {concurrency}
+    const cities = await Promise.all(
+        ['Mocква', 'Санкт-Петербург', 'Казань', 'Йошкар-Ола'].map((name) =>
+            TestFactory.createCity({
+                countryId: RU.id,
+                city: {
+                    name
+                }
+            })
         )
     );
 
@@ -41,7 +36,7 @@ export async function handle() {
         range(100),
         async () => {
             const {id} = await TestFactory.createAuthor({
-                cityId: cities[random(0, cities.length - 1)]
+                cityId: cities[random(0, cities.length - 1)].id
             });
 
             return id;
@@ -76,19 +71,44 @@ export async function handle() {
 
     // Категории продуктов
     console.log('product categories...');
-    const productCategories = await pMap(
-        range(10),
-        async () => {
-            const {id} = await TestFactory.createProductCategory();
-
-            return id;
-        },
-        {concurrency}
+    const productCategories = await Promise.all(
+        ['Картина', 'Скульптура', 'Принт'].map((name) =>
+            TestFactory.createProductCategory({
+                productCategory: {
+                    name
+                }
+            })
+        )
     );
 
-    const styles = uniq(range(10).map(() => casual.word));
-    const materials = uniq(range(10).map(() => casual.word));
-    const shapeFormats = uniq(range(10).map(() => casual.word));
+    const styles = [
+        'Импрессионизм',
+        'Экспрессионизм',
+        'Кубизм',
+        'Романтизм',
+        'Неоклассицизм',
+        'Поп – арт',
+        'Романтизм',
+        'Реализм',
+        'Сюрреализм',
+        'Символизм',
+        'Абстракционизм',
+        'Портрет',
+        'Стрит – арт',
+        'Натюрморт',
+        'Минимализм'
+    ].map((it) => it.toLowerCase());
+    const materials = ['Фотобумага', 'Цифровая фотография', 'Ватман', 'Полотно'].map((it) => it.toLowerCase());
+    const shapeFormats = [
+        'Квадрат',
+        'Круг',
+        'Вертикальный',
+        'Горизонтальный',
+        'Круг / овал',
+        'Триптих',
+        'Диптих',
+        'Другое'
+    ].map((it) => it.toLowerCase());
 
     // Продукты
     console.log('products...');
@@ -101,7 +121,7 @@ export async function handle() {
 
             const {id} = await TestFactory.createProduct({
                 authorId: authors[random(0, authors.length - 1)],
-                productCategoryId: category,
+                productCategoryId: category.id,
                 product: {
                     style: styles[random(0, styles.length - 1)],
                     material: materials[random(0, materials.length - 1)],
@@ -161,7 +181,7 @@ export async function handle() {
     // Подборки
     console.log('selections...');
     const selections = await pMap(
-        range(50),
+        range(10),
         async () => {
             const {id: parentId} = await TestFactory.createSelection();
             const {id} = await TestFactory.createSelection({parentId});

@@ -1,12 +1,12 @@
 import {Column, OneToMany, Entity, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
-import {nanoid} from 'nanoid';
+import slugify from 'slugify';
 import {Product} from 'entity/product';
 
 @Entity()
 export class ProductCategory {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = this.code || nanoid();
+        this.code = slugify(this.name, '_');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})
