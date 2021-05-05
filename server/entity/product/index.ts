@@ -18,6 +18,8 @@ import {Color} from 'entity/color';
 import {Style} from 'entity/style';
 import {Material} from 'entity/material';
 import {ShapeFormat} from 'entity/shape-format';
+import {Gallery} from 'entity/gallery';
+import {Selection} from 'entity/selection';
 
 interface ProductSize {
     width: number;
@@ -69,6 +71,12 @@ export class Product {
     category: Category;
 
     @Column({type: 'bigint', nullable: true})
+    galleryId: number;
+
+    @ManyToOne(() => Gallery, (gallery) => gallery.products)
+    gallery: Gallery;
+
+    @Column({type: 'bigint', nullable: true})
     styleId: number;
 
     @ManyToOne(() => Style, (style) => style.products)
@@ -116,4 +124,18 @@ export class Product {
         }
     })
     colors: Color[];
+
+    @ManyToMany(() => Selection)
+    @JoinTable({
+        name: DbTable.PRODUCT_SELECTION,
+        joinColumn: {
+            name: 'product_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'selection_id',
+            referencedColumnName: 'id'
+        }
+    })
+    selections: Selection[];
 }

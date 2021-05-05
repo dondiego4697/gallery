@@ -114,6 +114,12 @@ export async function handle() {
         ].map((name) => TestFactory.createShapeFormat({shapeFormat: {name}}))
     );
 
+    // Галлереи
+    console.log('galleries...');
+    const galleries = await pMap(range(10), async () => {
+        return TestFactory.createGallery();
+    });
+
     // Продукты
     console.log('products...');
     const products = await pMap(
@@ -123,17 +129,16 @@ export async function handle() {
 
             const category = categories[index];
 
-            const {id} = await TestFactory.createProduct({
+            return TestFactory.createProduct({
                 authorId: authors[random(0, authors.length - 1)].id,
                 categoryId: category.id,
+                galleryId: Math.random() > 0.5 ? galleries[random(0, galleries.length - 1)].id : undefined,
                 product: {
-                    styleId: styles[random(0, styles.length - 1)].id,
-                    materialId: materials[random(0, materials.length - 1)].id,
-                    shapeFormatId: shapeFormats[random(0, shapeFormats.length - 1)].id
+                    styleId: Math.random() > 0.4 ? styles[random(0, styles.length - 1)].id : undefined,
+                    materialId: Math.random() > 0.4 ? materials[random(0, materials.length - 1)].id : undefined,
+                    shapeFormatId: Math.random() > 0.4 ? shapeFormats[random(0, shapeFormats.length - 1)].id : undefined
                 }
             });
-
-            return id;
         },
         {concurrency}
     );
@@ -143,16 +148,16 @@ export async function handle() {
     const colors = await Promise.all(range(0, 10).map(() => TestFactory.createColor()));
 
     // Цвета продуктов
-    console.log('product colors...');
+    console.log('products colors...');
     await pMap(
         products,
-        async (productId) => {
+        async (product) => {
             const shuffledColors = shuffle(colors);
 
             await Promise.all(
                 range(0, 3).map((i) =>
                     TestFactory.createProductColor({
-                        productId,
+                        productId: product.id,
                         colorId: shuffledColors[i].id
                     })
                 )
@@ -165,11 +170,11 @@ export async function handle() {
     console.log('products photos...');
     await pMap(
         products,
-        async (productId) => {
+        async (product) => {
             await Promise.all(
                 range(0, random(5, 10)).map(() =>
                     TestFactory.createProductPhoto({
-                        productId
+                        productId: product.id
                     })
                 )
             );
@@ -181,15 +186,11 @@ export async function handle() {
     console.log('products views...');
     await pMap(
         products,
-        async (productId) => {
-            await Promise.all(
-                range(0, random(1, 100)).map(() =>
-                    TestFactory.createProductView({
-                        productId
-                    })
-                )
-            );
-        },
+        async (product) =>
+            TestFactory.createProductView({
+                productId: product.id,
+                count: random(0, 500)
+            }),
         {concurrency}
     );
 
@@ -234,13 +235,13 @@ export async function handle() {
     console.log('products selections...');
     await pMap(
         products,
-        async (productId) => {
+        async (product) => {
             const shuffledSelections = shuffle(selections);
 
             await Promise.all(
                 range(2, random(3, 10)).map((_, i) =>
                     TestFactory.createProductSelection({
-                        productId,
+                        productId: product.id,
                         selectionId: shuffledSelections[i].id
                     })
                 )
@@ -257,17 +258,13 @@ export async function handle() {
     console.log('products tags...');
     await pMap(
         products,
-        async (productId) => {
+        async (product) => {
             const shuffledTags = shuffle(tags);
 
-            await Promise.all(
-                range(0, random(3, 10)).map((_, i) =>
-                    TestFactory.createProductTag({
-                        productId,
-                        tagId: shuffledTags[i].id
-                    })
-                )
-            );
+            await TestFactory.createProductTag({
+                productId: product.id,
+                tagIds: range(0, random(3, 10)).map((_, i) => shuffledTags[i].id)
+            });
         },
         {concurrency}
     );

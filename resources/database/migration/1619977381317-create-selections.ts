@@ -149,7 +149,7 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            DROP TABLE selection_product;
+            DROP TABLE product_selection;
             DROP TABLE selection;
         
             DROP FUNCTION selection__generate_path;

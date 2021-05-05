@@ -42,8 +42,17 @@ export class PostRefactoring1619977084555 implements MigrationInterface {
             );
 
             CREATE VIEW view__product_view AS (
-                SELECT prv.product_id, COUNT(*) as count FROM product_view prv
+                SELECT prv.product_id, COUNT(*) as count
+                FROM product_view prv
                 INNER JOIN product pr ON pr.id = prv.product_id
+                WHERE pr.is_sold IS FALSE
+                GROUP BY (product_id)
+            );
+
+            CREATE VIEW view__product_like AS (
+                SELECT prl.product_id, COUNT(*) as count
+                FROM product_like prl
+                INNER JOIN product pr ON pr.id = prl.product_id
                 WHERE pr.is_sold IS FALSE
                 GROUP BY (product_id)
             );

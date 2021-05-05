@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Joi from '@hapi/joi';
 import {bodyValidate} from 'app/middleware/validate';
-import {base} from './base';
+import {filters} from './filters';
 import {fullText} from './full-text';
 import {dictionary} from './dictionary';
 
@@ -10,19 +10,20 @@ const minMaxSchema = Joi.object({
     max: Joi.number().integer().positive()
 });
 
-const baseSchema = Joi.object({
+const filtersSchema = Joi.object({
     limit: Joi.number().integer().positive().default(20),
     offset: Joi.number().integer().positive().default(0),
-    filter: Joi.object({
+    filters: Joi.object({
         price: minMaxSchema,
         width: minMaxSchema,
         height: minMaxSchema,
         length: minMaxSchema,
         categoryCode: Joi.string(),
         selectionCode: Joi.string(),
-        styleCode: Joi.string(),
-        shapeFormatCode: Joi.string()
-    })
+        styleCodes: Joi.array().items(Joi.string()).default([]),
+        shapeFormatCodes: Joi.array().items(Joi.string()).default([]),
+        colorCodes: Joi.array().items(Joi.string()).default([])
+    }).default({})
 });
 
 const fullTextSchema = Joi.object({
@@ -31,6 +32,6 @@ const fullTextSchema = Joi.object({
 
 export const router = express
     .Router()
-    .post('/base', bodyValidate(baseSchema), base)
+    .post('/filters', bodyValidate(filtersSchema), filters)
     .post('/full-text', bodyValidate(fullTextSchema), fullText)
     .get('/dictionary', dictionary);

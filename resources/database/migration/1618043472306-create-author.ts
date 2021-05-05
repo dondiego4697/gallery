@@ -4,6 +4,17 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
+            CREATE TABLE gallery (
+                id BIGSERIAL NOT NULL,
+                code TEXT NOT NULL,
+                name TEXT NOT NULL,
+
+                CONSTRAINT pk__gallery PRIMARY KEY (id),
+
+                CONSTRAINT uq__gallery__code UNIQUE (code),
+                CONSTRAINT uq__gallery__name UNIQUE (name)
+            );
+
             CREATE TABLE country (
                 id BIGSERIAL NOT NULL,
                 code TEXT NOT NULL,

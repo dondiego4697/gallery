@@ -1,13 +1,13 @@
+import slugify from 'slugify';
 import {DbTable} from 'entity/const';
 import {Product} from 'entity/product';
 import {Column, BeforeInsert, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn} from 'typeorm';
-import {nanoid} from 'nanoid';
 
 @Entity()
 export class Selection {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = this.code || nanoid();
+        this.code = slugify(this.name.toLowerCase(), '_');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})
@@ -45,7 +45,7 @@ export class Selection {
 
     @ManyToMany(() => Product)
     @JoinTable({
-        name: DbTable.SELECTION_PRODUCT,
+        name: DbTable.PRODUCT_SELECTION,
         joinColumn: {
             name: 'selection_id',
             referencedColumnName: 'id'

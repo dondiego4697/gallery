@@ -13,5 +13,5 @@ export class ViewOfProductFilters {
     name: string;
 
     @ViewColumn()
-    type: 'style' | 'material' | 'shapeFormat';
+    type: 'color' | 'style' | 'material' | 'shapeFormat';
 }

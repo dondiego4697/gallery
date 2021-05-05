@@ -2,6 +2,7 @@
 import {v4 as uuidv4} from 'uuid';
 import {DeepPartial} from 'typeorm';
 import casual from 'casual';
+import {range} from 'lodash';
 import {dbManager} from 'app/lib/db-manager';
 
 import {Author} from 'entity/author';
@@ -25,6 +26,7 @@ import {Style} from 'entity/style';
 import {Material} from 'entity/material';
 import {ShapeFormat} from 'entity/shape-format';
 import {Color} from 'entity/color';
+import {Gallery} from 'entity/gallery';
 import {ProductColor} from 'entity/product-color';
 
 interface CreateCountryParams {
@@ -54,15 +56,31 @@ async function createCity(params: CreateCityParams) {
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(City);
 
-    const city = casual.city;
     const entity = manager.create(City, {
-        name: params.city?.name || `${city}_${casual.random}`,
+        name: params.city?.name || `${casual.city}_${casual.random}`,
         countryId: params.countryId
     });
 
     await manager.save(entity);
 
     return manager.findOneOrFail(City, entity.id);
+}
+
+interface CreateGalleryParams {
+    gallery?: DeepPartial<Gallery>;
+}
+
+async function createGallery(params: CreateGalleryParams = {}) {
+    const connection = await dbManager.getConnection();
+    const {manager} = connection.getRepository(Gallery);
+
+    const entity = manager.create(Gallery, {
+        name: params.gallery?.name || `${casual.name}_${casual.random}`
+    });
+
+    await manager.save(entity);
+
+    return manager.findOneOrFail(Gallery, entity.id);
 }
 
 async function createUser() {
@@ -151,6 +169,7 @@ async function createTag() {
 
 interface CreateProductParams {
     product?: DeepPartial<Product>;
+    galleryId?: number;
     authorId: number;
     categoryId: number;
 }
@@ -164,6 +183,7 @@ async function createProduct(params: CreateProductParams) {
         price: casual.integer(5000, 10000000),
         authorId: params.authorId,
         categoryId: params.categoryId,
+        galleryId: params.galleryId,
         size: {
             width: casual.integer(10, 100),
             height: casual.integer(10, 100),
@@ -360,40 +380,46 @@ async function createProductPhoto(params: CreateProductPhotoParams) {
 
 interface CreateProductTagParams {
     productId: number;
-    tagId: number;
+    tagIds: number[];
 }
 
 async function createProductTag(params: CreateProductTagParams) {
     const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(ProductTag);
 
-    const entity = manager.create(ProductTag, {
-        productId: params.productId,
-        tagId: params.tagId
-    });
-
-    await manager.save(entity);
-
-    return manager.findOneOrFail(ProductTag, entity.id);
+    await connection
+        .createQueryBuilder()
+        .insert()
+        .into(ProductTag)
+        .values(
+            params.tagIds.map((tagId) => ({
+                productId: params.productId,
+                tagId
+            }))
+        )
+        .execute();
 }
 
 interface CreateProductViewParams {
     productId: number;
+    count?: number;
     fingerprint?: string;
 }
 
 async function createProductView(params: CreateProductViewParams) {
+    const count = params.count || 1;
     const connection = await dbManager.getConnection();
-    const {manager} = connection.getRepository(ProductView);
 
-    const entity = manager.create(ProductView, {
-        productId: params.productId,
-        fingerprint: params.fingerprint || uuidv4()
-    });
-
-    await manager.save(entity);
-
-    return manager.findOneOrFail(ProductView, entity.id);
+    await connection
+        .createQueryBuilder()
+        .insert()
+        .into(ProductView)
+        .values(
+            range(0, count).map(() => ({
+                productId: params.productId,
+                fingerprint: count > 1 ? uuidv4() : params.fingerprint || uuidv4()
+            }))
+        )
+        .execute();
 }
 
 interface CreateProductSelectionParams {
@@ -445,7 +471,14 @@ async function getCities() {
     return connection.getRepository(City).createQueryBuilder().getMany();
 }
 
+async function getProducts() {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(Product).createQueryBuilder().getMany();
+}
+
 export const TestFactory = {
+    createGallery,
     createCountry,
     createCity,
     createUser,
@@ -471,5 +504,6 @@ export const TestFactory = {
     getProductsLikes,
     getProductsViews,
     getProductsViewsCount,
-    getCities
+    getCities,
+    getProducts
 };

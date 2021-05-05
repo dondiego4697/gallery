@@ -77,6 +77,7 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
 
                 author_id BIGINT NOT NULL,
                 category_id BIGINT NOT NULL,
+                gallery_id BIGINT,
 
                 style_id BIGINT,
                 material_id BIGINT,
@@ -94,6 +95,7 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
 
                 CONSTRAINT pk__product PRIMARY KEY (id),
 
+                CONSTRAINT fk__product__gallery_id__gallery FOREIGN KEY (gallery_id) REFERENCES gallery (id),
                 CONSTRAINT fk__product__author_id__author FOREIGN KEY (author_id) REFERENCES author (id),
                 CONSTRAINT fk__product__category_id__category FOREIGN KEY (category_id) REFERENCES category (id),
                 CONSTRAINT fk__product__style_id__style FOREIGN KEY (style_id) REFERENCES style (id),
@@ -140,7 +142,9 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                     m.name as name
                 FROM product pr
                     INNER JOIN category ct on ct.id = pr.category_id
-                    LEFT JOIN material m ON m.id = pr.material_id GROUP BY (ct.id, m.id)
+                    LEFT JOIN material m ON m.id = pr.material_id
+                    WHERE m IS NOT NULL
+                GROUP BY (ct.id, m.id)
                 UNION (
                     SELECT
                         'style' as type,
@@ -149,7 +153,9 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                         st.name as name
                     FROM product pr
                         INNER JOIN category ct on ct.id = pr.category_id
-                        LEFT JOIN style st ON st.id = pr.style_id GROUP BY (ct.id, st.id)
+                        LEFT JOIN style st ON st.id = pr.style_id
+                        WHERE st IS NOT NULL
+                    GROUP BY (ct.id, st.id)
                 )
                 UNION (
                     SELECT
@@ -159,8 +165,36 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                         sf.name as name
                     FROM product pr
                         INNER JOIN category ct on ct.id = pr.category_id
-                        LEFT JOIN shape_format sf ON sf.id = pr.shape_format_id GROUP BY (ct.id, sf.id)
+                        LEFT JOIN shape_format sf ON sf.id = pr.shape_format_id
+                        WHERE sf IS NOT NULL
+                    GROUP BY (ct.id, sf.id)
                 )
+                UNION (
+                    SELECT
+                        'color' as type,
+                        ct.code as category_code,
+                        clr.code as code,
+                        clr.name as name
+                    FROM product pr
+                        INNER JOIN category ct on ct.id = pr.category_id
+                        LEFT JOIN product_color pc on pr.id = pc.product_id
+                        LEFT JOIN color clr ON clr.id = pc.color_id
+                        WHERE clr IS NOT NULL
+                    GROUP BY (ct.id, clr.id)
+                )
+            );
+
+            CREATE VIEW view__product_min_max AS (
+                SELECT
+                    max(price) as max_price,
+                    min(price) as min_price,
+                    max(size ->> 'width')::int as max_width,
+                    min(size ->> 'width')::int as min_width,
+                    max(size ->> 'height')::int as max_height,
+                    min(size ->> 'height')::int as min_height,
+                    max(size ->> 'length')::int as max_length,
+                    min(size ->> 'length')::int as min_length
+                FROM product
             );
         `);
 

@@ -5,6 +5,7 @@ import {config} from 'app/config';
 import {SnakeNamingStrategy} from 'typeorm-naming-strategies';
 import {Author} from 'entity/author';
 import {City} from 'entity/city';
+import {Gallery} from 'entity/gallery';
 import {Color} from 'entity/color';
 import {Country} from 'entity/country';
 import {AuthorProfession} from 'entity/author-profession';
@@ -24,8 +25,10 @@ import {ProductSelection} from 'entity/product-selection';
 import {Tag} from 'entity/tag';
 import {User} from 'entity/user';
 import {ViewOfProductView} from 'entity/view-of-product-view';
+import {ViewOfProductLike} from 'entity/view-of-product-like';
 import {ViewOfProductFilters} from 'entity/view-of-product-filters';
 import {ProductColor} from 'entity/product-color';
+import {ViewOfProductMinMax} from 'entity/view-of-product-min-max';
 
 pgTypes.setTypeParser(20, toFinite);
 pgTypes.setTypeParser(1700, toFinite);
@@ -55,6 +58,7 @@ class DbManager {
             },
             entities: [
                 City,
+                Gallery,
                 Color,
                 Country,
                 Author,
@@ -76,7 +80,9 @@ class DbManager {
                 Tag,
                 User,
                 ViewOfProductView,
-                ViewOfProductFilters
+                ViewOfProductLike,
+                ViewOfProductFilters,
+                ViewOfProductMinMax
             ],
             logging: config['logger.silent'] ? false : config['logger.db.level'],
             maxQueryExecutionTime: 5000,

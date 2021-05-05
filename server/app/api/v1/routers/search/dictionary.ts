@@ -1,7 +1,8 @@
+import {Dictionary, sortBy, get, set} from 'lodash';
 import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-import {getProductFilters} from 'entity/view-of-product-filters/api/get-filters';
-import {Dictionary, sortBy, get, set} from 'lodash';
+import {getProductFilters} from 'entity/view-of-product-filters/api/get-product-filters';
+import {getProductMinMax} from 'entity/view-of-product-min-max/api/get-product-min-max';
 
 interface Item {
     code: string;
@@ -9,26 +10,29 @@ interface Item {
 }
 
 export const dictionary = wrap<Request, Response>(async (_req, res) => {
-    const filters = await getProductFilters();
+    const [filtersRaw, minMax] = await Promise.all([getProductFilters(), getProductMinMax()]);
 
-    const result: Dictionary<Dictionary<Item[]>> = {};
+    const filters: Dictionary<Dictionary<Item[]>> = {};
 
-    filters.forEach((it) => {
+    filtersRaw.forEach((it) => {
         const key: [string, string] = [it.categoryCode, it.type];
-        const items = get(result, key);
+        const items = get(filters, key);
 
         if (items) {
             items.push({code: it.code, name: it.name});
 
             set(
-                result,
+                filters,
                 key,
                 sortBy(items, (it) => it.name.toLowerCase())
             );
         } else {
-            set(result, key, [{code: it.code, name: it.name}]);
+            set(filters, key, [{code: it.code, name: it.name}]);
         }
     });
 
-    res.json(result);
+    res.json({
+        minMax,
+        filters
+    });
 });

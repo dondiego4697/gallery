@@ -48,14 +48,10 @@ describe(`GET ${PATH}`, () => {
 
         const tags = await Promise.all(range(0, 5).map(() => TestFactory.createTag()));
 
-        await Promise.all(
-            tags.map((tag) =>
-                TestFactory.createProductTag({
-                    productId: product.id,
-                    tagId: tag.id
-                })
-            )
-        );
+        await TestFactory.createProductTag({
+            productId: product.id,
+            tagIds: tags.map((tag) => tag.id)
+        });
 
         const viewsCount = random(5, 12);
 

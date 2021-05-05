@@ -12,7 +12,7 @@ export enum DbTable {
     PRODUCT_PHOTO = 'product_photo',
     INTERIOR = 'interior',
     SELECTION = 'selection',
-    SELECTION_PRODUCT = 'selection_product',
+    PRODUCT_SELECTION = 'product_selection',
     USER = 'users',
     PRODUCT_LIKE = 'product_like',
     COLOR = 'color',
@@ -23,5 +23,8 @@ export enum DbTable {
 
 export enum DbView {
     PRODUCT_VIEW = 'view__product_view',
-    PRODUCT_FILTERS = 'view__product_filters'
+    PRODUCT_LIKE = 'view__product_like',
+    PRODUCT_MIN_MAX = 'view__product_min_max',
+    PRODUCT_FILTERS = 'view__product_filters',
+    PRODUCT_SEARCH = 'view__product_search'
 }

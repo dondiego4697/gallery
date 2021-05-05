@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range, sortBy} from 'lodash';
+import {range, sortBy, last, first} from 'lodash';
 
 import {TestServer} from 'test/test-server';
 import {TestFactory} from 'test/test-factory';
@@ -52,14 +52,42 @@ describe(`GET ${PATH}`, () => {
             {concurrency: 1}
         );
 
+        const products = await TestFactory.getProducts();
+
+        const width = sortBy(products, 'size.width');
+        const height = sortBy(products, 'size.height');
+        const length = sortBy(products, 'size.length').filter((it) => it.size.length);
+        const price = sortBy(products, 'price');
+
+        const color = await TestFactory.createColor();
+
+        await Promise.all(
+            products.map((product) =>
+                TestFactory.createProductColor({
+                    productId: product.id,
+                    colorId: color.id
+                })
+            )
+        );
+
         const {statusCode, body} = await got.get<any>(`${url}${PATH}`, {
             responseType: 'json',
             throwHttpErrors: false
         });
 
         expect(statusCode).toBe(200);
-        expect(body).toEqual(
-            categories.reduce(
+        expect(body).toEqual({
+            minMax: {
+                minHeight: first(height)?.size.height,
+                maxHeight: last(height)?.size.height,
+                minLength: first(length)?.size.length,
+                maxLength: last(length)?.size.length,
+                minWidth: first(width)?.size.width,
+                maxWidth: last(width)?.size.width,
+                minPrice: first(price)?.price,
+                maxPrice: last(price)?.price
+            },
+            filters: categories.reduce(
                 (acc, category) => ({
                     ...acc,
                     [category.code]: {
@@ -74,11 +102,17 @@ describe(`GET ${PATH}`, () => {
                         style: sortBy(
                             filters.map((it) => ({name: it.style.name, code: it.style.code})),
                             'code'
-                        )
+                        ),
+                        color: [
+                            {
+                                code: color.code,
+                                name: color.name
+                            }
+                        ]
                     }
                 }),
                 {}
             )
-        );
+        });
     });
 });
