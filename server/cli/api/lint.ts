@@ -1,15 +1,29 @@
-import path from 'path';
 import execa from 'execa';
+import path from 'path';
 
-export async function handle() {
-    const {ROOT_DIR, argv} = cliRuntime();
-    const {fix} = argv;
-
-    const params = [path.resolve(ROOT_DIR, 'server'), '--ext', 'ts'];
+async function lintServer(rootDir: string, fix?: boolean) {
+    const params = [path.resolve(rootDir, 'server'), '--ext', 'ts'];
 
     if (fix) {
         params.push('--fix');
     }
 
-    await execa('node_modules/.bin/eslint', params, {stdout: 'inherit', stderr: 'inherit', cwd: ROOT_DIR});
+    await execa('node_modules/.bin/eslint', params, {stdout: 'inherit', stderr: 'inherit', cwd: rootDir});
+}
+
+async function lintClient(rootDir: string, fix?: boolean) {
+    const params = [path.resolve(rootDir, 'client'), '--ext', 'ts,tsx'];
+
+    if (fix) {
+        params.push('--fix');
+    }
+
+    await execa('node_modules/.bin/eslint', params, {stdout: 'inherit', stderr: 'inherit', cwd: rootDir});
+}
+
+export async function handle() {
+    const {ROOT_DIR, argv} = cliRuntime();
+    const {fix} = argv;
+
+    await Promise.all([lintServer(ROOT_DIR, fix), lintClient(ROOT_DIR, fix)]);
 }

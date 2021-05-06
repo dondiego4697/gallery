@@ -1,8 +1,9 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-import {ClientError} from 'service/error';
-import {toggleProductLike} from 'entity/product/api/toggle-product-like';
+import {Request, Response} from 'express';
+
 import {checkProductExistance} from 'entity/product/api/get-product-by-code';
+import {toggleProductLike} from 'entity/product/api/toggle-product-like';
+import {ClientError} from 'service/error';
 
 export const like = wrap<Request, Response>(async (req, res) => {
     const user = await req.context.getUser();

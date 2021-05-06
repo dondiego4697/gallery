@@ -1,5 +1,5 @@
-import {Request} from 'express';
 import _CSRF from 'csrf';
+import {Request} from 'express';
 
 const csrf = new _CSRF();
 const secret = csrf.secretSync();

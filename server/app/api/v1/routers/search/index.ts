@@ -1,9 +1,11 @@
-import * as express from 'express';
 import Joi from '@hapi/joi';
+import * as express from 'express';
+
 import {bodyValidate} from 'app/middleware/validate';
+
+import {dictionary} from './dictionary';
 import {filters} from './filters';
 import {fullText} from './full-text';
-import {dictionary} from './dictionary';
 
 const minMaxSchema = Joi.object({
     min: Joi.number().integer().positive(),

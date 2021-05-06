@@ -1,6 +1,7 @@
-import _helmet from 'helmet';
 import {randomBytes} from 'crypto';
-import {Request, Response, NextFunction} from 'express';
+import {NextFunction, Request, Response} from 'express';
+import _helmet from 'helmet';
+
 import {directives} from 'app/csp';
 
 export const helmet = [

@@ -1,6 +1,7 @@
+import {ILike} from 'typeorm';
+
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
-import {ILike} from 'typeorm';
 
 interface Params {
     limit: number;

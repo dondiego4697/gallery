@@ -1,8 +1,9 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-import {createUser} from 'entity/user/api/create-user';
+import {Request, Response} from 'express';
+
 import {config} from 'app/config';
 import {JWT} from 'app/lib/jwt';
+import {createUser} from 'entity/user/api/create-user';
 import {CookieUserData} from 'types/cookie';
 
 export const login = wrap<Request, Response>(async (_req, res) => {

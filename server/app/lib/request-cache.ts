@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Request} from 'express';
 import NodeCache from 'node-cache';
-import slugify from 'slugify';
 import objectHash from 'object-hash';
+import slugify from 'slugify';
+
 import {config} from 'app/config';
 
 const DEFAULT_TTL = 60 * 5; // 5 min

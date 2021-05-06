@@ -15,7 +15,8 @@
             "parser": "@typescript-eslint/parser",
             "plugins": [
                 "@typescript-eslint",
-                "prettier"
+                "prettier",
+                "simple-import-sort"
             ],
             "extends": [
                 "plugin:@typescript-eslint/recommended",
@@ -47,6 +48,22 @@
                     {"blankLine": "always", "prev": "*", "next": "continue"},
 
                     {"blankLine": "always", "prev": "if", "next": "*"}
+                ],
+                "simple-import-sort/imports": [
+                    "error",
+                    {
+                        "groups": [
+                            ["^@?\\w"],
+                            ["^(types|cli|entity|app|test|service)/.*"],
+                            ["^\\."]
+                        ]
+                    }
+                ],
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "patterns": ["../*"]
+                    }
                 ]
             }
         }

@@ -1,13 +1,14 @@
-import {Logger} from 'winston';
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
 import {v4 as uuidv4} from 'uuid';
+import {Logger} from 'winston';
+
 import {config} from 'app/config';
-import {logger as _logger} from 'service/logger';
 import {JWT} from 'app/lib/jwt';
-import {CookieUserData} from 'types/cookie';
-import {ClientError} from 'service/error';
 import {getUserById} from 'entity/user/api/get-user-by-id';
+import {ClientError} from 'service/error';
+import {logger as _logger} from 'service/logger';
+import {CookieUserData} from 'types/cookie';
 
 const REQUEST_ID = config['header.requestId'];
 

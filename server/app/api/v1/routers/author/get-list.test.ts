@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import got from 'got';
 import casual from 'casual';
+import got from 'got';
 import {range, sortBy, xorBy} from 'lodash';
 import pMap from 'p-map';
 
-import {TestServer} from 'test/test-server';
 import {TestFactory} from 'test/test-factory';
+import {TestServer} from 'test/test-server';
 
 const PATH = '/api/v1/author';
 

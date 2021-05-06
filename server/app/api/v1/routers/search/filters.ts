@@ -1,5 +1,6 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
+
 import {getProductsByFilters} from 'entity/product/api/get-products-by-filters';
 import {MinMax} from 'types/query';
 

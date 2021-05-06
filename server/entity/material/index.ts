@@ -1,5 +1,6 @@
-import {Column, OneToMany, Entity, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
 import slugify from 'slugify';
+import {BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+
 import {Product} from 'entity/product';
 
 @Entity()

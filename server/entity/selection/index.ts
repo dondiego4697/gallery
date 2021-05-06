@@ -1,7 +1,8 @@
 import slugify from 'slugify';
+import {BeforeInsert, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
+
 import {DbTable} from 'entity/const';
 import {Product} from 'entity/product';
-import {Column, BeforeInsert, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class Selection {

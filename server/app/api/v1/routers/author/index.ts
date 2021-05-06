@@ -1,8 +1,10 @@
-import * as express from 'express';
 import Joi from '@hapi/joi';
-import {getList} from './get-list';
-import {getInfo} from './get-info';
+import * as express from 'express';
+
 import {queryValidate} from 'app/middleware/validate';
+
+import {getInfo} from './get-info';
+import {getList} from './get-list';
 
 const listSchema = Joi.object({
     limit: Joi.number().integer().positive().default(20),

@@ -1,8 +1,9 @@
 import * as Boom from '@hapi/boom';
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-import {CSRF} from 'app/lib/csrf';
+import {Request, Response} from 'express';
+
 import {config} from 'app/config';
+import {CSRF} from 'app/lib/csrf';
 
 export const csrf = wrap<Request, Response>(async (req, res, next) => {
     if (!config['csrf.enable']) {

@@ -2,11 +2,11 @@
 import got from 'got';
 import {v4 as uuidv4} from 'uuid';
 
-import {TestServer} from 'test/test-server';
-import {TestFactory} from 'test/test-factory';
 import {config} from 'app/config';
 import {JWT} from 'app/lib/jwt';
 import {User} from 'entity/user';
+import {TestFactory} from 'test/test-factory';
+import {TestServer} from 'test/test-server';
 
 const PATH = '/api/v1/product/:code/like';
 

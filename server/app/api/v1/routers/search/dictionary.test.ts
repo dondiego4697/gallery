@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range, sortBy, last, first} from 'lodash';
-
-import {TestServer} from 'test/test-server';
-import {TestFactory} from 'test/test-factory';
+import {first, last, range, sortBy} from 'lodash';
 import pMap from 'p-map';
+
+import {TestFactory} from 'test/test-factory';
+import {TestServer} from 'test/test-server';
 
 const PATH = '/api/v1/search/dictionary';
 

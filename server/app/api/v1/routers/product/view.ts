@@ -1,5 +1,6 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
+
 import {addProductView} from 'entity/product/api/add-product-view';
 import {checkProductExistance} from 'entity/product/api/get-product-by-code';
 import {ClientError} from 'service/error';

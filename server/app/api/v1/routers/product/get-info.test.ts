@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import got from 'got';
-import {range, random, xor, xorBy} from 'lodash';
+import {random, range, xor, xorBy} from 'lodash';
 import {v4 as uuidv4} from 'uuid';
 
-import {TestServer} from 'test/test-server';
-import {TestFactory} from 'test/test-factory';
+import {config} from 'app/config';
 import {JWT} from 'app/lib/jwt';
 import {User} from 'entity/user';
-import {config} from 'app/config';
+import {TestFactory} from 'test/test-factory';
+import {TestServer} from 'test/test-server';
 
 const PATH = '/api/v1/product/:code/info';
 

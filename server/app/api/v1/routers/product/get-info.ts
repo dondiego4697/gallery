@@ -1,10 +1,11 @@
-import {pick} from 'lodash';
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
+import {pick} from 'lodash';
+
 import {getProductByCode} from 'entity/product/api/get-product-by-code';
-import {ClientError} from 'service/error';
-import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
+import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
+import {ClientError} from 'service/error';
 
 export const getInfo = wrap<Request, Response>(async (req, res) => {
     const {code} = req.params;

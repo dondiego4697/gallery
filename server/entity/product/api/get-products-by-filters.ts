@@ -1,6 +1,7 @@
+import {Brackets} from 'typeorm';
+
 import {dbManager} from 'app/lib/db-manager';
 import {Product} from 'entity/product';
-import {Brackets} from 'typeorm';
 import {MinMax} from 'types/query';
 
 interface Params {

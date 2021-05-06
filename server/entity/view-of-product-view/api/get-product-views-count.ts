@@ -1,4 +1,5 @@
 import {keyBy} from 'lodash';
+
 import {dbManager} from 'app/lib/db-manager';
 import {ViewOfProductView} from 'entity/view-of-product-view';
 

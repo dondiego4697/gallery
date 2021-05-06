@@ -1,33 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {v4 as uuidv4} from 'uuid';
-import {DeepPartial} from 'typeorm';
 import casual from 'casual';
 import {range} from 'lodash';
-import {dbManager} from 'app/lib/db-manager';
+import {DeepPartial} from 'typeorm';
+import {v4 as uuidv4} from 'uuid';
 
+import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
-import {Interior} from 'entity/interior';
-import {Profession} from 'entity/profession';
-import {Selection} from 'entity/selection';
-import {Tag} from 'entity/tag';
-import {User} from 'entity/user';
-import {Product} from 'entity/product';
-import {Category} from 'entity/category';
-import {Country} from 'entity/country';
-import {City} from 'entity/city';
 import {AuthorProfession} from 'entity/author-profession';
+import {Category} from 'entity/category';
+import {City} from 'entity/city';
+import {Color} from 'entity/color';
+import {Country} from 'entity/country';
+import {Gallery} from 'entity/gallery';
+import {Interior} from 'entity/interior';
+import {Material} from 'entity/material';
+import {Product} from 'entity/product';
+import {ProductColor} from 'entity/product-color';
 import {ProductLike} from 'entity/product-like';
 import {ProductPhoto} from 'entity/product-photo';
+import {ProductSelection} from 'entity/product-selection';
 import {ProductTag} from 'entity/product-tag';
 import {ProductView} from 'entity/product-view';
-import {ProductSelection} from 'entity/product-selection';
-import {ViewOfProductView} from 'entity/view-of-product-view';
-import {Style} from 'entity/style';
-import {Material} from 'entity/material';
+import {Profession} from 'entity/profession';
+import {Selection} from 'entity/selection';
 import {ShapeFormat} from 'entity/shape-format';
-import {Color} from 'entity/color';
-import {Gallery} from 'entity/gallery';
-import {ProductColor} from 'entity/product-color';
+import {Style} from 'entity/style';
+import {Tag} from 'entity/tag';
+import {User} from 'entity/user';
+import {ViewOfProductView} from 'entity/view-of-product-view';
 
 interface CreateCountryParams {
     country?: DeepPartial<Country>;

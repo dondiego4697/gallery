@@ -1,4 +1,5 @@
 import execa from 'execa';
+
 import {dbManager} from 'app/lib/db-manager';
 
 async function restoreSchema() {

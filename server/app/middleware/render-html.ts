@@ -1,19 +1,17 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-// import {config} from 'app/config';
+import {Request, Response} from 'express';
+import MobileDetect from 'mobile-detect';
 
-export const renderHTML = wrap<Request, Response>(async (_req, res) => {
-    // const mobileDetect = new MobileDetect(req.headers['user-agent'] || '');
-    // const bundleType = mobileDetect.mobile() ? 'touch' : 'desktop';
+export const renderHTML = wrap<Request, Response>(async (req, res) => {
+    const mobileDetect = new MobileDetect(req.headers['user-agent'] || '');
+    const deviceType = mobileDetect.mobile() ? 'touch' : 'desktop';
 
-    // const renderConfig = {
-    //     bundlesUrl: `${config['client.bundlesRootFolder']}${bundleType}`
-    // };
+    const clientConfig = JSON.stringify({});
 
-    // const clientConfig = JSON.stringify({});
-
-    res.render('desktop', {
-        config: {},
-        clientConfig: {}
+    res.render(deviceType, {
+        config: {
+            bundleJsPath: `/public/bundles/${deviceType}.bundle.js`
+        },
+        clientConfig
     });
 });

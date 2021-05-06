@@ -1,25 +1,26 @@
+import {nanoid} from 'nanoid';
 import {
-    Column,
-    ManyToMany,
-    JoinTable,
-    OneToMany,
-    ManyToOne,
-    Entity,
     BeforeInsert,
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from 'typeorm';
-import {nanoid} from 'nanoid';
+
 import {Author} from 'entity/author';
 import {Category} from 'entity/category';
-import {ProductPhoto} from 'entity/product-photo';
-import {Tag} from 'entity/tag';
-import {DbTable} from 'entity/const';
 import {Color} from 'entity/color';
-import {Style} from 'entity/style';
-import {Material} from 'entity/material';
-import {ShapeFormat} from 'entity/shape-format';
+import {DbTable} from 'entity/const';
 import {Gallery} from 'entity/gallery';
+import {Material} from 'entity/material';
+import {ProductPhoto} from 'entity/product-photo';
 import {Selection} from 'entity/selection';
+import {ShapeFormat} from 'entity/shape-format';
+import {Style} from 'entity/style';
+import {Tag} from 'entity/tag';
 
 interface ProductSize {
     width: number;

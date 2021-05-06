@@ -1,6 +1,6 @@
-import {RequestHandler} from 'express';
-import Joi from '@hapi/joi';
 import Boom from '@hapi/boom';
+import Joi from '@hapi/joi';
+import {RequestHandler} from 'express';
 
 export function bodyValidate(schema: Joi.Schema, options: Joi.ValidationOptions = {}): RequestHandler {
     return (req, _, next) => {

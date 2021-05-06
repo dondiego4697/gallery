@@ -1,5 +1,5 @@
-import path from 'path';
 import execa from 'execa';
+import path from 'path';
 
 export async function handle() {
     const {ROOT_DIR} = cliRuntime();

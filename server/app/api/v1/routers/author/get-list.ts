@@ -1,7 +1,8 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
-import {getAuthors} from 'entity/author/api/get-authors';
+import {Request, Response} from 'express';
 import {pick} from 'lodash';
+
+import {getAuthors} from 'entity/author/api/get-authors';
 
 interface Query {
     limit: number;

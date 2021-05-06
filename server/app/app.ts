@@ -3,20 +3,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import Boom from '@hapi/boom';
-import localtunnel from 'localtunnel';
 import assert from 'assert';
-import path from 'path';
 import bodyParser from 'body-parser';
-import express from 'express';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express from 'express';
+import localtunnel from 'localtunnel';
+import path from 'path';
+
+import {router as v1} from 'app/api/v1';
+import {config} from 'app/config';
+import {helmet} from 'app/middleware/helmet';
+import {ping} from 'app/middleware/ping';
 import {renderHTML} from 'app/middleware/render-html';
 import {router as staticRouter} from 'app/middleware/static';
-import {ping} from 'app/middleware/ping';
-import {helmet} from 'app/middleware/helmet';
-import {router as v1} from 'app/api/v1';
 import {ClientError} from 'service/error';
-import {config} from 'app/config';
 
 const bodyParserJson = bodyParser.json({
     limit: '5mb',

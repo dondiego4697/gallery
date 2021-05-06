@@ -1,5 +1,6 @@
-import {DbTable} from 'entity/const';
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+
+import {DbTable} from 'entity/const';
 
 @Entity({name: DbTable.USER})
 export class User {

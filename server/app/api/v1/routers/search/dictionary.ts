@@ -1,6 +1,7 @@
-import {Dictionary, sortBy, get, set} from 'lodash';
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
+import {Dictionary, get, set, sortBy} from 'lodash';
+
 import {getProductFilters} from 'entity/view-of-product-filters/api/get-product-filters';
 import {getProductMinMax} from 'entity/view-of-product-min-max/api/get-product-min-max';
 

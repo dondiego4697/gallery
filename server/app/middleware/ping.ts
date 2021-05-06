@@ -1,5 +1,6 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
+
 import {dbManager} from 'app/lib/db-manager';
 
 let lastCheck: undefined | number;

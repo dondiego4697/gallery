@@ -1,5 +1,6 @@
-import {Column, Entity, ManyToOne, OneToMany, BeforeInsert, PrimaryGeneratedColumn} from 'typeorm';
 import slugify from 'slugify';
+import {BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+
 import {Author} from 'entity/author';
 import {Country} from 'entity/country';
 

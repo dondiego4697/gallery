@@ -1,4 +1,5 @@
 import {createLogger, format, transports} from 'winston';
+
 import {config} from 'app/config';
 
 const {printf} = format;

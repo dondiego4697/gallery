@@ -1,0 +1,37 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "prettier",
+        "simple-import-sort"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "quotes": ["error", "single", {"avoidEscape": true}],
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "tabWidth": 4,
+                "ignoreUrls": true,
+                "ignorePattern": "^import"
+            }
+        ],
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    ["^@?\\w"],
+                    ["^(common|desktop|touch)/.*"],
+                    ["^\\."]
+                ]
+            }
+        ],
+        "no-restricted-imports": [
+            "error",
+            {
+                "patterns": ["../*"]
+            }
+        ]
+    }
+}

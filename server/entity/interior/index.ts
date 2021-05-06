@@ -1,5 +1,5 @@
-import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 import {nanoid} from 'nanoid';
+import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
 export class Interior {

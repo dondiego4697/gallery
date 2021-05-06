@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
 import {wrap} from 'async-middleware';
+import {Request, Response} from 'express';
 
 interface Body {
     query: string;

@@ -1,7 +1,8 @@
+import {flatten, random, range, shuffle} from 'lodash';
 import pMap from 'p-map';
-import {range, flatten, random, shuffle} from 'lodash';
-import {TestFactory} from 'test/test-factory';
+
 import {restoreDb} from 'test/restore-db';
+import {TestFactory} from 'test/test-factory';
 
 const concurrency = 10;
 

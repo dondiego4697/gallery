@@ -1,18 +1,19 @@
+import {nanoid} from 'nanoid';
 import {
-    Column,
-    ManyToMany,
-    JoinTable,
-    OneToMany,
-    Entity,
     BeforeInsert,
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn
 } from 'typeorm';
-import {nanoid} from 'nanoid';
+
 import {City} from 'entity/city';
+import {DbTable} from 'entity/const';
 import {Product} from 'entity/product';
 import {Profession} from 'entity/profession';
-import {DbTable} from 'entity/const';
 
 @Entity()
 export class Author {
