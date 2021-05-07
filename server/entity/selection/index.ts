@@ -8,7 +8,7 @@ import {Product} from 'entity/product';
 export class Selection {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = slugify(this.name.toLowerCase(), '_');
+        this.code = slugify(this.name.toLowerCase(), '-');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})

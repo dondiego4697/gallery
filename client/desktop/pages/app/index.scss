@@ -1,0 +1,9 @@
+@import 'common/const.scss';
+
+.g-root {
+    background-color: $color-background;
+}
+
+.force-hide {
+    display: none !important;
+}

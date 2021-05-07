@@ -5,7 +5,7 @@ import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 export class Profession {
     @BeforeInsert()
     _beforeInsert() {
-        this.code = slugify(this.name.toLowerCase(), '_');
+        this.code = slugify(this.name.toLowerCase(), '-');
     }
 
     @PrimaryGeneratedColumn({type: 'bigint'})

@@ -1,0 +1,29 @@
+@import 'common/const.scss';
+
+.g-input-search {
+    display: flex;
+
+    & label {
+        position: relative;
+        margin: auto 0 auto 35px;
+    }
+
+    & input {
+        outline: none;
+        border: 0;
+        padding: 10px 13px;
+        background-color: $color-components-background;
+    }
+
+    &__search-icon-container {
+        display: flex;
+        position: absolute;
+        left: 12px;
+        height: 100%;
+        pointer-events: none;
+
+        & img {
+            margin: auto;
+        }
+    }
+}

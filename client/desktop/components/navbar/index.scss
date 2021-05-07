@@ -1,0 +1,86 @@
+@import 'common/const.scss';
+
+.g-navbar {
+    display: grid;
+    height: 80px;
+    margin: 0 80px;
+
+    grid-template-columns: 30% 30% 40%;
+    grid-template-rows: 100%;
+
+    &__logo {
+        grid-column-start: 1;
+        display: flex;
+
+        & a {
+            margin: auto;
+            color: $color-text;
+            font-size: 30px;
+        }
+    }
+
+    & ul {
+        grid-column-start: 2;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 0;
+        padding: 0;
+
+        & a {
+            display: inline-flex;
+            text-decoration: none;
+            color: $color-text;
+            font-size: 16px;
+            margin: auto;
+
+            &:hover {
+                color: #95a5a6;
+            }
+        }
+
+        & li {
+            list-style-type: none;
+            position: relative;
+            display: flex;
+
+            &:hover {
+                color: $color-text-active;
+            }
+
+            &::after {
+                background: none repeat scroll 0 0 transparent;
+                bottom: -3px;
+                content: "";
+                display: block;
+                height: 3px;
+                left: 50%;
+                position: absolute;
+                background: $color-background;
+                transition: width 0.3s ease 0s, left 0.3s ease 0s;
+                width: 0;
+            }
+
+            &:hover::after {
+                width: 100%; 
+                left: 0; 
+            }
+        }
+    }
+
+    &__controls {
+        grid-column-start: 3;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    &__icon-control-container {
+        display: flex;
+        margin-left: 32px;
+
+        & a {
+            margin: auto;
+        }
+    }
+}

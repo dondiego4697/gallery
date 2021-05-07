@@ -1,0 +1,28 @@
+@import 'common/const.scss';
+
+.g-btn-link {
+    width: 100%;
+    border: 1px solid white;
+    display: flex;
+    cursor: pointer;
+    transition: 0.3s ease 0s;
+
+    & a {
+        text-decoration: none;
+        color: white;
+        font-size: 12px;
+        width: 100%;
+
+        & div {
+            margin: 15px auto;
+        }
+    }
+
+    &:hover {
+        border: 1px solid $color-text-active;
+
+        & a {
+            color: $color-text-active;
+        }
+    }
+}
