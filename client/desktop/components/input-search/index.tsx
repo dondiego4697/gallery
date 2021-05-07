@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
+import {SVG} from 'common/svg';
 
 import './index.scss';
 
@@ -55,7 +56,7 @@ export class InputSearch extends React.Component<Props, State> {
                             ...(this.state.hideSearchIcon || value.length > 0 ? {'force-hide': true} : {})
                         })}
                     >
-                        <img src="/public/image/search-icon.svg" width="16" />
+                        {SVG.Search}
                     </div>
                     <input
                         type={'text'}

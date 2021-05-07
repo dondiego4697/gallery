@@ -1,8 +1,10 @@
+import classnames from 'classnames';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
+import {SVG} from 'common/svg';
 import {InputSearch} from 'desktop/components/input-search';
 
 import './index.scss';
@@ -62,15 +64,11 @@ export class NavBar extends React.Component<Props, State> {
         return (
             <div className={b('controls')}>
                 <InputSearch value={this.state.searchValue} onChange={this.inputSearchChangeHandler} />
-                <div className={b('icon-control-container')}>
-                    <Link to={RoutePaths.LIKE}>
-                        <img src="/public/image/heart-icon.svg" width="20" />
-                    </Link>
+                <div className={classnames(b('icon-control-container'), b('heart'))}>
+                    <Link to={RoutePaths.LIKE}>{SVG.Heart}</Link>
                 </div>
-                <div className={b('icon-control-container')}>
-                    <Link to={RoutePaths.CART}>
-                        <img src="/public/image/cart-icon.svg" width="20" />
-                    </Link>
+                <div className={classnames(b('icon-control-container'), b('cart'))}>
+                    <Link to={RoutePaths.CART}>{SVG.Cart}</Link>
                 </div>
             </div>
         );

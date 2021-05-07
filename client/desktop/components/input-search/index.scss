@@ -22,8 +22,10 @@
         height: 100%;
         pointer-events: none;
 
-        & img {
+        & svg {
             margin: auto;
+            width: 16px;
+            height: 16px;
         }
     }
 }

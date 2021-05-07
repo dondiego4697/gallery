@@ -81,6 +81,41 @@
 
         & a {
             margin: auto;
+            display: flex;
+        
+            & svg path {
+                transition: 0.3s ease 0s;
+            }
+        }
+    }
+
+    &__heart {
+        & svg {
+            margin: auto;
+            width: 20px;
+        }
+    }
+
+    &__cart {
+        & svg {
+            margin: auto;
+            width: 22px;
+        }
+    }
+
+    &__cart {
+        & a:hover {
+            & svg path {
+                stroke: $color-text-active;
+            }
+        }
+    }
+
+    &__heart {
+        & a:hover {
+            & svg path {
+                fill: $color-text-active;
+            }
         }
     }
 }
