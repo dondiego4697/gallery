@@ -362,6 +362,7 @@ async function createShapeFormat(params: CreateShapeFormatParams = {}) {
 
 interface CreateProductPhotoParams {
     productId: number;
+    photoUrl?: string;
 }
 
 async function createProductPhoto(params: CreateProductPhotoParams) {
@@ -370,7 +371,7 @@ async function createProductPhoto(params: CreateProductPhotoParams) {
 
     const entity = manager.create(ProductPhoto, {
         productId: params.productId,
-        photoUrl: casual.url + uuidv4()
+        photoUrl: params.photoUrl || casual.url + uuidv4()
     });
 
     await manager.save(entity);

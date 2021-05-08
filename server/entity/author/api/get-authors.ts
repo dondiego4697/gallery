@@ -8,6 +8,7 @@ interface Params {
     offset: number;
     searchFirstLetter?: string;
     searchQuery?: string;
+    isRandom?: boolean;
 }
 
 export async function getAuthors({limit, offset, searchFirstLetter, searchQuery}: Params) {

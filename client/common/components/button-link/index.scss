@@ -5,7 +5,7 @@
     border: 1px solid white;
     display: flex;
     cursor: pointer;
-    transition: 0.3s ease 0s;
+    transition: $transition;
 
     & a {
         text-decoration: none;

@@ -1,0 +1,32 @@
+@import 'common/const.scss';
+
+.g-btn-arrow-link {
+    display: flex;
+    margin-left: auto;
+
+    & a {
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        font-size: $font-size-s;
+        font-weight: $font-weight-m;
+        color: $color-text;
+
+        &:hover {
+            color: $color-text-active;
+
+            & svg path {
+                fill: $color-text-active;
+            }
+        }
+
+        & svg {
+            width: 62px;
+            margin-left: 28px;
+
+            & path {
+                transition: $transition;
+            }
+        }
+    }
+}

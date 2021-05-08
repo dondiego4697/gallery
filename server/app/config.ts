@@ -20,6 +20,7 @@ export interface Config {
     'header.requestId': string;
     'app.cache.enable': boolean;
     'app.host': string;
+    's3.host': string;
     'localtunnel.enable': boolean;
     'private.key': string;
     'cookie.key.userToken': string;
@@ -37,6 +38,7 @@ const production: Config = {
     'csrf.enable': true,
     'csrf.token.ttl': 60 * 60 * 1000, // 1h
     'app.cache.enable': true,
+    's3.host': 'https://storage.yandexcloud.net/gallerian',
     'app.host': 'https://some_host.ru',
     'private.key': process.env.PRIVATE_KEY!,
     'cookie.key.userToken': 'user_token',

@@ -1,14 +1,22 @@
+@import 'common/const.scss';
+
 .g-morda {
-    &__header {
-        background-image: url('/public/image/morda-head.png');
-        width: 100%;
-        height: 550px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
+    user-select: none;
+
+    &__container {
+        margin: 0 140px;
     }
+}
+
+.g-morda-header {
+    background-image: url('/public/image/morda-head.png');
+    width: 100%;
+    height: 550px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 
     &__container {
         margin: auto;
@@ -23,5 +31,30 @@
     &__btn {
         max-width: 250px;
         margin: 45px auto;
+    }
+}
+
+.g-morda-new-products {
+    &__header {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: row;
+
+        & h2 {
+            font-size: $font-size-x;
+            font-weight: $font-weight-m;
+            margin: 0;
+        }
+    }
+
+    &::after {
+        margin-top: 16px;
+        display: block;
+        content: "";
+        width: 100%;
+        height: 1px;
+        background: #C4C4C4;
+        position: absolute;
+        left: 0;
     }
 }

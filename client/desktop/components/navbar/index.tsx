@@ -53,7 +53,9 @@ export class NavBar extends React.Component<Props, State> {
             <ul>
                 {NAV_BUTTONS.map((it, i) => (
                     <li key={`nav-btn-${i}`}>
-                        <Link to={it[0]}>{it[1]}</Link>
+                        <Link to={it[0]}>
+                            <div>{it[1]}</div>
+                        </Link>
                     </li>
                 ))}
             </ul>

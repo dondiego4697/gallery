@@ -10,6 +10,10 @@ const argv = require('minimist')(process.argv.slice(2));
 
 const COMMAND = argv._[0];
 
+if (COMMAND === 'db:mock') {
+    process.env.DISABLE_LOGGING = '1';
+}
+
 require('ts-node').register({
     compiler: 'ttypescript',
     files: true,
