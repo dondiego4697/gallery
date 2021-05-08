@@ -21,7 +21,7 @@ const NAV_BUTTONS = [
     [RoutePaths.MORDA, 'Главная'],
     [RoutePaths.CATALOG, 'Каталог'],
     [RoutePaths.ARTIST, 'Художники'],
-    [RoutePaths.ABOUT, 'О нас'],
+    [RoutePaths.ABOUT, 'О\u00a0нас'],
     [RoutePaths.CONTACTS, 'Контакты']
 ];
 

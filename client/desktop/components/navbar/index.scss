@@ -63,7 +63,7 @@
                 left: 50%;
                 position: absolute;
                 background: $color-background;
-                transition: $transition;
+                transition: 0.3s ease 0s;
                 width: 0;
             }
 
@@ -88,10 +88,6 @@
         & a {
             margin: auto;
             display: flex;
-        
-            & svg path {
-                transition: $transition;
-            }
         }
     }
 

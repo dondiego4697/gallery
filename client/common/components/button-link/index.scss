@@ -5,10 +5,10 @@
     border: 1px solid white;
     display: flex;
     cursor: pointer;
-    transition: $transition;
 
     & a {
         text-decoration: none;
+        transition: none;
         color: white;
         font-size: 12px;
         width: 100%;

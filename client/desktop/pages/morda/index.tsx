@@ -45,7 +45,7 @@ export class MordaPage extends React.Component<Props> {
             <div className={b()}>
                 <div className={b('header')}>
                     <h2>Новинки</h2>
-                    <ButtonArrowLink to={RoutePaths.CATALOG} text={'Смотреть все'.replace(/ /g, '\u00a0')} />
+                    <ButtonArrowLink to={RoutePaths.CATALOG} text={'Смотреть\u00a0все'} />
                 </div>
             </div>
         );
