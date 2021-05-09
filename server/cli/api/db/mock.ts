@@ -1,9 +1,11 @@
 import {flatten, random, range, shuffle} from 'lodash';
 import pMap from 'p-map';
 
+import {config} from 'app/config';
 import {restoreDb} from 'test/restore-db';
 import {TestFactory} from 'test/test-factory';
 
+const s3Prefix = `https://${config['s3.host']}/${config['s3.bucketName']}`;
 const concurrency = 10;
 
 export async function handle() {
@@ -32,12 +34,12 @@ export async function handle() {
     );
 
     const authorPhotos = [
-        '/authors/5e95ca74-ce32-40f2-90a0-296db6895f10.png',
-        '/authors/9a431f89-c385-42ef-aca4-d3ffee0effbd.png',
-        '/authors/afa052d0-0437-418a-b58c-e9e4a9c937f0.png',
-        '/authors/d9e6eebd-8e0f-449e-9a80-b0644b7c8df2.png',
-        '/authors/ea74be70-ac64-4786-a7df-b5aec438f0bf.png',
-        '/authors/f7ae9b17-1f2a-4f89-8ab3-100b3847617c.png'
+        `${s3Prefix}/authors/5e95ca74-ce32-40f2-90a0-296db6895f10.png`,
+        `${s3Prefix}/authors/9a431f89-c385-42ef-aca4-d3ffee0effbd.png`,
+        `${s3Prefix}/authors/afa052d0-0437-418a-b58c-e9e4a9c937f0.png`,
+        `${s3Prefix}/authors/d9e6eebd-8e0f-449e-9a80-b0644b7c8df2.png`,
+        `${s3Prefix}/authors/ea74be70-ac64-4786-a7df-b5aec438f0bf.png`,
+        `${s3Prefix}/authors/f7ae9b17-1f2a-4f89-8ab3-100b3847617c.png`
     ];
 
     // Авторы
@@ -183,17 +185,17 @@ export async function handle() {
     );
 
     const productPhotos = [
-        '/products/023f95c8-77bb-4a3e-a7bb-600c9b56dd7f.png',
-        '/products/05b41588-c7f8-480d-88fb-7227aec1958d.png',
-        '/products/0d26fe95-e964-4288-bcb3-256a568798d1.png',
-        '/products/2545013c-eec9-4169-8897-1c3074aa21fe.png',
-        '/products/2d6bd722-41be-4a8c-b764-4ac7c6039057.png',
-        '/products/38eae298-8298-4c2b-ac37-374b743da7c8.png',
-        '/products/3ce89881-16a8-4873-9352-8e80f44e8229.png',
-        '/products/9e5265be-d892-4837-90b1-300563bbddd6.png',
-        '/products/c081598c-3024-41b5-a53f-8c9808362ad3.png',
-        '/products/f96dd2f0-83d5-40b9-b704-77d313f0a24f.png',
-        '/products/f9e8bbc7-3532-4bbe-ad68-29a4da47574e.png'
+        `${s3Prefix}/products/023f95c8-77bb-4a3e-a7bb-600c9b56dd7f.png`,
+        `${s3Prefix}/products/05b41588-c7f8-480d-88fb-7227aec1958d.png`,
+        `${s3Prefix}/products/0d26fe95-e964-4288-bcb3-256a568798d1.png`,
+        `${s3Prefix}/products/2545013c-eec9-4169-8897-1c3074aa21fe.png`,
+        `${s3Prefix}/products/2d6bd722-41be-4a8c-b764-4ac7c6039057.png`,
+        `${s3Prefix}/products/38eae298-8298-4c2b-ac37-374b743da7c8.png`,
+        `${s3Prefix}/products/3ce89881-16a8-4873-9352-8e80f44e8229.png`,
+        `${s3Prefix}/products/9e5265be-d892-4837-90b1-300563bbddd6.png`,
+        `${s3Prefix}/products/c081598c-3024-41b5-a53f-8c9808362ad3.png`,
+        `${s3Prefix}/products/f96dd2f0-83d5-40b9-b704-77d313f0a24f.png`,
+        `${s3Prefix}/products/f9e8bbc7-3532-4bbe-ad68-29a4da47574e.png`
     ];
 
     // Фото продуктов

@@ -6,3 +6,9 @@ export async function getUserById(id: number) {
 
     return connection.getRepository(User).createQueryBuilder().where({id}).getOne();
 }
+
+export async function getUserByEmail(email: string) {
+    const connection = await dbManager.getConnection();
+
+    return connection.getRepository(User).createQueryBuilder().where({email}).getOne();
+}

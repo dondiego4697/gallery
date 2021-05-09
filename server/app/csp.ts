@@ -5,7 +5,7 @@ export const directives: ContentSecurityPolicyOptions['directives'] = {
     scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'"],
     styleSrc: ["'self'", "'unsafe-inline'"],
     fontSrc: ["'self'", 'data:'],
-    imgSrc: ["'self'", 'data:'],
+    imgSrc: ["'self'", 'data:', 'storage.yandexcloud.net'],
     frameSrc: ["'self'"],
     childSrc: ["'self'"],
     connectSrc: ["'self'"]

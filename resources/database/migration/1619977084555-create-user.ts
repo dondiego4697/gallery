@@ -8,6 +8,8 @@ export class PostRefactoring1619977084555 implements MigrationInterface {
                 id BIGSERIAL NOT NULL,  
             
                 email TEXT NOT NULL,
+                code INTEGER,
+                is_admin BOOLEAN NOT NULL DEFAULT FALSE,
             
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
             

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import App from 'desktop/pages/app';
@@ -12,6 +12,7 @@ export class RoutesApp extends React.Component<Props> {
         return (
             <Switch>
                 <Route exact path={RoutePaths.MORDA} component={MordaPage} />
+                <Route render={() => <Redirect to={RoutePaths.MORDA} />} />
             </Switch>
         );
     }

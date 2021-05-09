@@ -57,4 +57,10 @@
         position: absolute;
         left: 0;
     }
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
+    }
 }

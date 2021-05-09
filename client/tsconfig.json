@@ -12,6 +12,7 @@
         "strict": true,
         "esModuleInterop": false,
         "experimentalDecorators": true,
+        "useDefineForClassFields": true,
         "noEmitOnError": true,
         "pretty": true,
 

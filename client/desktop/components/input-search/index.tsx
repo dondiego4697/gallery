@@ -24,20 +24,13 @@ export class InputSearch extends React.Component<Props, State> {
         hideSearchIcon: (this.props.value.length ?? 0) > 0
     };
 
-    constructor(props: Props) {
-        super(props);
-
-        this.inputOnFocusHandler = this.inputOnFocusHandler.bind(this);
-        this.inputOnBlurHandler = this.inputOnBlurHandler.bind(this);
-    }
-
-    private inputOnFocusHandler() {
+    private inputOnFocusHandler = () => {
         this.setState({hideSearchIcon: true});
-    }
+    };
 
-    private inputOnBlurHandler() {
+    private inputOnBlurHandler = () => {
         this.setState({hideSearchIcon: false});
-    }
+    };
 
     public render(): React.ReactNode {
         const {className, value, name, onChange} = this.props;

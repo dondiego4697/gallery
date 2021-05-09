@@ -1,26 +1,32 @@
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 
 import {ButtonArrowLink} from 'common/components/button-arrow-link';
 import {ButtonLink} from 'common/components/button-link';
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
+import {MordaPageModel} from 'common/models/morda-page';
 import {UserModel} from 'common/models/user';
-import {SVG} from 'common/svg';
 import {NavBar} from 'desktop/components/navbar';
+import {ProductCard} from 'desktop/components/product-card';
 
 import './index.scss';
 
 interface Props extends RouteComponentProps {
     userModel?: UserModel;
+    mordaPageModel?: MordaPageModel;
 }
 
 const b = bevis('morda');
 
-@inject('userModel')
+@inject('userModel', 'mordaPageModel')
 @observer
 export class MordaPage extends React.Component<Props> {
+    public componentDidMount() {
+        this.props.mordaPageModel?.load();
+    }
+
     private renderHeader() {
         const b = bevis('morda-header');
 
@@ -46,6 +52,11 @@ export class MordaPage extends React.Component<Props> {
                 <div className={b('header')}>
                     <h2>Новинки</h2>
                     <ButtonArrowLink to={RoutePaths.CATALOG} text={'Смотреть\u00a0все'} />
+                </div>
+                <div className={b('container')}>
+                    {this.props.mordaPageModel?.products.map((it, i) => (
+                        <ProductCard key={`morda-product-${i}`} src={it.photos[0]} />
+                    ))}
                 </div>
             </div>
         );

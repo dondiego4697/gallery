@@ -10,6 +10,12 @@ export class User {
     @Column({type: 'text'})
     email: string;
 
+    @Column({type: 'integer', nullable: true})
+    code: number;
+
+    @Column({type: 'boolean'})
+    isAdmin: boolean;
+
     @Column({type: 'timestamp with time zone'})
     createdAt: Date;
 }

@@ -21,6 +21,9 @@ export interface Config {
     'app.cache.enable': boolean;
     'app.host': string;
     's3.host': string;
+    's3.bucketName': string;
+    's3.key': string;
+    's3.secret': string;
     'localtunnel.enable': boolean;
     'private.key': string;
     'cookie.key.userToken': string;
@@ -38,7 +41,10 @@ const production: Config = {
     'csrf.enable': true,
     'csrf.token.ttl': 60 * 60 * 1000, // 1h
     'app.cache.enable': true,
-    's3.host': 'https://storage.yandexcloud.net/gallerian',
+    's3.host': 'storage.yandexcloud.net',
+    's3.bucketName': 'gallerian',
+    's3.key': process.env.S3_KEY!,
+    's3.secret': process.env.S3_SECRET!,
     'app.host': 'https://some_host.ru',
     'private.key': process.env.PRIVATE_KEY!,
     'cookie.key.userToken': 'user_token',
@@ -105,3 +111,5 @@ export const config = configForEnv!;
 
 assert(config, `there is no configuration for environment "${env}"`);
 assert(config['private.key'], 'there is no private key');
+assert(config['s3.key'], 'there is no s3 key');
+assert(config['s3.secret'], 'there is no s3 secret');

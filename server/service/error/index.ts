@@ -2,21 +2,29 @@ import {Request} from 'express';
 
 import {logger} from 'service/logger';
 
-interface Params {
-    message?: string;
+interface BaseParams {
     group?: 'application' | 'database' | 'jwt';
     request?: Request;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     meta?: Record<string, any>;
 }
 
-type ClientErrorCode = 'ENTITY_NOT_FOUND' | 'UNAUTHORIZED' | 'BAD_USER_TOKEN';
+interface ClientErrorParams extends BaseParams {
+    message?: string;
+}
 
-export class LoggableError extends Error {
-    constructor(params: Params, clientErrorCode: ClientErrorCode) {
+interface LoggableErrorParams extends BaseParams {
+    message: string;
+    statusCode?: number;
+}
+
+type ClientErrorCode = 'ENTITY_NOT_FOUND' | 'UNAUTHORIZED' | 'BAD_USER_TOKEN' | 'ACCESS_FORBIDDEN';
+
+class LoggableError extends Error {
+    constructor(params: LoggableErrorParams) {
         const {message, group, meta = {}, request} = params;
 
-        super(message || clientErrorCode);
+        super(message);
 
         const log = {
             ...meta,
@@ -24,9 +32,9 @@ export class LoggableError extends Error {
         };
 
         if (request) {
-            request.context.logger.error(message || clientErrorCode, log);
+            request.context.logger.error(message, log);
         } else {
-            logger.error(message || clientErrorCode, log);
+            logger.error(message, log);
         }
     }
 }
@@ -34,8 +42,11 @@ export class LoggableError extends Error {
 export class ClientError extends LoggableError {
     public clientErrorCode: ClientErrorCode;
 
-    constructor(clientErrorCode: ClientErrorCode, params: Params = {}) {
-        super(params, clientErrorCode);
+    constructor(clientErrorCode: ClientErrorCode, params: ClientErrorParams = {}) {
+        super({
+            ...params,
+            message: params.message || clientErrorCode
+        });
 
         this.clientErrorCode = clientErrorCode;
     }

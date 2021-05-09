@@ -11,11 +11,13 @@ import express from 'express';
 import localtunnel from 'localtunnel';
 import path from 'path';
 
+import {router as imageUploader} from 'app/api/image-uploader';
 import {router as v1} from 'app/api/v1';
 import {config} from 'app/config';
 import {helmet} from 'app/middleware/helmet';
 import {ping} from 'app/middleware/ping';
 import {renderHTML} from 'app/middleware/render-html';
+import {requestContext} from 'app/middleware/request-context';
 import {router as staticRouter} from 'app/middleware/static';
 import {ClientError} from 'service/error';
 
@@ -48,7 +50,9 @@ export const app = express()
     .use(bodyParserJson)
     .get('/ping', ping)
     .use(staticRouter)
+    .use(requestContext)
     .use('/api/v1', v1)
+    .use('/api/image-uploader', imageUploader)
     .get('/*', renderHTML)
     .use((_req, _res, next) => next(Boom.notFound('endpoint not found')))
     // eslint-disable-next-line
@@ -56,12 +60,16 @@ export const app = express()
         if (error.isBoom) {
             sendError(req, res, error);
         } else if (error instanceof ClientError) {
-            if (error.clientErrorCode === 'UNAUTHORIZED') {
-                sendError(req, res, Boom.unauthorized(error.clientErrorCode));
-            } else if (error.clientErrorCode === 'ENTITY_NOT_FOUND') {
-                sendError(req, res, Boom.notFound(error.clientErrorCode));
+            const code = error.clientErrorCode;
+
+            if (code === 'UNAUTHORIZED') {
+                sendError(req, res, Boom.unauthorized(code));
+            } else if (code === 'ENTITY_NOT_FOUND') {
+                sendError(req, res, Boom.notFound(code));
+            } else if (code === 'ACCESS_FORBIDDEN') {
+                sendError(req, res, Boom.forbidden(code));
             } else {
-                sendError(req, res, Boom.badRequest(error.clientErrorCode));
+                sendError(req, res, Boom.badRequest(code));
             }
         } else {
             sendError(req, res, Boom.boomify(error));
