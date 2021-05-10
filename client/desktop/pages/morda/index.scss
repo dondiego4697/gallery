@@ -1,8 +1,6 @@
 @import 'common/const.scss';
 
-.morda {
-    user-select: none;
-}
+.morda {}
 
 .morda-header {
     background-image: url('/public/image/morda-head.png');
@@ -39,7 +37,7 @@
 
         & h2 {
             font-size: $font-size-l;
-            font-weight: $font-weight-m;
+            font-family: $font-family-text-regular;
             margin: 0;
         }
     }
@@ -71,7 +69,7 @@
     &__description {
         @include margin-container();
         font-size: $font-size-m;
-        font-weight: $font-weight-m;
+        font-family: $font-family-text-regular;
         margin-top: 30px;
     }
 }

@@ -1,29 +1,22 @@
 @font-face {
     font-family: 'ProximaNovaBold';
-    src: local('ProximaNova Bold'), local('ProximaNova-Bold'),
-        url('/public/fonts/Montserrat/ProximaNova-Bold.ttf') format('truetype');
+    src: url('/public/fonts/proxima-nova/ProximaNova-Bold.ttf') format('truetype'),
+        url('/public/fonts/proxima-nova/ProximaNova-Bold.woff') format('woff');
 }
 
-// @font-face {
-//     font-family: 'MontserratRegular';
-//     src: local('Montserrat Regular'), local('Montserrat-Regular'),
-//         url('/public/fonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
-//     font-weight: 400;
-//     font-style: normal;
-// }
+@font-face {
+    font-family: 'ProximaNovaRegular';
+    src: url('/public/fonts/proxima-nova/ProximaNova-Regular.ttf') format('truetype'),
+        url('/public/fonts/proxima-nova/ProximaNova-Regular.woff') format('woff');
+}
 
-// @font-face {
-//     font-family: 'MontserratLight';
-//     src: local('Montserrat Light'), local('Montserrat-Light'),
-//         url('/public/fonts/Montserrat/Montserrat-Light.ttf') format('truetype');
-//     font-weight: 300;
-//     font-style: normal;
-// }
+@font-face {
+    font-family: 'ProximaNovaLight';
+    src: url('/public/fonts/proxima-nova/ProximaNova-Light.ttf') format('truetype'),
+        url('/public/fonts/proxima-nova/ProximaNova-Light.woff') format('woff');
+}
 
-// @font-face {
-//     font-family: 'MontserratExtraLight';
-//     src: local('Montserrat Extralight'), local('Montserrat-Extralight'),
-//         url('/public/fonts/Montserrat/Montserrat-ExtraLight.ttf') format('truetype');
-//     font-weight: 200;
-//     font-style: normal;
-// }
+@font-face {
+    font-family: 'MakBold';
+    src: url('/public/fonts/mak/Mak-Bold.woff') format('woff');
+}

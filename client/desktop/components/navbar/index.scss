@@ -18,8 +18,8 @@
         & a {
             margin: auto 0;
             color: $color-text;
+            font-family: $font-family-logo;
             font-size: 30px;
-            font-weight: 700;
             text-decoration: none;
         }
     }
@@ -36,7 +36,6 @@
             text-decoration: none;
             color: $color-text;
             font-size: $font-size-s;
-            font-weight: $font-weight-m;
 
             div {
                 margin: auto;
