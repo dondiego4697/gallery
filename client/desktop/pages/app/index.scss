@@ -1,11 +1,12 @@
 @import 'common/const.scss';
+@import 'common/font.scss';
 
 body {
     margin: 0;
     padding: 0;
 }
 
-.g-root {
+.root {
     background-color: $color-background;
 }
 

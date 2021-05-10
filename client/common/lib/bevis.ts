@@ -5,11 +5,9 @@ export interface ClassNameGenerator {
     (state?: State): string;
 }
 
-const PREFIX = 'g-';
-
 export function bevis(blockName: string): ClassNameGenerator {
     return (elementNameOrState?: string | State, stateRaw?: State): string => {
-        let className = `${PREFIX}${blockName}`;
+        let className = blockName;
         let state: State = {...stateRaw};
 
         if (elementNameOrState) {

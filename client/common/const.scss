@@ -3,9 +3,20 @@ $color-text-active: #BFBFBF;
 $color-components-background: #F5F5F5;
 $color-background: #FFFFFF;
 
-$font-size-x: 30px;
+$font-size-l: 30px;
 $font-size-m: 20px;
 $font-size-s: 16px;
 
+$font-weight-l: 700;
 $font-weight-m: 600;
 $font-weight-s: 400;
+
+@mixin margin-container() {
+    margin-left: 140px;
+    margin-right: 140px;
+}
+
+$font-family-text-bold: 'ProximaNovaBold', Eina01, sans-serif;
+// $font-family-montserrat-regular: 'MontserratRegular', Eina01, sans-serif;
+// $font-family-montserrat-light: 'MontserratLight', Eina01, sans-serif;
+// $font-family-montserrat-extra-light: 'MontserratExtraLight', Eina01, sans-serif;

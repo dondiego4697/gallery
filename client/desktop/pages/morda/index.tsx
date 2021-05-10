@@ -8,6 +8,7 @@ import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
 import {UserModel} from 'common/models/user';
+import {Devider} from 'desktop/components/devider';
 import {NavBar} from 'desktop/components/navbar';
 import {ProductCard} from 'desktop/components/product-card';
 
@@ -47,16 +48,21 @@ export class MordaPage extends React.Component<Props> {
     private renderNewProducts() {
         const b = bevis('morda-new-products');
 
+        const products = this.props.mordaPageModel?.products || [];
+
         return (
             <div className={b()}>
-                <div className={b('header')}>
+                <div className={b('title')}>
                     <h2>Новинки</h2>
                     <ButtonArrowLink to={RoutePaths.CATALOG} text={'Смотреть\u00a0все'} />
                 </div>
+                <Devider />
+                <p className={b('description')}>Потребность красоты и творчества, воплощающего её</p>
                 <div className={b('container')}>
-                    {this.props.mordaPageModel?.products.map((it, i) => (
-                        <ProductCard key={`morda-product-${i}`} src={it.photos[0]} />
+                    {products.map((it, i) => (
+                        <ProductCard key={`morda-product-${i}`} product={it} style={i === 0 ? {marginLeft: 140} : {}} />
                     ))}
+                    <div className={b('card-mock')} />
                 </div>
             </div>
         );
@@ -67,7 +73,7 @@ export class MordaPage extends React.Component<Props> {
             <div className={b()}>
                 <NavBar />
                 {this.renderHeader()}
-                <div className={b('container')}>{this.renderNewProducts()}</div>
+                {this.renderNewProducts()}
             </div>
         );
     }

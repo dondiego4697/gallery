@@ -1,5 +1,5 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import {action, observable} from 'mobx';
+import {action, makeObservable, observable} from 'mobx';
 
 interface ClientConfig {}
 
@@ -8,6 +8,8 @@ export class UserModel {
     @observable public fingerprint: string | null = null;
 
     constructor() {
+        makeObservable(this);
+
         this.loadClientConfig();
         this.getFingerprint();
     }
