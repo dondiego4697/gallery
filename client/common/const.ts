@@ -5,5 +5,6 @@ export enum RoutePaths {
     ABOUT = '/about',
     CONTACTS = '/contacts',
     LIKE = '/like',
-    CART = '/cart'
+    CART = '/cart',
+    PRODUCT = '/product/:code'
 }

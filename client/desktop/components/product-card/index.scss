@@ -4,11 +4,65 @@
     display: flex;
     flex-direction: column;
 
+    &__heart-container {
+        margin-left: auto;
+        cursor: pointer;
+
+        & svg {
+            width: 16px;
+            
+            & path {
+                fill: $color-text;
+                opacity: 0.5;
+            }
+        }
+
+        &_liked {
+            & svg path {
+                fill: #EE6451;
+                opacity: 0.9;
+            }
+        }
+
+        &:hover {
+            & svg path {
+                opacity: 0.7;
+            }
+        }
+
+        &_liked:hover {
+            & svg path {
+                fill: #EE6451;
+                opacity: 1;
+            }
+        }
+    }
+
     &__title-container {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: row;
 
         & h2 {
-            font-size: $font-size-m;
+            font-size: $font-size-s;
             font-family: $font-family-text-bold;
+            margin: 0;
         }
+    }
+
+    &__description-container {
+        margin-top: 8px;
+
+        & p {
+            color: $color-text-secondary;
+            font-size: $font-size-xs;
+            font-family: $font-family-text-light;
+            margin: 0;
+        }
+    }
+
+    &__price-container {
+        display: flex;
+        flex-direction: row;
     }
 }

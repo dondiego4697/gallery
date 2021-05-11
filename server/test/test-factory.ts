@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import casual from 'casual';
-import {range} from 'lodash';
+import {random, range} from 'lodash';
 import {DeepPartial} from 'typeorm';
 import {v4 as uuidv4} from 'uuid';
 
@@ -189,6 +189,7 @@ async function createProduct(params: CreateProductParams) {
             height: casual.integer(10, 100),
             length: Math.random() > 0.5 ? casual.integer(10, 100) : undefined
         },
+        releaseYear: random(2000, 2021),
         ...(params.product || {})
     });
 

@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import * as React from 'react';
-import {useState} from 'react';
 
 import {bevis} from 'common/lib/bevis';
 import {SVG} from 'common/svg';
@@ -18,7 +17,7 @@ const b = bevis('input-search');
 
 export function InputSearch(props: Props) {
     const {className, value, name, onChange} = props;
-    const [hideSearchIcon, setHideSearchIcon] = useState((props.value.length ?? 0) > 0);
+    const [hideSearchIcon, setHideSearchIcon] = React.useState((props.value.length ?? 0) > 0);
 
     return (
         <div

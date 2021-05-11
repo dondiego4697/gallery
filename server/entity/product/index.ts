@@ -56,6 +56,9 @@ export class Product {
     @Column({type: 'boolean'})
     isSold: boolean;
 
+    @Column({type: 'numeric'})
+    releaseYear: number;
+
     @Column({type: 'timestamp with time zone'})
     createdAt: Date;
 

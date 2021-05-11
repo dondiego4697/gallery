@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import * as React from 'react';
-import {useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
@@ -43,7 +42,7 @@ function renderMenu() {
 }
 
 function renderControls() {
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = React.useState('');
 
     return (
         <div className={b('controls-container')}>

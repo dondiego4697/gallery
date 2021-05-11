@@ -24,7 +24,7 @@ export const main = wrap<Request, Response>(async (req, res) => {
             professions: author.professions.map((prof) => prof.name)
         })),
         products: products.map((product) => ({
-            ...pick(product, ['code', 'name', 'size', 'price', 'author.firstName', 'author.lastName']),
+            ...pick(product, ['code', 'name', 'size', 'price', 'author.firstName', 'author.lastName', 'releaseYear']),
             photos: product.photos.map((it) => it.photoUrl),
             meta: {
                 views: views[product.id]?.count || 0,
