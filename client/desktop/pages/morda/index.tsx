@@ -10,6 +10,7 @@ import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
 import {UserModel} from 'common/models/user';
 import {Devider} from 'desktop/components/devider';
+import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
 import {ProductCard} from 'desktop/components/product-card';
 
@@ -76,6 +77,7 @@ export const MordaPage = inject(
                 <NavBar />
                 {renderBannerSection()}
                 {renderNewProductsSection(props)}
+                <Footer />
             </div>
         );
     })
