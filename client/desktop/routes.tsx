@@ -5,19 +5,15 @@ import {RoutePaths} from 'common/const';
 import App from 'desktop/pages/app';
 import {MordaPage} from 'desktop/pages/morda';
 
-interface Props {}
+function renderRouter() {
+    return (
+        <Switch>
+            <Route exact path={RoutePaths.MORDA} component={MordaPage} />
+            <Route render={() => <Redirect to={RoutePaths.MORDA} />} />
+        </Switch>
+    );
+}
 
-export class RoutesApp extends React.Component<Props> {
-    private renderRouter(): React.ReactNode {
-        return (
-            <Switch>
-                <Route exact path={RoutePaths.MORDA} component={MordaPage} />
-                <Route render={() => <Redirect to={RoutePaths.MORDA} />} />
-            </Switch>
-        );
-    }
-
-    public render(): React.ReactNode {
-        return <App>{this.renderRouter()}</App>;
-    }
+export function RoutesApp() {
+    return <App>{renderRouter()}</App>;
 }

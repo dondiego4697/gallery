@@ -11,7 +11,7 @@
     grid-template-columns: 20% 40% 40%;
     grid-template-rows: 100%;
 
-    &__logo {
+    &__logo-container {
         grid-column-start: 1;
         display: flex;
 
@@ -24,7 +24,7 @@
         }
     }
 
-    & ul {
+    &__menu-container {
         grid-column-start: 2;
         display: flex;
         flex-direction: row;
@@ -76,14 +76,14 @@
         }
     }
 
-    &__controls {
+    &__controls-container {
         grid-column-start: 3;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
     }
 
-    &__icon-control-container {
+    &__controls-container-icon {
         display: flex;
         margin-left: 32px;
 

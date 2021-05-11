@@ -12,17 +12,15 @@ interface Props {
 
 const b = bevis('product-card');
 
-export class ProductCard extends React.Component<Props> {
-    public render(): React.ReactNode {
-        const {product, style} = this.props;
+export function ProductCard(props: Props) {
+    const {product, style} = props;
 
-        return (
-            <div className={b()} style={style || {}}>
-                <img src={product.photos[0]} width={250} />
-                <div className={b('title-container')}>
-                    <h2>{product.name}</h2>
-                </div>
+    return (
+        <div className={b()} style={style || {}}>
+            <img src={product.photos[0]} width={250} />
+            <div className={b('title-container')}>
+                <h2>{product.name}</h2>
             </div>
-        );
-    }
+        </div>
+    );
 }

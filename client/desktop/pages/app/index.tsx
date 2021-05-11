@@ -11,10 +11,8 @@ interface Props extends RouteComponentProps {
 
 const b = bevis('root');
 
-class App extends React.Component<Props> {
-    public render(): React.ReactNode {
-        return <div className={b()}>{this.props.children}</div>;
-    }
+function App(props: Props) {
+    return <div className={b()}>{props.children}</div>;
 }
 
 export default withRouter(App);

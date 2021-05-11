@@ -15,21 +15,19 @@ interface Props {
 
 const b = bevis('btn-link');
 
-export class ButtonLink extends React.Component<Props> {
-    public render(): React.ReactNode {
-        const {to, text, className} = this.props;
+export function ButtonLink(props: Props) {
+    const {to, text, className} = props;
 
-        return (
-            <div
-                className={classnames({
-                    [b()]: true,
-                    ...(className ? {[className]: true} : {})
-                })}
-            >
-                <Link to={to}>
-                    <div>{text}</div>
-                </Link>
-            </div>
-        );
-    }
+    return (
+        <div
+            className={classnames({
+                [b()]: true,
+                ...(className ? {[className]: true} : {})
+            })}
+        >
+            <Link to={to}>
+                <div>{text}</div>
+            </Link>
+        </div>
+    );
 }

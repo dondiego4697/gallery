@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import * as React from 'react';
+import {useState} from 'react';
 
 import {bevis} from 'common/lib/bevis';
 import {SVG} from 'common/svg';
@@ -13,54 +14,37 @@ interface Props {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface State {
-    hideSearchIcon?: boolean;
-}
-
 const b = bevis('input-search');
 
-export class InputSearch extends React.Component<Props, State> {
-    state = {
-        hideSearchIcon: (this.props.value.length ?? 0) > 0
-    };
+export function InputSearch(props: Props) {
+    const {className, value, name, onChange} = props;
+    const [hideSearchIcon, setHideSearchIcon] = useState((props.value.length ?? 0) > 0);
 
-    private inputOnFocusHandler = () => {
-        this.setState({hideSearchIcon: true});
-    };
-
-    private inputOnBlurHandler = () => {
-        this.setState({hideSearchIcon: false});
-    };
-
-    public render(): React.ReactNode {
-        const {className, value, name, onChange} = this.props;
-
-        return (
-            <div
-                className={classnames({
-                    [b()]: true,
-                    ...(className ? {[className]: true} : {})
-                })}
-            >
-                <label>
-                    <div
-                        className={classnames({
-                            [b('search-icon-container')]: true,
-                            ...(this.state.hideSearchIcon || value.length > 0 ? {'force-hide': true} : {})
-                        })}
-                    >
-                        {SVG.Search}
-                    </div>
-                    <input
-                        type={'text'}
-                        name={name}
-                        value={value}
-                        onChange={onChange}
-                        onFocus={this.inputOnFocusHandler}
-                        onBlur={this.inputOnBlurHandler}
-                    />
-                </label>
-            </div>
-        );
-    }
+    return (
+        <div
+            className={classnames({
+                [b()]: true,
+                ...(className ? {[className]: true} : {})
+            })}
+        >
+            <label>
+                <div
+                    className={classnames({
+                        [b('search-icon-container')]: true,
+                        ...(hideSearchIcon || value.length > 0 ? {'force-hide': true} : {})
+                    })}
+                >
+                    {SVG.Search}
+                </div>
+                <input
+                    type={'text'}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    onFocus={() => setHideSearchIcon(true)}
+                    onBlur={() => setHideSearchIcon(false)}
+                />
+            </label>
+        </div>
+    );
 }

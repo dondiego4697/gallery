@@ -15,22 +15,20 @@ interface Props {
 
 const b = bevis('btn-arrow-link');
 
-export class ButtonArrowLink extends React.Component<Props> {
-    public render(): React.ReactNode {
-        const {to, text, className} = this.props;
+export function ButtonArrowLink(props: Props) {
+    const {to, text, className} = props;
 
-        return (
-            <div
-                className={classnames({
-                    [b()]: true,
-                    ...(className ? {[className]: true} : {})
-                })}
-            >
-                <Link to={to}>
-                    {text || ''}
-                    {SVG.Arrow}
-                </Link>
-            </div>
-        );
-    }
+    return (
+        <div
+            className={classnames({
+                [b()]: true,
+                ...(className ? {[className]: true} : {})
+            })}
+        >
+            <Link to={to}>
+                {text || ''}
+                {SVG.Arrow}
+            </Link>
+        </div>
+    );
 }
