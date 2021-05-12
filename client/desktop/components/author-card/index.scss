@@ -4,9 +4,13 @@
     display: flex;
     flex-direction: column;
 
-    & img {
-        border-radius: 100%;
+    & a {
         margin: auto;
+        border-radius: 100%;
+
+        img {
+            border-radius: 100%;
+        }
     }
 
     &__name {

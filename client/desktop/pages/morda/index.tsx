@@ -22,7 +22,30 @@ interface Props extends RouteComponentProps {
     mordaPageModel?: MordaPageModel;
 }
 
+interface SectionHeaderParams {
+    title: string;
+    description?: string;
+    to: string;
+    isDevider?: boolean;
+}
+
 const b = bevis('morda');
+
+function renderSectionHeader(params: SectionHeaderParams) {
+    const {title, description, to, isDevider} = params;
+    const b = bevis('morda-section-header');
+
+    return (
+        <div className={b()}>
+            <div className={b('title')}>
+                <h2>{title}</h2>
+                <ButtonArrowLink to={to} text={'Смотреть\u00a0все'} />
+            </div>
+            {isDevider && <Devider />}
+            {description && <p className={b('description')}>{description}</p>}
+        </div>
+    );
+}
 
 function renderBannerSection() {
     const b = bevis('morda-banner');
@@ -47,20 +70,34 @@ function renderNewProductsSection(props: Props) {
     const products = props.mordaPageModel?.products || [];
 
     return (
-        <div className={b()}>
-            <div className={b('title')}>
-                <h2>Новинки</h2>
-                <ButtonArrowLink to={RoutePaths.CATALOG} text={'Смотреть\u00a0все'} />
-            </div>
-            <Devider />
-            <p className={b('description')}>Потребность красоты и творчества, воплощающего её</p>
+        <section className={b()}>
+            {renderSectionHeader({
+                title: 'Новинки',
+                description: 'Потребность красоты и творчества, воплощающего её',
+                to: RoutePaths.CATALOG,
+                isDevider: true
+            })}
             <div className={b('products-container')}>
                 {products.map((it, i) => (
                     <ProductCard key={`morda-product-${i}`} product={it} style={i === 0 ? {marginLeft: 140} : {}} />
                 ))}
                 <div className={b('product-card-mock')} />
             </div>
-        </div>
+        </section>
+    );
+}
+
+function renderSelectionsSection(props: Props) {
+    const b = bevis('morda-selections');
+
+    return (
+        <section className={b()}>
+            {renderSectionHeader({
+                title: 'Подборки',
+                description: 'Потребность красоты и творчества, воплощающего её',
+                to: RoutePaths.SELECTIONS
+            })}
+        </section>
     );
 }
 
@@ -70,17 +107,33 @@ function renderAuthorsSection(props: Props) {
     const authors = props.mordaPageModel?.authors || [];
 
     return (
-        <div className={b()}>
-            <div className={b('title')}>
-                <h2>Художники</h2>
-                <ButtonArrowLink to={RoutePaths.ARTISTS} text={'Смотреть\u00a0все'} />
-            </div>
-            <p className={b('description')}>Where the spirit does not work with the hand there is no art</p>
+        <section className={b()}>
+            {renderSectionHeader({
+                title: 'Художники',
+                description: 'Where the spirit does not work with the hand there is no art',
+                to: RoutePaths.ARTISTS
+            })}
             <div className={b('authors-container')}>
                 {authors.map((it, i) => (
                     <AuthorCard key={`morda-author-${i}`} author={it} />
                 ))}
                 <div className={b('product-card-mock')} />
+            </div>
+        </section>
+    );
+}
+
+function renderPersonalSelectionSection() {
+    const b = bevis('morda-personal-selection');
+
+    return (
+        <div className={b()}>
+            <div className={b('container')}>
+                <p className={b('text')}>
+                    Where the spirit does not work with <br />
+                    the hand there is no art
+                </p>
+                <ButtonLink to={RoutePaths.PERSONAL_SELECTION} text="РЕКОМЕНДАЦИИ" style="light" className={b('btn')} />
             </div>
         </div>
     );
@@ -100,7 +153,9 @@ export const MordaPage = inject(
                 <NavBar />
                 {renderBannerSection()}
                 {renderNewProductsSection(props)}
+                {renderSelectionsSection(props)}
                 {renderAuthorsSection(props)}
+                {renderPersonalSelectionSection()}
                 <Footer />
             </div>
         );

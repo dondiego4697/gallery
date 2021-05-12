@@ -2,6 +2,26 @@
 
 .morda {}
 
+.morda-section-header {
+    &__title {
+        @include margin-container();
+        margin-top: 80px;
+        display: flex;
+        flex-direction: row;
+
+        & h2 {
+            font-size: $font-size-l;
+            margin: 0;
+        }
+    }
+
+    &__description {
+        @include margin-container();
+        font-size: $font-size-m;
+        margin-top: 30px;
+    }
+}
+
 .morda-banner {
     background-image: url('/public/image/morda-banner.png');
     width: 100%;
@@ -29,18 +49,7 @@
 }
 
 .morda-new-products {
-    &__title {
-        @include margin-container();
-        margin-top: 80px;
-        display: flex;
-        flex-direction: row;
-
-        & h2 {
-            font-size: $font-size-l;
-            margin: 0;
-        }
-    }
-
+    
     &__products-container {
         display: flex;
         position: relative;
@@ -63,38 +72,46 @@
     &__product-card-mock {
         min-width: 140px;
     }
-
-    &__description {
-        @include margin-container();
-        font-size: $font-size-m;
-        margin-top: 30px;
-    }
 }
 
 .morda-authors {
     margin-top: 150px;
-    @include margin-container();
-
-    &__title {
-        margin-top: 80px;
-        display: flex;
-        flex-direction: row;
-
-        & h2 {
-            font-size: $font-size-l;
-            margin: 0;
-        }
-    }
-
-    &__description {
-        font-size: $font-size-m;
-        margin-top: 30px;
-    }
 
     &__authors-container {
+        @include margin-container();
+
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-top: 50px;
     }
+}
+
+.morda-personal-selection {
+    background: $color-text;
+    margin-top: 100px;
+    
+    &__container {
+        display: flex;
+        flex-direction: column;
+        padding: 50px 0;
+    }
+
+    &__text {
+        margin: 0 auto;
+        font-family: $font-family-text-bold;
+        font-size: $font-size-l;
+        color: white;
+        text-align: center;
+    }
+
+    &__btn {
+        margin-top: 35px;
+        max-width: 250px;
+        margin: 35px auto 0 auto;
+    }
+}
+
+.morda-selections {
+    margin-top: 100px;
 }

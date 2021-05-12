@@ -1,6 +1,8 @@
 import {lowerCase, upperFirst} from 'lodash';
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 
+import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {Author} from 'common/request-book/morda';
 
@@ -21,7 +23,9 @@ export function AuthorCard(props: Props) {
 
     return (
         <div className={b()} style={style || {}}>
-            <img src={author.avatarUrl} width={150} />
+            <Link to={RoutePaths.ARTIST.replace(':code', author.code)}>
+                <img src={author.avatarUrl} width={150} />
+            </Link>
             <h3 className={b('name')}>{fullName}</h3>
             <p className={b('profession')}>{profession}</p>
         </div>
