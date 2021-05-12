@@ -1,0 +1,26 @@
+@import 'common/const.scss';
+
+.author-card {
+    display: flex;
+    flex-direction: column;
+
+    & img {
+        border-radius: 100%;
+        margin: auto;
+    }
+
+    &__name {
+        font-size: $font-size-m;
+        font-family: $font-family-text-bold;
+        text-align: center;
+        margin: 20px 0 0 0;
+    }
+
+    &__profession {
+        color: $color-text-secondary;
+        font-size: $font-size-s;
+        font-family: $font-family-text-light;
+        text-align: center;
+        margin: 6px 0 0 0;
+    }
+}

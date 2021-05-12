@@ -14,7 +14,7 @@ const b = bevis('navbar');
 const NAV_BUTTONS = [
     [RoutePaths.MORDA, 'Главная'],
     [RoutePaths.CATALOG, 'Каталог'],
-    [RoutePaths.ARTIST, 'Художники'],
+    [RoutePaths.ARTISTS, 'Художники'],
     [RoutePaths.ABOUT, 'О\u00a0нас'],
     [RoutePaths.CONTACTS, 'Контакты']
 ];

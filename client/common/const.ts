@@ -1,7 +1,7 @@
 export enum RoutePaths {
     MORDA = '/',
     CATALOG = '/catalog',
-    ARTIST = '/artist',
+    ARTISTS = '/artists',
     ABOUT = '/about',
     CONTACTS = '/contacts',
     LIKE = '/like',

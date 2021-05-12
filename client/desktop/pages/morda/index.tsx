@@ -9,6 +9,7 @@ import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
 import {UserModel} from 'common/models/user';
+import {AuthorCard} from 'desktop/components/author-card';
 import {Devider} from 'desktop/components/devider';
 import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
@@ -63,6 +64,28 @@ function renderNewProductsSection(props: Props) {
     );
 }
 
+function renderAuthorsSection(props: Props) {
+    const b = bevis('morda-authors');
+
+    const authors = props.mordaPageModel?.authors || [];
+
+    return (
+        <div className={b()}>
+            <div className={b('title')}>
+                <h2>Художники</h2>
+                <ButtonArrowLink to={RoutePaths.ARTISTS} text={'Смотреть\u00a0все'} />
+            </div>
+            <p className={b('description')}>Where the spirit does not work with the hand there is no art</p>
+            <div className={b('authors-container')}>
+                {authors.map((it, i) => (
+                    <AuthorCard key={`morda-author-${i}`} author={it} />
+                ))}
+                <div className={b('product-card-mock')} />
+            </div>
+        </div>
+    );
+}
+
 export const MordaPage = inject(
     'userModel',
     'mordaPageModel'
@@ -77,6 +100,7 @@ export const MordaPage = inject(
                 <NavBar />
                 {renderBannerSection()}
                 {renderNewProductsSection(props)}
+                {renderAuthorsSection(props)}
                 <Footer />
             </div>
         );
