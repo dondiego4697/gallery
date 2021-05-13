@@ -13,6 +13,7 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                 image_url TEXT NOT NULL,
             
                 is_active BOOLEAN NOT NULL DEFAULT TRUE,
+                sort_order SMALLINT NOT NULL,
             
                 parent_id BIGINT,
                 path LTREE NOT NULL,
@@ -26,6 +27,7 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
             
                 CONSTRAINT uq__selection__code UNIQUE (code),
                 CONSTRAINT uq__selection__path UNIQUE (path),
+                CONSTRAINT uq__selection__parent_id__sort_order UNIQUE (parent_id, sort_order),
             
                 CONSTRAINT fk__selection__parent_id__selection FOREIGN KEY (parent_id) REFERENCES selection (id),
             

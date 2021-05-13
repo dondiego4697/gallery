@@ -29,6 +29,9 @@ export class Selection {
     @Column({type: 'boolean'})
     isActive: boolean;
 
+    @Column({type: 'smallint'})
+    sortOrder: number;
+
     @Column({type: 'bigint', nullable: true})
     parentId?: number;
 

@@ -8,6 +8,18 @@ import {TestFactory} from 'test/test-factory';
 const s3Prefix = `https://${config['s3.host']}/${config['s3.bucketName']}`;
 const concurrency = 10;
 
+function getRandomItem<T>(items: T[], count: number): T[];
+function getRandomItem<T>(items: T[]): T;
+function getRandomItem<T>(items: T[], count?: number) {
+    const shuffled = shuffle(items);
+
+    if (count !== undefined) {
+        return shuffled.slice(0, count);
+    }
+
+    return shuffled[0];
+}
+
 export async function handle() {
     await restoreDb('development');
 
@@ -47,12 +59,10 @@ export async function handle() {
     const authors = await pMap(
         range(100),
         async () => {
-            const shuffledAuthorPhotos = shuffle(authorPhotos);
-
             return TestFactory.createAuthor({
                 cityId: cities[random(0, cities.length - 1)].id,
                 author: {
-                    avatarUrl: shuffledAuthorPhotos[0]
+                    avatarUrl: getRandomItem(authorPhotos)
                 }
             });
         },
@@ -70,7 +80,7 @@ export async function handle() {
         async (author) => {
             await TestFactory.createAuthorProfession({
                 authorId: author.id,
-                professionId: professions[random(0, professions.length - 1)].id
+                professionId: getRandomItem(professions).id
             });
         },
         {concurrency}
@@ -150,11 +160,11 @@ export async function handle() {
             return TestFactory.createProduct({
                 authorId: authors[random(0, authors.length - 1)].id,
                 categoryId: category.id,
-                galleryId: Math.random() > 0.5 ? galleries[random(0, galleries.length - 1)].id : undefined,
+                galleryId: Math.random() > 0.5 ? getRandomItem(galleries).id : undefined,
                 product: {
-                    styleId: Math.random() > 0.4 ? styles[random(0, styles.length - 1)].id : undefined,
-                    materialId: Math.random() > 0.4 ? materials[random(0, materials.length - 1)].id : undefined,
-                    shapeFormatId: Math.random() > 0.4 ? shapeFormats[random(0, shapeFormats.length - 1)].id : undefined
+                    styleId: Math.random() > 0.4 ? getRandomItem(styles).id : undefined,
+                    materialId: Math.random() > 0.4 ? getRandomItem(materials).id : undefined,
+                    shapeFormatId: Math.random() > 0.4 ? getRandomItem(shapeFormats).id : undefined
                 }
             });
         },
@@ -170,13 +180,11 @@ export async function handle() {
     await pMap(
         products,
         async (product) => {
-            const shuffledColors = shuffle(colors);
-
             await Promise.all(
-                range(0, 3).map((i) =>
+                getRandomItem(colors, 3).map((color) =>
                     TestFactory.createProductColor({
                         productId: product.id,
-                        colorId: shuffledColors[i].id
+                        colorId: color.id
                     })
                 )
             );
@@ -203,13 +211,11 @@ export async function handle() {
     await pMap(
         products,
         async (product) => {
-            const shuffledProductPhotos = shuffle(productPhotos);
-
             await Promise.all(
-                range(0, random(5, 10)).map((i) =>
+                getRandomItem(productPhotos, random(1, productPhotos.length - 1)).map((photoUrl) =>
                     TestFactory.createProductPhoto({
                         productId: product.id,
-                        photoUrl: shuffledProductPhotos[i]
+                        photoUrl
                     })
                 )
             );
@@ -233,6 +239,14 @@ export async function handle() {
     console.log('interiors...');
     await pMap(range(100), async () => TestFactory.createInterior(), {concurrency});
 
+    const selectionPhotos = [
+        `${s3Prefix}/selections/00325eb0-680c-4624-aeb2-7d5a3bcd086e.png`,
+        `${s3Prefix}/selections/2b9c0767-ed16-4316-91e4-f42b3b820a1b.png`,
+        `${s3Prefix}/selections/48873750-d192-4b1d-8e2b-6efc9cab40e6.png`,
+        `${s3Prefix}/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png`,
+        `${s3Prefix}/selections/bf10b779-55e6-4f4f-96cd-62df36efea21.png`
+    ];
+
     // Подборки
     console.log('selections...');
     const selections = flatten(
@@ -247,22 +261,39 @@ export async function handle() {
                 'Новые художники',
                 'Спец. предложения'
             ] as (string | [string, string[]])[],
-            async (it) => {
+            async (it, i) => {
                 if (Array.isArray(it)) {
                     const {id: parentId} = await TestFactory.createSelection({
-                        selection: {name: it[0]}
+                        selection: {
+                            name: it[0],
+                            sortOrder: i,
+                            imageUrl: getRandomItem(selectionPhotos)
+                        }
                     });
 
-                    return Promise.all(it[1].map((name) => TestFactory.createSelection({parentId, selection: {name}})));
+                    return Promise.all(
+                        it[1].map((name, j) =>
+                            TestFactory.createSelection({
+                                parentId,
+                                selection: {
+                                    name,
+                                    sortOrder: j,
+                                    imageUrl: getRandomItem(selectionPhotos)
+                                }
+                            })
+                        )
+                    );
                 } else {
                     return TestFactory.createSelection({
                         selection: {
-                            name: it
+                            name: it,
+                            sortOrder: i,
+                            imageUrl: getRandomItem(selectionPhotos)
                         }
                     });
                 }
             },
-            {concurrency: 1}
+            {concurrency}
         )
     );
 
@@ -271,13 +302,11 @@ export async function handle() {
     await pMap(
         products,
         async (product) => {
-            const shuffledSelections = shuffle(selections);
-
             await Promise.all(
-                range(2, random(3, 10)).map((_, i) =>
+                getRandomItem(selections, random(3, 10)).map((selection) =>
                     TestFactory.createProductSelection({
                         productId: product.id,
-                        selectionId: shuffledSelections[i].id
+                        selectionId: selection.id
                     })
                 )
             );
@@ -294,11 +323,9 @@ export async function handle() {
     await pMap(
         products,
         async (product) => {
-            const shuffledTags = shuffle(tags);
-
             await TestFactory.createProductTag({
                 productId: product.id,
-                tagIds: range(0, random(3, 10)).map((_, i) => shuffledTags[i].id)
+                tagIds: getRandomItem(tags, random(3, 10)).map((it) => it.id)
             });
         },
         {concurrency}

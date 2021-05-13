@@ -204,14 +204,16 @@ interface CreateSelectionParams {
 }
 
 async function createSelection(params: CreateSelectionParams = {}) {
+    const {parentId, selection} = params;
     const connection = await dbManager.getConnection();
     const {manager} = connection.getRepository(Selection);
 
     const entity = manager.create(Selection, {
-        name: params.selection?.name || casual.words(2),
-        description: params.selection?.description || casual.sentences(10),
+        name: selection?.name || casual.words(2),
+        description: selection?.description || casual.sentences(10),
         imageUrl: casual.url + uuidv4(),
-        parentId: params.parentId
+        parentId,
+        ...(selection || {})
     });
 
     await manager.save(entity);
