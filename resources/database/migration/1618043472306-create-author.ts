@@ -67,7 +67,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
                 city_id BIGINT,
 
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT clock_timestamp() NOT NULL,
 
                 CONSTRAINT pk__author PRIMARY KEY (id),
 

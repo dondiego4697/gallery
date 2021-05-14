@@ -29,9 +29,19 @@ export interface Author {
     professions: string[];
 }
 
+export interface Selection {
+    item: {
+        code: string;
+        name: string;
+        description?: string;
+        imageUrl: string;
+    };
+}
+
 export interface MordaMainResponse {
     authors: Author[];
     products: Product[];
+    selections: Selection[];
 }
 
 async function main() {

@@ -21,7 +21,7 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                 level INTEGER GENERATED ALWAYS AS (nlevel(path)) STORED,
                 is_root BOOLEAN NOT NULL GENERATED ALWAYS AS (nlevel(path) = 1) STORED,
             
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT clock_timestamp() NOT NULL,
             
                 CONSTRAINT pk__selection PRIMARY KEY (id),
             

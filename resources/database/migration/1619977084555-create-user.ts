@@ -11,7 +11,7 @@ export class PostRefactoring1619977084555 implements MigrationInterface {
                 code INTEGER,
                 is_admin BOOLEAN NOT NULL DEFAULT FALSE,
             
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT clock_timestamp() NOT NULL,
             
                 CONSTRAINT pk__users PRIMARY KEY (id)
             );

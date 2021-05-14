@@ -1,0 +1,46 @@
+@import 'common/const.scss';
+
+.price-category-card {
+    position: relative;
+
+    & a {
+        text-decoration: none;
+
+        &:hover .price-category-card__blur {
+            opacity: 0.2;
+        }
+    }
+
+    &__blur {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: black;
+        opacity: 0.5;
+        transition-duration: .5s;
+    }
+
+    &__container {
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        display: flex;
+    }
+
+    &__text-container {
+        display: flex;
+        flex-direction: column;
+        margin: 200px 50px 50px 50px;
+        z-index: 1;
+
+        & p {
+            margin: 12px 0 0 0;
+            color: white;
+            font-size: $font-size-m;
+            font-family: $font-family-text-regular;
+        }
+    }
+}

@@ -92,7 +92,7 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 is_sold BOOLEAN NOT NULL DEFAULT FALSE,
 
                 release_year NUMERIC(4),
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT clock_timestamp() NOT NULL,
 
                 CONSTRAINT pk__product PRIMARY KEY (id),
 
