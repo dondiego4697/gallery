@@ -1,0 +1,12 @@
+.waterfall-container {
+    width: 100%;
+
+    &__wrapper {
+        display: flex;
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+    }
+}

@@ -44,7 +44,7 @@ export class Author {
     cityId?: number;
 
     @ManyToOne(() => City, (city) => city.authors)
-    city: City;
+    city?: City;
 
     @OneToMany(() => Product, (product) => product.author)
     products: Product[];

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
+import {ButtonLink} from 'common/components/button-link';
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 
@@ -10,7 +11,6 @@ interface Props {
     data: {
         text: string;
         interval: (number | null)[];
-        imageUrl: string;
     };
     style?: React.CSSProperties;
 }
@@ -22,14 +22,7 @@ export function PriceCategoryCard(props: Props) {
 
     return (
         <div className={b()} style={style || {}}>
-            <Link to={RoutePaths.CATALOG}>
-                <div className={b('blur')} />
-                <div className={b('container')} style={{background: `url(${data.imageUrl})`}}>
-                    <div className={b('text-container')}>
-                        <p>{data.text}</p>
-                    </div>
-                </div>
-            </Link>
+            <ButtonLink to={RoutePaths.CATALOG} text={data.text} style="dark" />
         </div>
     );
 }

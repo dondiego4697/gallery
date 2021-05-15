@@ -112,12 +112,7 @@ describe(`GET ${PATH}`, () => {
                     code: country.code,
                     name: country.name
                 },
-                professions: [
-                    {
-                        code: profession.code,
-                        name: profession.name
-                    }
-                ]
+                professions: [profession.name]
             },
             products: products.map(({product, isLike}, i) => ({
                 code: product.code,
@@ -129,7 +124,8 @@ describe(`GET ${PATH}`, () => {
                     isLike,
                     views: products.length - i
                 },
-                photo: expect.anything()
+                photo: expect.anything(),
+                releaseYear: product.releaseYear
             }))
         });
 

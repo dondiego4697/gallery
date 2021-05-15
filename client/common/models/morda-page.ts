@@ -1,12 +1,12 @@
 import {action, makeObservable, observable, runInAction} from 'mobx';
 
 import {RequestBook} from 'common/request-book';
-import {Author, Product, Selection} from 'common/request-book/morda';
+import {MordaMainResponse} from 'common/request-book/morda';
 
 export class MordaPageModel {
-    @observable public authors: Author[] = [];
-    @observable public products: Product[] = [];
-    @observable public selections: Selection[] = [];
+    @observable public authors: MordaMainResponse.Author[] = [];
+    @observable public products: MordaMainResponse.Product[] = [];
+    @observable public selections: MordaMainResponse.Selection[] = [];
 
     constructor() {
         makeObservable(this);

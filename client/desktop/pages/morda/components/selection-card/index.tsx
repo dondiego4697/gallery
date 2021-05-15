@@ -3,12 +3,12 @@ import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
-import {Selection} from 'common/request-book/morda';
+import {MordaMainResponse} from 'common/request-book/morda';
 
 import './index.scss';
 
 interface Props {
-    selection: Selection;
+    selection: MordaMainResponse.Selection;
     style?: React.CSSProperties;
 }
 

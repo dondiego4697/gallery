@@ -16,12 +16,13 @@ interface Props {
 const b = bevis('btn-link');
 
 export function ButtonLink(props: Props) {
-    const {to, text, className} = props;
+    const {to, text, className, style} = props;
 
     return (
         <div
             className={classnames({
                 [b()]: true,
+                [b(style)]: true,
                 ...(className ? {[className]: true} : {})
             })}
         >

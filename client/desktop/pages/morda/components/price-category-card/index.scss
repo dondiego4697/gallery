@@ -1,0 +1,11 @@
+@import 'common/const.scss';
+
+.price-category-card {
+    & a {
+        text-decoration: none;
+
+        &:hover .price-category-card__blur {
+            opacity: 0.2;
+        }
+    }
+}

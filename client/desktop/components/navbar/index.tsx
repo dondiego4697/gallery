@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import cn from 'classnames';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
@@ -8,6 +8,10 @@ import {SVG} from 'common/svg';
 import {InputSearch} from 'desktop/components/input-search';
 
 import './index.scss';
+
+interface Props {
+    underline: 'dark' | 'light';
+}
 
 const b = bevis('navbar');
 
@@ -27,9 +31,9 @@ function renderLogo() {
     );
 }
 
-function renderMenu() {
+function renderMenu(props: Props) {
     return (
-        <ul className={b('menu-container')}>
+        <ul className={cn(b('menu-container'), props.underline)}>
             {NAV_BUTTONS.map((it, i) => (
                 <li key={`nav-btn-${i}`}>
                     <Link to={it[0]}>
@@ -47,22 +51,24 @@ function renderControls() {
     return (
         <div className={b('controls-container')}>
             <InputSearch value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-            <div className={classnames(b('controls-container-icon'), b('heart'))}>
+            <div className={cn(b('controls-container-icon'), b('heart'))}>
                 <Link to={RoutePaths.LIKE}>{SVG.Heart}</Link>
             </div>
-            <div className={classnames(b('controls-container-icon'), b('cart'))}>
+            <div className={cn(b('controls-container-icon'), b('cart'))}>
                 <Link to={RoutePaths.CART}>{SVG.Cart}</Link>
             </div>
         </div>
     );
 }
 
-export function NavBar() {
+export function NavBar(props: Props) {
     return (
         <div className={b()}>
-            {renderLogo()}
-            {renderMenu()}
-            {renderControls()}
+            <div className={b('wrapper')}>
+                {renderLogo()}
+                {renderMenu(props)}
+                {renderControls()}
+            </div>
         </div>
     );
 }

@@ -1,3 +1,5 @@
+import {Brackets} from 'typeorm';
+
 import {dbManager} from 'app/lib/db-manager';
 import {Author} from 'entity/author';
 
@@ -14,7 +16,7 @@ export async function getAuthorByCode(code: string) {
         .leftJoinAndSelect('product.category', 'category')
         .leftJoinAndSelect('product.photos', 'productPhoto')
         .where('athr.code = :code', {code})
-        .andWhere('product.isSold IS FALSE');
+        .andWhere(new Brackets((qb) => qb.where('product.isSold IS FALSE').orWhere('product.isSold IS NULL')));
 
     const author = await qb.getOne();
 

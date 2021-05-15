@@ -34,18 +34,18 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         author: {
             ...pick(author, ['code', 'firstName', 'lastName', 'bio', 'avatarUrl', 'createdAt']),
             city: {
-                code: author.city.code,
-                name: author.city.name
+                code: author.city?.code,
+                name: author.city?.name
             },
             country: {
-                code: author.city.country.code,
-                name: author.city.country.name
+                code: author.city?.country.code,
+                name: author.city?.country.name
             },
-            professions: (author.professions || []).map((it) => pick(it, ['code', 'name']))
+            professions: (author.professions || []).map((it) => it.name)
         },
         products: sortBy(
             products.map((product) => ({
-                ...pick(product, ['code', 'name', 'price', 'isSold', 'size']),
+                ...pick(product, ['code', 'name', 'price', 'isSold', 'size', 'releaseYear']),
                 photo: (product.photos || []).map((it) => it.photoUrl)[0],
                 meta: {
                     views: views[product.id]?.count || 0,

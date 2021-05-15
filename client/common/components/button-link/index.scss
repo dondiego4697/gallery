@@ -2,20 +2,34 @@
 
 .btn-link {
     width: 100%;
-    border: 1px solid white;
     display: flex;
     cursor: pointer;
+
+    &__light {
+        border: 1px solid white;
+
+        & a {
+            color: white;
+        }
+    }
+
+    &__dark {
+        border: 1px solid $color-text;
+
+        & a {
+            color: $color-text;
+        }
+    }
 
     & a {
         text-decoration: none;
         transition: none;
-        color: white;
         font-size: 12px;
         width: 100%;
         text-align: center;
 
         & div {
-            margin: 15px auto;
+            margin: 15px;
         }
     }
 

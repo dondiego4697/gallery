@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     background: $color-text;
+    width: 100%;
+    margin-top: auto;
 
     &__logo-container {
         margin-top: 35px;

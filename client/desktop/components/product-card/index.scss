@@ -3,6 +3,7 @@
 .product-card {
     display: flex;
     flex-direction: column;
+    max-width: 250px;
 
     &__heart-container {
         margin-left: auto;

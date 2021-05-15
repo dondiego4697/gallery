@@ -9,13 +9,14 @@ import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
 import {UserModel} from 'common/models/user';
-import {AuthorCard} from 'desktop/components/author-card';
 import {Devider} from 'desktop/components/devider';
 import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
-import {PriceCategoryCard} from 'desktop/components/price-category-card';
 import {ProductCard} from 'desktop/components/product-card';
-import {SelectionCard} from 'desktop/components/selection-card';
+
+import {AuthorCard} from './components/author-card';
+import {PriceCategoryCard} from './components/price-category-card';
+import {SelectionCard} from './components/selection-card';
 
 import './index.scss';
 
@@ -31,39 +32,34 @@ interface SectionHeaderParams {
     isDevider?: boolean;
 }
 
-const b = bevis('morda');
+const b = bevis('morda-page');
 
 const PRICE_CATEGORIES = [
     {
         text: 'до 40 тыс. ₽',
-        interval: [null, 40],
-        imageUrl: 'https://storage.yandexcloud.net/gallerian/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png'
+        interval: [null, 40]
     },
     {
         text: '40 тыс. ₽ – 60 тыс. ₽',
-        interval: [40, 60],
-        imageUrl: 'https://storage.yandexcloud.net/gallerian/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png'
+        interval: [40, 60]
     },
     {
         text: '60 тыс. ₽ – 120 тыс. ₽',
-        interval: [60, 120],
-        imageUrl: 'https://storage.yandexcloud.net/gallerian/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png'
+        interval: [60, 120]
     },
     {
         text: '120 тыс. ₽ – 200 тыс. ₽',
-        interval: [120, 200],
-        imageUrl: 'https://storage.yandexcloud.net/gallerian/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png'
+        interval: [120, 200]
     },
     {
         text: 'свыше 200 тыс. ₽',
-        interval: [200, null],
-        imageUrl: 'https://storage.yandexcloud.net/gallerian/selections/878cd3b6-0aa2-40e5-b791-d4051c6e6a87.png'
+        interval: [200, null]
     }
 ];
 
 function renderSectionHeader(params: SectionHeaderParams) {
     const {title, description, to, isDevider} = params;
-    const b = bevis('morda-section-header');
+    const b = bevis('morda-page-section-header');
 
     return (
         <section className={b()}>
@@ -78,7 +74,7 @@ function renderSectionHeader(params: SectionHeaderParams) {
 }
 
 function renderBannerSection() {
-    const b = bevis('morda-banner');
+    const b = bevis('morda-page-banner');
 
     return (
         <section className={b()}>
@@ -95,7 +91,7 @@ function renderBannerSection() {
 }
 
 function renderNewProductsSection(props: Props) {
-    const b = bevis('morda-new-products');
+    const b = bevis('morda-page-new-products');
 
     const products = props.mordaPageModel?.products || [];
 
@@ -109,7 +105,14 @@ function renderNewProductsSection(props: Props) {
             })}
             <div className={b('products-container')}>
                 {products.map((it, i) => (
-                    <ProductCard key={`morda-product-${i}`} product={it} style={i === 0 ? {marginLeft: 140} : {}} />
+                    <ProductCard
+                        key={`morda-product-${i}`}
+                        product={{
+                            ...it,
+                            photo: it.photos[0]
+                        }}
+                        style={i === 0 ? {marginLeft: 140} : {}}
+                    />
                 ))}
                 <div className={b('product-card-mock')} />
             </div>
@@ -118,7 +121,7 @@ function renderNewProductsSection(props: Props) {
 }
 
 function renderSelectionsSection(props: Props) {
-    const b = bevis('morda-selections');
+    const b = bevis('morda-page-selections');
 
     const selections = props.mordaPageModel?.selections || [];
 
@@ -140,7 +143,7 @@ function renderSelectionsSection(props: Props) {
 }
 
 function renderAuthorsSection(props: Props) {
-    const b = bevis('morda-authors');
+    const b = bevis('morda-page-authors');
 
     const authors = props.mordaPageModel?.authors || [];
 
@@ -155,14 +158,13 @@ function renderAuthorsSection(props: Props) {
                 {authors.map((it, i) => (
                     <AuthorCard key={`morda-author-${i}`} author={it} />
                 ))}
-                <div className={b('product-card-mock')} />
             </div>
         </section>
     );
 }
 
 function renderPersonalSelectionSection() {
-    const b = bevis('morda-personal-selection');
+    const b = bevis('morda-page-personal-selection');
 
     return (
         <section className={b()}>
@@ -178,18 +180,19 @@ function renderPersonalSelectionSection() {
 }
 
 function renderPriceCategorySection() {
-    const b = bevis('morda-price-category');
+    const b = bevis('morda-page-price-category');
 
     return (
         <section className={b()}>
             <div className={b('price-category-container')}>
                 <div className={b('text-container')}>
-                    <p>Where the spirit does not work with the hand there is no art</p>
-                    <ButtonArrowLink className={b('see-all')} to={RoutePaths.CATALOG} text={'Смотреть\u00a0все'} />
+                    <p>Поиск по цене</p>
                 </div>
-                {PRICE_CATEGORIES.map((it, i) => (
-                    <PriceCategoryCard key={`morda-price-category-${i}`} data={it} />
-                ))}
+                <div className={b('btn-container')}>
+                    {PRICE_CATEGORIES.map((it, i) => (
+                        <PriceCategoryCard style={{minWidth: 180}} key={`morda-price-category-${i}`} data={it} />
+                    ))}
+                </div>
             </div>
         </section>
     );
@@ -206,7 +209,7 @@ export const MordaPage = inject(
 
         return (
             <div className={b()}>
-                <NavBar />
+                <NavBar underline="light" />
                 {renderBannerSection()}
                 {renderNewProductsSection(props)}
                 {renderSelectionsSection(props)}

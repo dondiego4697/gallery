@@ -4,12 +4,12 @@ import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
-import {Author} from 'common/request-book/morda';
+import {MordaMainResponse} from 'common/request-book/morda';
 
 import './index.scss';
 
 interface Props {
-    author: Author;
+    author: MordaMainResponse.Author;
     style?: React.CSSProperties;
 }
 

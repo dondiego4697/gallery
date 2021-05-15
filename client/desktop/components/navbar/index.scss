@@ -1,15 +1,18 @@
 @import 'common/const.scss';
 
 .navbar {
-    @include margin-container();
     user-select: none;
-    display: grid;
-    height: 80px;
-    margin-top: 0;
-    margin-bottom: 0;
+    border-bottom: 1px solid $color-text-secondary;
 
-    grid-template-columns: 20% 40% 40%;
-    grid-template-rows: 100%;
+    &__wrapper {
+        @include margin-container();
+        display: grid;
+        grid-template-columns: 20% 40% 40%;
+        grid-template-rows: 100%;
+        height: 80px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 
     &__logo-container {
         grid-column-start: 1;
@@ -30,6 +33,10 @@
         flex-direction: row;
         padding: 0;
         margin: 0;
+
+        &.dark li::after {
+            background: $color-text-secondary;
+        }
 
         & a {
             display: flex;
@@ -64,7 +71,7 @@
                 height: 3px;
                 left: 50%;
                 position: absolute;
-                background: $color-background;
+                background: white;
                 transition: 0.3s ease 0s;
                 width: 0;
             }
