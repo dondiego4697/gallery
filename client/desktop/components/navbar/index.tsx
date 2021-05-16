@@ -11,6 +11,7 @@ import './index.scss';
 
 interface Props {
     underline: 'dark' | 'light';
+    currentPath: string;
 }
 
 const b = bevis('navbar');
@@ -35,7 +36,12 @@ function renderMenu(props: Props) {
     return (
         <ul className={cn(b('menu-container'), props.underline)}>
             {NAV_BUTTONS.map((it, i) => (
-                <li key={`nav-btn-${i}`}>
+                <li
+                    key={`nav-btn-${i}`}
+                    className={cn({
+                        ['active']: it[0] === props.currentPath
+                    })}
+                >
                     <Link to={it[0]}>
                         <div>{it[1]}</div>
                     </Link>

@@ -34,21 +34,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
             isLike: likes.has(product.id)
         },
         product: {
-            ...pick(product, [
-                'code',
-                'name',
-                'size',
-                'data',
-                'price',
-                'isSold',
-                'style.code',
-                'style.name',
-                'material.code',
-                'material.name',
-                'shapeFormat.code',
-                'shapeFormat.name',
-                'createdAt'
-            ]),
+            ...pick(product, ['code', 'name', 'size', 'data', 'price', 'isSold', 'createdAt']),
             style: product.style ? pick(product.style, ['code', 'name']) : null,
             material: product.material ? pick(product.material, ['code', 'name']) : null,
             shapeFormat: product.shapeFormat ? pick(product.shapeFormat, ['code', 'name']) : null,

@@ -36,7 +36,7 @@ export const MordaPage = inject(
 
         return (
             <div className={b()}>
-                <NavBar underline="light" />
+                <NavBar underline="light" currentPath={props.match.path} />
                 <BannerSection />
                 <NewProductsSection
                     products={(props.mordaPageModel?.products || []).map((it) => ({

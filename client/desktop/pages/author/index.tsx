@@ -37,7 +37,7 @@ export const AuthorPage = inject(
 
         return (
             <div className={b()}>
-                <NavBar underline="dark" />
+                <NavBar underline="dark" currentPath={props.match.path} />
                 <AuthorSection
                     author={
                         author
