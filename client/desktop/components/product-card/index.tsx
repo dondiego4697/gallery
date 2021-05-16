@@ -1,5 +1,6 @@
-import classnames from 'classnames';
+import cn from 'classnames';
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 
 import {ButtonArrowLink} from 'common/components/button-arrow-link';
 import {RoutePaths} from 'common/const';
@@ -10,27 +11,29 @@ import {Devider} from 'desktop/components/devider';
 
 import './index.scss';
 
-interface Props {
-    product: {
-        code: string;
-        name: string;
-        price: number;
-        releaseYear?: number;
-        photo?: string;
-        size: {
-            width: number;
-            height: number;
-            length?: number;
-        };
-        meta: {
-            views: number;
-            isLike: boolean;
-        };
-        author?: {
-            firstName: string;
-            lastName: string;
-        };
+export interface Product {
+    code: string;
+    name: string;
+    price: number;
+    releaseYear?: number;
+    photo?: string;
+    size: {
+        width: number;
+        height: number;
+        length?: number;
     };
+    meta: {
+        views: number;
+        isLike: boolean;
+    };
+    author?: {
+        firstName: string;
+        lastName: string;
+    };
+}
+
+interface Props {
+    product: Product;
     style?: React.CSSProperties;
 }
 
@@ -54,14 +57,17 @@ export function ProductCard(props: Props) {
         .join('');
     const sizeLine = [size.width, size.height, size.length].filter(Boolean).join(' x ');
     const price = stringifyPrice(product.price);
+    const to = RoutePaths.PRODUCT.replace(':code', product.code);
 
     return (
         <div className={b()} style={style || {}}>
-            <img src={product.photo} width={250} />
+            <Link to={to}>
+                <img src={product.photo} width={250} />
+            </Link>
             <div className={b('title-container')}>
                 <h2>{product.name}</h2>
                 <div
-                    className={classnames({
+                    className={cn({
                         [b('heart-container')]: true,
                         [b('heart-container_liked')]: isLike
                     })}
@@ -80,7 +86,7 @@ export function ProductCard(props: Props) {
             <Devider />
             <div className={b('price-container')}>
                 <p>{price}</p>
-                <ButtonArrowLink to={RoutePaths.PRODUCT.replace(':code', product.code)} />
+                <ButtonArrowLink to={to} />
             </div>
         </div>
     );

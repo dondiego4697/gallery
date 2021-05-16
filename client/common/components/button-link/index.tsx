@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import cn from 'classnames';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export function ButtonLink(props: Props) {
 
     return (
         <div
-            className={classnames({
+            className={cn({
                 [b()]: true,
                 [b(style)]: true,
                 ...(className ? {[className]: true} : {})

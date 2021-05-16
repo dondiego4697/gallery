@@ -1,0 +1,23 @@
+@import 'common/const.scss';
+
+.header-section {
+    margin-top: 80px;
+    margin-bottom: 40px;
+
+    &__title {
+        @include margin-container();
+        display: flex;
+        flex-direction: row;
+
+        & h2 {
+            font-size: $font-size-l;
+            margin: 0;
+        }
+    }
+
+    &__description {
+        @include margin-container();
+        font-size: $font-size-m;
+        margin-top: 30px;
+    }
+}

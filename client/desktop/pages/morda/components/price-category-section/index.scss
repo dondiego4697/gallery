@@ -1,0 +1,41 @@
+@import 'common/const.scss';
+
+.morda-price-category-section {
+    margin: 80px;
+    @include margin-container();
+    max-width: $max-width;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__btn-container {
+        display: flex;
+        flex-direction: row;
+        margin-right: auto;
+    }
+
+    &__text-container {
+        display: flex;
+        margin-right: 30px;
+        margin-left: auto;
+
+        & p {
+            font-size: $font-size-m;
+            margin: auto 0;
+        }
+    }
+}
+
+.morda-price-category-card {
+    min-width: 180px;
+
+    & a {
+        text-decoration: none;
+
+        &:hover .price-category-card__blur {
+            opacity: 0.2;
+        }
+    }
+}

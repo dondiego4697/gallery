@@ -1,0 +1,25 @@
+.morda-banner-section {
+    background-image: url('/public/image/morda-banner.png');
+    width: 100%;
+    height: 550px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &__container {
+        margin: auto;
+
+        & h1 {
+            color: white;
+            font-size: 35px;
+            margin: 45px auto;
+        }
+    }
+
+    &__btn {
+        max-width: 250px;
+        margin: 45px auto;
+    }
+}

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import cn from 'classnames';
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
@@ -21,14 +21,14 @@ export function InputSearch(props: Props) {
 
     return (
         <div
-            className={classnames({
+            className={cn({
                 [b()]: true,
                 ...(className ? {[className]: true} : {})
             })}
         >
             <label>
                 <div
-                    className={classnames({
+                    className={cn({
                         [b('search-icon-container')]: true,
                         ...(hideSearchIcon || value.length > 0 ? {'force-hide': true} : {})
                     })}

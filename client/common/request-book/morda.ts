@@ -16,12 +16,10 @@ export namespace MordaMainResponse {
     }
 
     export interface Selection {
-        item: {
-            code: string;
-            name: string;
-            description?: string;
-            imageUrl: string;
-        };
+        code: string;
+        name: string;
+        description?: string;
+        imageUrl: string;
     }
 
     export interface Product {

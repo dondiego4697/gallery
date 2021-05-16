@@ -54,10 +54,12 @@ describe(`GET ${PATH}`, () => {
 
         const products = await TestFactory.getProducts();
 
-        const width = sortBy(products, 'size.width');
-        const height = sortBy(products, 'size.height');
-        const length = sortBy(products, 'size.length').filter((it) => it.size.length);
-        const price = sortBy(products, 'price');
+        const width = sortBy(products.map((it) => it.size.width));
+        const height = sortBy(products.map((it) => it.size.height));
+        const length = sortBy(
+            products.filter((it) => typeof it.size.length !== 'undefined').map((it) => it.size.length)
+        );
+        const price = sortBy(products.map((it) => it.price));
 
         const color = await TestFactory.createColor();
 
@@ -78,14 +80,14 @@ describe(`GET ${PATH}`, () => {
         expect(statusCode).toBe(200);
         expect(body).toEqual({
             minMax: {
-                minHeight: first(height)?.size.height,
-                maxHeight: last(height)?.size.height,
-                minLength: first(length)?.size.length,
-                maxLength: last(length)?.size.length,
-                minWidth: first(width)?.size.width,
-                maxWidth: last(width)?.size.width,
-                minPrice: first(price)?.price,
-                maxPrice: last(price)?.price
+                minHeight: first(height),
+                maxHeight: last(height),
+                minLength: first(length),
+                maxLength: last(length),
+                minWidth: first(width),
+                maxWidth: last(width),
+                minPrice: first(price),
+                maxPrice: last(price)
             },
             filters: categories.reduce(
                 (acc, category) => ({
