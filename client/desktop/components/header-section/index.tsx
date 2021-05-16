@@ -9,7 +9,7 @@ import './index.scss';
 interface Props {
     title: string;
     description?: string;
-    to: string;
+    to?: string;
     isDevider?: boolean;
     style?: React.CSSProperties;
 }
@@ -23,7 +23,7 @@ export function HeaderSection(props: Props) {
         <section className={b()} style={style || {}}>
             <div className={b('title')}>
                 <h2>{title}</h2>
-                <ButtonArrowLink to={to} text={'Смотреть\u00a0все'} />
+                {to && <ButtonArrowLink to={to} text={'Смотреть\u00a0все'} />}
             </div>
             {isDevider && <Devider />}
             {description && <p className={b('description')}>{description}</p>}

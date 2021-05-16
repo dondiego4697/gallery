@@ -18,13 +18,14 @@
     }
 }
 
+// IMPORTANT: Есть дочерние элемент с названием класса
 .morda-selection-card {
     position: relative;
 
     & a {
         text-decoration: none;
 
-        &:hover .selection-card__blur {
+        &:hover .morda-selection-card__blur {
             opacity: 0.2;
         }
     }

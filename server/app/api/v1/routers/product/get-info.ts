@@ -35,6 +35,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         },
         product: {
             ...pick(product, ['code', 'name', 'size', 'data', 'price', 'isSold', 'createdAt']),
+            category: pick(product.category, ['code', 'name']),
             style: product.style ? pick(product.style, ['code', 'name']) : null,
             material: product.material ? pick(product.material, ['code', 'name']) : null,
             shapeFormat: product.shapeFormat ? pick(product.shapeFormat, ['code', 'name']) : null,

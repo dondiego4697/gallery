@@ -93,6 +93,10 @@ describe(`GET ${PATH}`, () => {
                 size: product.size,
                 data: product.data,
                 price: product.price,
+                category: {
+                    code: category.code,
+                    name: category.name
+                },
                 isSold: product.isSold,
                 createdAt: product.createdAt.toISOString(),
                 style: null,

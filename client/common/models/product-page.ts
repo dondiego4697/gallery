@@ -5,10 +5,10 @@ import {AuthorGetInfoResponse} from 'common/request-book/author';
 import {ProductGetInfoResponse} from 'common/request-book/product';
 
 export class ProductPageModel {
-    @observable public author: ProductGetInfoResponse.Author | null = null;
+    @observable public author: AuthorGetInfoResponse.Author | undefined;
     @observable public authorProducts: AuthorGetInfoResponse.Product[] = [];
-    @observable public product: ProductGetInfoResponse.Product | null = null;
-    @observable public meta: ProductGetInfoResponse.Meta | null = null;
+    @observable public product: ProductGetInfoResponse.Product | undefined;
+    @observable public meta: ProductGetInfoResponse.Meta | undefined;
 
     constructor() {
         makeObservable(this);
@@ -19,7 +19,6 @@ export class ProductPageModel {
             .getInfo(code)
             .then((response) => {
                 runInAction(() => {
-                    this.author = response.author;
                     this.product = response.product;
                     this.meta = response.meta;
                 });
@@ -27,6 +26,7 @@ export class ProductPageModel {
                 return RequestBook.author.getInfo(response.author.code);
             })
             .then((response) => {
+                this.author = response.author;
                 this.authorProducts = response.products;
             });
     }

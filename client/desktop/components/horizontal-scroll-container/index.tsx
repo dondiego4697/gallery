@@ -8,7 +8,7 @@ import './index.scss';
 interface Props {
     title: string;
     description?: string;
-    to: string;
+    to?: string;
     isDevider?: boolean;
     children: React.ReactNode;
     margin: number;

@@ -19,6 +19,10 @@ export namespace ProductGetInfoResponse {
             height: number;
             length?: number;
         };
+        category: {
+            code: string;
+            name: string;
+        };
         shapeFormat?: {
             code: string;
             name: string;

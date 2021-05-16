@@ -1,1 +1,46 @@
-.product-content-section {}
+@import 'common/const.scss';
+
+.product-content-section {
+    @include margin-container();
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 30px;
+
+    &__image-container {
+        display: flex;
+
+        & img {
+            margin: auto;
+            max-width: 500px;
+        }
+    }
+
+    &__title-container {
+        display: flex;
+        flex-direction: row;
+
+        & h2 {
+            margin: auto 0;
+        }
+
+        & img {
+            max-width: 65px;
+            border-radius: 100%;
+            margin-left: auto;
+        }
+    }
+
+    &__parameters-container {
+        font-family: $font-family-text-light;
+        font-weight: 400;
+        margin-top: 32px;
+    }
+
+    &__price {
+        margin-top: 80px;
+        font-weight: 700;
+        font-family: $font-family-text-bold;
+        font-size: $font-size-m;
+    }
+}

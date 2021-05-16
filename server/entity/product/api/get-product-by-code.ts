@@ -11,6 +11,7 @@ export async function getProductByCode(code: string) {
         .leftJoinAndSelect('p.material', 'pmaterial')
         .leftJoinAndSelect('p.shapeFormat', 'pshapeformat')
         .innerJoinAndSelect('p.author', 'athr')
+        .innerJoinAndSelect('p.category', 'category')
         .leftJoinAndSelect('p.photos', 'photo')
         .leftJoinAndSelect('p.tags', 'tag')
         .where('p.code = :code', {code});
