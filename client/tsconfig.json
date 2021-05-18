@@ -26,6 +26,9 @@
             ],
             "touch/*": [
                 "./touch/*"
+            ],
+            "@server-types/response": [
+                "../server/types/response.ts"
             ]
         }
     },
@@ -35,5 +38,11 @@
     "exclude": [
         "out",
         "node_modules"
+    ],
+    "references": [
+        { 
+            "path": "../server/types/response.ts",
+            "prepend": true
+        }
     ]
 }

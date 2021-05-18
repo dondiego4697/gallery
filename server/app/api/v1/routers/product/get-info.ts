@@ -6,6 +6,7 @@ import {getProductByCode} from 'entity/product/api/get-product-by-code';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
 import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
 import {ClientError} from 'service/error';
+import {ProductGetInfoResponse} from 'types/response';
 
 export const getInfo = wrap<Request, Response>(async (req, res) => {
     const {code} = req.params;
@@ -28,7 +29,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
 
     const {author} = product;
 
-    res.json({
+    const data: ProductGetInfoResponse.Response = {
         meta: {
             views: views[product.id]?.count || 0,
             isLike: likes.has(product.id)
@@ -36,9 +37,9 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         product: {
             ...pick(product, ['code', 'name', 'size', 'data', 'price', 'isSold', 'createdAt']),
             category: pick(product.category, ['code', 'name']),
-            style: product.style ? pick(product.style, ['code', 'name']) : null,
-            material: product.material ? pick(product.material, ['code', 'name']) : null,
-            shapeFormat: product.shapeFormat ? pick(product.shapeFormat, ['code', 'name']) : null,
+            style: product.style ? pick(product.style, ['code', 'name']) : undefined,
+            material: product.material ? pick(product.material, ['code', 'name']) : undefined,
+            shapeFormat: product.shapeFormat ? pick(product.shapeFormat, ['code', 'name']) : undefined,
             photos: (product.photos || []).map((it) => it.photoUrl).sort(),
             tags: (product.tags || []).map((it) => ({
                 code: it.code,
@@ -51,5 +52,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
             lastName: author.lastName,
             code: author.code
         }
-    });
+    };
+
+    res.json(data);
 });

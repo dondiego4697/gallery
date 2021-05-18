@@ -6,6 +6,7 @@ import {getAuthorByCode} from 'entity/author/api/get-author-by-code';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
 import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
 import {ClientError} from 'service/error';
+import {AuthorGetInfoResponse} from 'types/response';
 
 export const getInfo = wrap<Request, Response>(async (req, res) => {
     const {code} = req.params;
@@ -30,7 +31,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         user ? getProductLikesForUser({userId: user.id, productIds}) : Promise.resolve(new Set<number>())
     ]);
 
-    res.json({
+    const data: AuthorGetInfoResponse.Response = {
         author: {
             ...pick(author, ['code', 'firstName', 'lastName', 'bio', 'avatarUrl', 'createdAt']),
             city: {
@@ -54,5 +55,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
             })),
             (it) => -it.meta.views
         )
-    });
+    };
+
+    res.json(data);
 });

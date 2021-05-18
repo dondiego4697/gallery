@@ -1,7 +1,7 @@
+import {ProductGetInfoResponse} from '@server-types/response';
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
-import {ProductGetInfoResponse} from 'common/request-book/product';
 import {stringifyPrice} from 'common/utils/price';
 import {Devider} from 'desktop/components/devider';
 

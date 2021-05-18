@@ -1,7 +1,7 @@
+import {MordaMainResponse} from '@server-types/response';
 import {action, makeObservable, observable, runInAction} from 'mobx';
 
 import {RequestBook} from 'common/request-book';
-import {MordaMainResponse} from 'common/request-book/morda';
 
 export class MordaPageModel {
     @observable public authors: MordaMainResponse.Author[] = [];

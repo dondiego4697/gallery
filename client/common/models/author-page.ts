@@ -1,7 +1,7 @@
+import {AuthorGetInfoResponse} from '@server-types/response';
 import {action, makeObservable, observable, runInAction} from 'mobx';
 
 import {RequestBook} from 'common/request-book';
-import {AuthorGetInfoResponse} from 'common/request-book/author';
 
 export class AuthorPageModel {
     @observable public author: AuthorGetInfoResponse.Author | null = null;

@@ -7,6 +7,7 @@ import {getRandomNewProducts} from 'entity/product/api/get-random-new-products';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
 import {getAllSelections} from 'entity/selection/api/get-all-selections';
 import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
+import {MordaMainResponse} from 'types/response';
 
 import {selectionsToTree} from './utils/selections-to-tree';
 
@@ -25,19 +26,25 @@ export const main = wrap<Request, Response>(async (req, res) => {
         user ? getProductLikesForUser({userId: user.id, productIds}) : Promise.resolve(new Set<number>())
     ]);
 
-    res.json({
+    const data: MordaMainResponse.Response = {
         authors: authors.map((author) => ({
             ...pick(author, ['code', 'firstName', 'lastName', 'avatarUrl']),
             professions: author.professions.map((prof) => prof.name)
         })),
         selections: selectionsToTree(selections).map((it) => it.item),
         products: products.map((product) => ({
-            ...pick(product, ['code', 'name', 'size', 'price', 'author.firstName', 'author.lastName', 'releaseYear']),
+            ...pick(product, ['code', 'price', 'name', 'size', 'releaseYear']),
             photos: product.photos.map((it) => it.photoUrl),
+            author: {
+                firstName: product.author.firstName,
+                lastName: product.author.lastName
+            },
             meta: {
                 views: views[product.id]?.count || 0,
                 isLike: likes.has(product.id)
             }
         }))
-    });
+    };
+
+    res.json(data);
 });

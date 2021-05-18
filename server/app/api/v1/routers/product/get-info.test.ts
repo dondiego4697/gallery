@@ -99,9 +99,9 @@ describe(`GET ${PATH}`, () => {
                 },
                 isSold: product.isSold,
                 createdAt: product.createdAt.toISOString(),
-                style: null,
-                shapeFormat: null,
-                material: null,
+                style: undefined,
+                shapeFormat: undefined,
+                material: undefined,
                 photos: expect.anything(),
                 tags: expect.anything()
             }

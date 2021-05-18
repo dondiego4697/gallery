@@ -2,8 +2,17 @@ import {pick, sortBy} from 'lodash';
 
 import {Selection} from 'entity/selection';
 
+interface PartialSelection {
+    code: string;
+    name: string;
+    description?: string;
+    imageUrl: string;
+    sortOrder: number;
+    createdAt: Date;
+}
+
 interface TreeItem {
-    item: Partial<Selection>;
+    item: PartialSelection;
     childrens: TreeItem[];
 }
 

@@ -43,10 +43,12 @@ export const ProductPage = inject(
                 <NavBar underline="dark" currentPath={props.match.path} />
                 <ContentSection product={productPageModel.product} author={productPageModel.author} />
                 <DescriptionSection />
-                <AuthorProductsSection
-                    authorCode={productPageModel.author.code}
-                    products={productPageModel.authorProducts}
-                />
+                {productPageModel.authorProducts.length > 0 && (
+                    <AuthorProductsSection
+                        authorCode={productPageModel.author.code}
+                        products={productPageModel.authorProducts}
+                    />
+                )}
                 <AuthorSection
                     author={{
                         ...productPageModel.author,
