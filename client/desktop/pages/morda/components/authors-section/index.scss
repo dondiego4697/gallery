@@ -1,12 +1,12 @@
 @import 'common/const.scss';
 
-.morda-author-section {
+.morda-page__authors-section {
+
     &__container {
         @include margin-container();
 
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin-top: 50px;
     }
 }

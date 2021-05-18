@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
-import {AuthorSection as AuthorSectionComponent} from 'desktop/components/author-section';
-import {HeaderSection} from 'desktop/components/header-section';
+import {AboutAuthorSection} from 'desktop/components/about-author-section';
+import {TitleSection} from 'desktop/components/title-section';
 
 import './index.scss';
 
@@ -11,21 +11,21 @@ interface Props {
         code: string;
         firstName: string;
         lastName: string;
-        avatarUrl: string;
+        avatarUrl?: string;
         bio?: string;
         professions: string[];
     };
 }
 
-const b = bevis('product-author-section');
+const b = bevis('product-page__author-section');
 
 export function AuthorSection(props: Props) {
     const {author} = props;
 
     return (
         <section className={b()}>
-            <HeaderSection title="Об авторе" isDevider={true} />
-            <AuthorSectionComponent profileLinkCode={author.code} author={author} />
+            <TitleSection title="Об авторе" isDevider={true} />
+            <AboutAuthorSection author={author} style={{marginBottom: 80}} />
         </section>
     );
 }

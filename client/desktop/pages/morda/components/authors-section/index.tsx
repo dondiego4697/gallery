@@ -3,7 +3,7 @@ import * as React from 'react';
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {AuthorCard} from 'desktop/components/author-card';
-import {HeaderSection} from 'desktop/components/header-section';
+import {TitleSection} from 'desktop/components/title-section';
 
 import './index.scss';
 
@@ -13,25 +13,25 @@ interface Props {
         lastName: string;
         professions: string[];
         code: string;
-        avatarUrl: string;
+        avatarUrl?: string;
     }[];
 }
 
-const b = bevis('morda-author-section');
+const b = bevis('morda-page__authors-section');
 
-export function AuthorSection(props: Props) {
+export function AuthorsSection(props: Props) {
     const {authors} = props;
 
     return (
         <section className={b()}>
-            <HeaderSection
+            <TitleSection
                 title="Художники"
                 description="Where the spirit does not work with the hand there is no art"
                 to={RoutePaths.ARTISTS}
             />
             <div className={b('container')}>
                 {authors.map((it, i) => (
-                    <AuthorCard key={`morda-author-${i}`} {...it} />
+                    <AuthorCard key={`morda-author-${i}`} author={it} />
                 ))}
             </div>
         </section>

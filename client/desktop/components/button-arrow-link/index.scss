@@ -4,13 +4,13 @@
     display: flex;
     margin-left: auto;
 
-    & a {
+    &__link {
         display: flex;
         flex-direction: row;
         margin: auto;
         font-size: $font-size-s;
         font-family: $font-family-text-regular;
-        color: $color-text;
+        color: $color-text-primary;
         transition: none;
         text-decoration: none;
 

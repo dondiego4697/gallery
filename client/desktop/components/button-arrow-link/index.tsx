@@ -10,22 +10,18 @@ import './index.scss';
 interface Props {
     to: string;
     text?: string;
+    style?: React.CSSProperties;
     className?: string;
 }
 
 const b = bevis('btn-arrow-link');
 
 export function ButtonArrowLink(props: Props) {
-    const {to, text, className} = props;
+    const {to, text, className, style} = props;
 
     return (
-        <div
-            className={cn({
-                [b()]: true,
-                ...(className ? {[className]: true} : {})
-            })}
-        >
-            <Link to={to}>
+        <div className={cn(b(), className)} style={style || {}}>
+            <Link to={to} className={b('link')}>
                 {text || ''}
                 {SVG.Arrow}
             </Link>

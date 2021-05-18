@@ -1,4 +1,5 @@
-import {max, range, sum} from 'lodash';
+import cn from 'classnames';
+import {range} from 'lodash';
 import * as React from 'react';
 import useResizeObserver from 'use-resize-observer';
 
@@ -7,17 +8,18 @@ import {bevis} from 'common/lib/bevis';
 import './index.scss';
 
 interface Props {
-    style?: React.CSSProperties;
     children: React.ReactNode;
     itemMaxWidth: number;
     minColumnGap: number;
     rowGap: number;
+    style?: React.CSSProperties;
+    className?: string;
 }
 
 const b = bevis('waterfall-container');
 
 export function WaterfallContainer(props: Props) {
-    const {style, rowGap, itemMaxWidth, minColumnGap} = props;
+    const {style, rowGap, itemMaxWidth, minColumnGap, className} = props;
 
     const {ref: containerRef, width: containerWidth = 1} = useResizeObserver<HTMLDivElement>();
 
@@ -51,7 +53,7 @@ export function WaterfallContainer(props: Props) {
     });
 
     return (
-        <div className={b()} style={style || {}} ref={containerRef}>
+        <div className={cn(b(), className)} style={style || {}} ref={containerRef}>
             <div className={b('wrapper')}>{columns}</div>
         </div>
     );

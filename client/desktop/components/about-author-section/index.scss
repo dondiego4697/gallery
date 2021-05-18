@@ -1,11 +1,11 @@
 @import 'common/const.scss';
 
-.author-section {
+.about-author-section {
+    @include margin-container();
+
     display: flex;
     flex-direction: row;
-    @include margin-container();
     margin-top: 80px;
-    margin-bottom: 80px;
 
     &__image-container {
         & img {

@@ -6,11 +6,11 @@ import {RouteComponentProps} from 'react-router-dom';
 import {bevis} from 'common/lib/bevis';
 import {AuthorPageModel} from 'common/models/author-page';
 import {UserModel} from 'common/models/user';
-import {AuthorSection} from 'desktop/components/author-section';
+import {AboutAuthorSection} from 'desktop/components/about-author-section';
 import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
 
-import {ProductsSection} from './components/products-section';
+import {OtherProductsSection} from './components/other-products-section';
 
 import './index.scss';
 
@@ -35,23 +35,23 @@ export const AuthorPage = inject(
         const author = authorPageModel?.author;
         const products = authorPageModel?.products || [];
 
+        if (!author) {
+            return <div />;
+        }
+
         return (
             <div className={b()}>
                 <NavBar underline="dark" currentPath={props.match.path} />
-                <AuthorSection
-                    author={
-                        author
-                            ? {
-                                  firstName: author.firstName,
-                                  lastName: author.lastName,
-                                  avatarUrl: author.avatarUrl,
-                                  bio: author.bio,
-                                  professions: author.professions
-                              }
-                            : undefined
-                    }
+                <AboutAuthorSection
+                    author={{
+                        firstName: author.firstName,
+                        lastName: author.lastName,
+                        avatarUrl: author.avatarUrl,
+                        bio: author.bio,
+                        professions: author.professions
+                    }}
                 />
-                {(authorPageModel?.products.length ?? 0) > 0 && <ProductsSection products={products} />}
+                {products.length > 0 && <OtherProductsSection products={products} />}
                 <Footer />
             </div>
         );

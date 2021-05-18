@@ -12,18 +12,24 @@ interface Props {
     author: ProductGetInfoResponse.Author;
 }
 
-const b = bevis('product-content-section');
+const b = bevis('product-page__content-section');
 
-export function ContentSection(props: Props) {
+function makeProductParameter(props: Props) {
     const {product, author} = props;
 
-    const parameters = [
+    return [
         `Автор: ${author.firstName} ${author.lastName}`,
         `Размер: ${[product.size.width, product.size.height, product.size.length].filter(Boolean).join(' × ')} см`,
         product.material ? `Материал: ${product.material.name}` : undefined,
         `Категория: ${product.category.name}`,
         product.releaseYear ? `Год: ${product.releaseYear}` : undefined
     ].filter(Boolean);
+}
+
+export function ContentSection(props: Props) {
+    const {product, author} = props;
+
+    const parameters = makeProductParameter(props);
 
     return (
         <section className={b()}>
@@ -37,8 +43,8 @@ export function ContentSection(props: Props) {
                 </div>
                 <Devider />
                 <div className={b('parameters-container')}>
-                    {parameters.map((it) => (
-                        <p>{it}</p>
+                    {parameters.map((it, i) => (
+                        <p key={`product-page-parameters-${i}`}>{it}</p>
                     ))}
                 </div>
                 <p className={b('price')}>{stringifyPrice(product.price)}</p>

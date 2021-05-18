@@ -2,11 +2,11 @@ import cn from 'classnames';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
-import {ButtonArrowLink} from 'common/components/button-arrow-link';
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {SVG} from 'common/svg';
 import {stringifyPrice} from 'common/utils/price';
+import {ButtonArrowLink} from 'desktop/components/button-arrow-link';
 import {Devider} from 'desktop/components/devider';
 
 import './index.scss';
@@ -23,7 +23,6 @@ export interface Product {
         length?: number;
     };
     meta: {
-        views: number;
         isLike: boolean;
     };
     author?: {
@@ -62,6 +61,7 @@ export function ProductCard(props: Props) {
     return (
         <div className={b()} style={style || {}}>
             <Link to={to}>
+                {/* TODO default photo */}
                 <img src={product.photo} width={250} />
             </Link>
             <div className={b('title-container')}>

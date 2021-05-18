@@ -9,7 +9,7 @@ import {UserModel} from 'common/models/user';
 import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
 
-import {AuthorSection} from './components/author-section';
+import {AuthorsSection} from './components/authors-section';
 import {BannerSection} from './components/banner-section';
 import {NewProductsSection} from './components/new-products-section';
 import {PersonalSelectionsSection} from './components/personal-selections-section';
@@ -52,7 +52,7 @@ export const MordaPage = inject(
                         description: it.description
                     }))}
                 />
-                <AuthorSection
+                <AuthorsSection
                     authors={(props.mordaPageModel?.authors || []).map((it) => ({
                         firstName: it.firstName,
                         lastName: it.lastName,

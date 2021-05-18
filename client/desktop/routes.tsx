@@ -4,7 +4,7 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {RoutePaths} from 'common/const';
 
 import App from './pages/app';
-import {AuthorPage} from './pages/author';
+import {AuthorPage} from './pages/author-page';
 import {MordaPage} from './pages/morda';
 import {ProductPage} from './pages/product';
 

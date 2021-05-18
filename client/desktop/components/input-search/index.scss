@@ -3,12 +3,12 @@
 .input-search {
     display: flex;
 
-    & label {
+    &__container {
         position: relative;
         margin: auto 0 auto 35px;
     }
 
-    & input {
+    &__input {
         outline: none;
         border: 0;
         padding: 10px 13px;

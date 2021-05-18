@@ -1,18 +1,12 @@
 import * as React from 'react';
 
-import {ButtonLink} from 'common/components/button-link';
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
+import {ButtonLink} from 'desktop/components/button-link';
 
 import './index.scss';
 
-interface PriceCategoryCardProps {
-    text: string;
-    interval: (number | null)[];
-    style?: React.CSSProperties;
-}
-
-const b = bevis('morda-price-category-section');
+const b = bevis('morda-page__price-category-section');
 
 const PRICE_CATEGORIES = [
     {
@@ -37,17 +31,6 @@ const PRICE_CATEGORIES = [
     }
 ];
 
-function PriceCategoryCard(props: PriceCategoryCardProps) {
-    const {text, style} = props;
-    const b = bevis('morda-price-category-card');
-
-    return (
-        <div className={b()} style={style || {}}>
-            <ButtonLink to={RoutePaths.CATALOG} text={text} style="dark" />
-        </div>
-    );
-}
-
 export function PriceCategorySection() {
     return (
         <section className={b()}>
@@ -57,13 +40,15 @@ export function PriceCategorySection() {
                 </div>
                 <div className={b('btn-container')}>
                     {PRICE_CATEGORIES.map((it, i) => (
-                        <PriceCategoryCard
+                        <ButtonLink
+                            key={`morda-page-category-${i}`}
+                            className={b('btn-link')}
+                            to={RoutePaths.CATALOG}
+                            text={it.text}
+                            theme="dark"
                             style={{
                                 marginLeft: i === 0 ? 0 : 15
                             }}
-                            key={`morda-price-category-${i}`}
-                            text={it.text}
-                            interval={it.interval}
                         />
                     ))}
                 </div>

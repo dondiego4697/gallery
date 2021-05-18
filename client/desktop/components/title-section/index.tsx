@@ -1,7 +1,8 @@
+import cn from 'classnames';
 import * as React from 'react';
 
-import {ButtonArrowLink} from 'common/components/button-arrow-link';
 import {bevis} from 'common/lib/bevis';
+import {ButtonArrowLink} from 'desktop/components/button-arrow-link';
 import {Devider} from 'desktop/components/devider';
 
 import './index.scss';
@@ -12,17 +13,18 @@ interface Props {
     to?: string;
     isDevider?: boolean;
     style?: React.CSSProperties;
+    className?: string;
 }
 
-const b = bevis('header-section');
+const b = bevis('title-section');
 
-export function HeaderSection(props: Props) {
-    const {title, description, to, isDevider, style} = props;
+export function TitleSection(props: Props) {
+    const {title, description, className, to, isDevider, style} = props;
 
     return (
-        <section className={b()} style={style || {}}>
-            <div className={b('title')}>
-                <h2>{title}</h2>
+        <section className={cn(b(), className)} style={style || {}}>
+            <div className={b('title-container')}>
+                <h2 className={b('title')}>{title}</h2>
                 {to && <ButtonArrowLink to={to} text={'Смотреть\u00a0все'} />}
             </div>
             {isDevider && <Devider />}

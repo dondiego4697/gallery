@@ -1,30 +1,26 @@
+import cn from 'classnames';
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
-import {HeaderSection} from 'desktop/components/header-section';
 
 import './index.scss';
 
 interface Props {
-    title: string;
-    description?: string;
-    to?: string;
-    isDevider?: boolean;
     children: React.ReactNode;
-    margin: number;
+    marginHorizontal: number;
     style?: React.CSSProperties;
+    className?: string;
 }
 
 const b = bevis('horizontal-scroll-container');
 
 export function HorizontalScrollContainer(props: Props) {
-    const {title, description, to, isDevider, style, children, margin} = props;
+    const {className, style, children, marginHorizontal} = props;
 
     return (
-        <div className={b()} style={style || {}}>
-            <HeaderSection title={title} description={description} to={to} isDevider={isDevider} />
+        <section className={cn(b(), className)} style={style || {}}>
             <div className={b('container')}>
-                <div style={{minWidth: margin}} />
+                <div style={{minWidth: marginHorizontal}} />
                 {React.Children.toArray(children).map((child, i) =>
                     React.cloneElement(child as any, {
                         style: {
@@ -32,8 +28,8 @@ export function HorizontalScrollContainer(props: Props) {
                         }
                     })
                 )}
-                <div style={{minWidth: margin}} />
+                <div style={{minWidth: marginHorizontal}} />
             </div>
-        </div>
+        </section>
     );
 }

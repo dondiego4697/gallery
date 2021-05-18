@@ -3,21 +3,21 @@
 .footer {
     display: flex;
     flex-direction: column;
-    background: $color-text;
+    background: $color-dark-1;
     width: 100%;
     margin-top: auto;
 
     &__logo-container {
         margin-top: 35px;
         display: flex;
+    }
 
-        & a {
-            margin: auto;
-            color: white;
-            font-family: $font-family-logo;
-            font-size: 30px;
-            text-decoration: none;
-        }
+    &__logo-link {
+        margin: auto;
+        color: white;
+        font-family: $font-family-logo;
+        font-size: 30px;
+        text-decoration: none;
     }
 
     &__social-container {

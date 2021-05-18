@@ -4,12 +4,13 @@
 body {
     margin: 0;
     padding: 0;
+    // Default на все приложение
     font-family: $font-family-text-regular;
     font-weight: 600;
 }
 
 .root {
-    background-color: $color-background;
+    background-color: white;
 }
 
 .force-hide {

@@ -9,25 +9,20 @@ import './index.scss';
 interface Props {
     text: string;
     to: string;
-    style: 'light' | 'dark';
+    theme: 'light' | 'dark';
+    style?: React.CSSProperties;
     className?: string;
 }
 
 const b = bevis('btn-link');
 
 export function ButtonLink(props: Props) {
-    const {to, text, className, style} = props;
+    const {to, text, className, theme, style} = props;
 
     return (
-        <div
-            className={cn({
-                [b()]: true,
-                [b(style)]: true,
-                ...(className ? {[className]: true} : {})
-            })}
-        >
-            <Link to={to}>
-                <div>{text}</div>
+        <div className={cn(b(), b(theme), className)} style={style || {}}>
+            <Link to={to} className={b('link')}>
+                <div className={b('text-container')}>{text}</div>
             </Link>
         </div>
     );

@@ -2,7 +2,7 @@
 
 .navbar {
     user-select: none;
-    border-bottom: 1px solid $color-text-secondary;
+    border-bottom: 1px solid $color-gray-1;
 
     &__wrapper {
         @include margin-container();
@@ -20,7 +20,7 @@
 
         & a {
             margin: auto 0;
-            color: $color-text;
+            color: $color-text-primary;
             font-family: $font-family-logo;
             font-size: 30px;
             text-decoration: none;
@@ -35,13 +35,13 @@
         margin: 0;
 
         &.dark li::after {
-            background: $color-text-secondary;
+            background: $color-gray-1;
         }
 
         & a {
             display: flex;
             text-decoration: none;
-            color: $color-text;
+            color: $color-text-primary;
             font-size: $font-size-s;
 
             div {

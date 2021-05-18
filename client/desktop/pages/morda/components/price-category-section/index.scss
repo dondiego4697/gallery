@@ -1,19 +1,28 @@
 @import 'common/const.scss';
 
-.morda-price-category-section {
-    margin: 80px;
+.morda-page__price-category-section {
     @include margin-container();
-    max-width: $max-width;
+
+    margin-top: 80px;
+    margin-bottom: 80px;
 
     &__container {
         display: flex;
         flex-direction: row;
+        max-width: $max-width;
+        margin: auto;
     }
 
     &__btn-container {
         display: flex;
         flex-direction: row;
         margin-right: auto;
+        min-width: 180px;
+    }
+
+    &__btn-link {
+        text-decoration: none;
+        min-width: 170px;
     }
 
     &__text-container {
@@ -24,18 +33,6 @@
         & p {
             font-size: $font-size-m;
             margin: auto 0;
-        }
-    }
-}
-
-.morda-price-category-card {
-    min-width: 180px;
-
-    & a {
-        text-decoration: none;
-
-        &:hover .price-category-card__blur {
-            opacity: 0.2;
         }
     }
 }

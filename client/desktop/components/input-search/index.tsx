@@ -9,6 +9,7 @@ import './index.scss';
 interface Props {
     name?: string;
     className?: string;
+    style?: React.CSSProperties;
     value: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -16,17 +17,12 @@ interface Props {
 const b = bevis('input-search');
 
 export function InputSearch(props: Props) {
-    const {className, value, name, onChange} = props;
+    const {className, value, name, onChange, style} = props;
     const [hideSearchIcon, setHideSearchIcon] = React.useState((props.value.length ?? 0) > 0);
 
     return (
-        <div
-            className={cn({
-                [b()]: true,
-                ...(className ? {[className]: true} : {})
-            })}
-        >
-            <label>
+        <div className={cn(b(), className)} style={style || {}}>
+            <label className={b('container')}>
                 <div
                     className={cn({
                         [b('search-icon-container')]: true,
@@ -36,6 +32,7 @@ export function InputSearch(props: Props) {
                     {SVG.Search}
                 </div>
                 <input
+                    className={b('input')}
                     type={'text'}
                     name={name}
                     value={value}

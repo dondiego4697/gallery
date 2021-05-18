@@ -7,37 +7,37 @@
 
     &__light {
         border: 1px solid white;
-
-        & a {
-            color: white;
-        }
     }
 
-    &__dark {
-        border: 1px solid $color-text;
-
-        & a {
-            color: $color-text;
-        }
+    &__light &__link {
+        color: white;
     }
 
-    & a {
+    &__dark  {
+        border: 1px solid $color-text-primary;
+    }
+
+    &__dark &__link {
+        color: $color-text-primary;
+    }
+
+    &__link {
         text-decoration: none;
         transition: none;
         font-size: 12px;
         width: 100%;
         text-align: center;
+    }
 
-        & div {
-            margin: 15px;
-        }
+    &__text-container {
+        margin: 15px;
     }
 
     &:hover {
         border: 1px solid $color-text-active;
+    }
 
-        & a {
-            color: $color-text-active;
-        }
+    &:hover &__link {
+        color: $color-text-active;
     }
 }

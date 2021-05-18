@@ -1,42 +1,17 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
-import {HeaderSection} from 'desktop/components/header-section';
+import {TitleSection} from 'desktop/components/title-section';
+
+import {MordaPageSelectionCard, Props as SelectionCardProps} from './components/selection-card';
 
 import './index.scss';
 
-const b = bevis('morda-selections-section');
-
-interface SelectionCardProps {
-    code: string;
-    imageUrl: string;
-    name: string;
-    description?: string;
-}
+const b = bevis('morda-page__selections-section');
 
 interface Props {
     selections: SelectionCardProps[];
-}
-
-function SelectionCard(props: SelectionCardProps) {
-    const {code, imageUrl, name, description} = props;
-    const b = bevis('morda-selection-card');
-
-    return (
-        <div className={b()}>
-            <Link to={RoutePaths.SELECTION.replace(':code', code)}>
-                <div className={b('blur')} />
-                <div className={b('container')} style={{background: `url(${imageUrl})`}}>
-                    <div className={b('text-container')}>
-                        <h2>{name}</h2>
-                        <p>{description?.slice(0, 100)}</p>
-                    </div>
-                </div>
-            </Link>
-        </div>
-    );
 }
 
 export function SelectionsSection(props: Props) {
@@ -44,7 +19,7 @@ export function SelectionsSection(props: Props) {
 
     return (
         <section className={b()}>
-            <HeaderSection
+            <TitleSection
                 title="Подборки"
                 description="Потребность красоты и творчества, воплощающего её"
                 to={RoutePaths.SELECTIONS}
@@ -52,8 +27,8 @@ export function SelectionsSection(props: Props) {
             />
             <div className={b('container')}>
                 {selections.map((it, i) => (
-                    <SelectionCard
-                        key={`morda-selection-${i}`}
+                    <MordaPageSelectionCard
+                        key={`morda-page-selection-${i}`}
                         code={it.code}
                         imageUrl={it.imageUrl}
                         name={it.name}

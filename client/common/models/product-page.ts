@@ -27,7 +27,7 @@ export class ProductPageModel {
             })
             .then((response) => {
                 this.author = response.author;
-                this.authorProducts = response.products;
+                this.authorProducts = response.products.filter((it) => it.code !== this.product?.code);
             });
     }
 }

@@ -1,16 +1,12 @@
 @import 'common/const.scss';
 
-.author-products-section {
+.author-page__other-products-section {
     margin-bottom: 80px;
 
-    &__title {
+    &__container {
         @include margin-container();
-    }
 
-    &__products-container {
-        @include margin-container();
         display: flex;
         flex-direction: row;
-        margin-top: 80px;
     }
 }

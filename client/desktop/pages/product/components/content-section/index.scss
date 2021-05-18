@@ -1,10 +1,10 @@
 @import 'common/const.scss';
 
-.product-content-section {
+.product-page__content-section {
     @include margin-container();
-    margin-top: 80px;
+    margin-top: 60px;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: auto auto;
     column-gap: 30px;
 
     &__image-container {
@@ -22,6 +22,8 @@
 
         & h2 {
             margin: auto 0;
+            font-family: $font-family-text-bold;
+            font-size: $font-size-l;
         }
 
         & img {
@@ -34,7 +36,7 @@
     &__parameters-container {
         font-family: $font-family-text-light;
         font-weight: 400;
-        margin-top: 32px;
+        margin-top: 30px;
     }
 
     &__price {

@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 
@@ -8,13 +9,22 @@ import {Devider} from 'desktop/components/devider';
 
 import './index.scss';
 
+interface Props {
+    style?: React.CSSProperties;
+    className?: string;
+}
+
 const b = bevis('footer');
 
-export function Footer() {
+export function Footer(props: Props) {
+    const {style, className} = props;
+
     return (
-        <div className={b()}>
+        <section className={cn(b(), className)} style={style || {}}>
             <div className={b('logo-container')}>
-                <Link to={RoutePaths.MORDA}>Gallerian</Link>
+                <Link to={RoutePaths.MORDA} className={b('logo-link')}>
+                    Gallerian
+                </Link>
             </div>
             <div className={b('social-container')}>
                 <div className={b('social-container-wrapper')}>
@@ -27,6 +37,6 @@ export function Footer() {
             <p className={b('privacy')}>
                 © 2021 Все права защищены. Политика в отношении обработки персональных данных.
             </p>
-        </div>
+        </section>
     );
 }
