@@ -29,6 +29,9 @@ export class PostRefactoring1619977084000 implements MigrationInterface {
                 CONSTRAINT fk__product_tag__tag_id__tag FOREIGN KEY (tag_id) REFERENCES tag (id),
                 CONSTRAINT fk__product_tag__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
+            
+            CREATE INDEX idx__product_tag__tag_id ON product_tag USING btree (tag_id);
+            CREATE INDEX idx__product_tag__product_id ON product_tag USING btree (product_id);
         `);
     }
 

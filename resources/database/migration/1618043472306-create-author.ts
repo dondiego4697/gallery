@@ -41,6 +41,8 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT fk__city__country_id__country FOREIGN KEY (country_id) REFERENCES country (id)
             );
 
+            CREATE INDEX idx__city__country_id ON city USING btree (country_id);
+
             CREATE TABLE profession (
                 id BIGSERIAL NOT NULL,
                 code TEXT NOT NULL,
@@ -76,6 +78,7 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 CONSTRAINT fk__author__city_id__city FOREIGN KEY (city_id) REFERENCES city (id)
             );
 
+            CREATE INDEX idx__author__city_id ON author USING btree (city_id);
             CREATE INDEX idx__author__code ON author USING btree (code);
 
             CREATE TABLE author_profession (
@@ -91,6 +94,9 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
 
                 CONSTRAINT uq__author_profession__author_id__profession_id UNIQUE (author_id, profession_id)
             );
+
+            CREATE INDEX idx__author_profession__author_id ON author_profession USING btree (author_id);
+            CREATE INDEX idx__author_profession__profession_id ON author_profession USING btree (profession_id);
 
             CREATE TABLE interior ( 
                 id BIGSERIAL NOT NULL,

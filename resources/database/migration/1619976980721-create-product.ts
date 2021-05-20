@@ -106,6 +106,13 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 CONSTRAINT uq__product__code UNIQUE (code)
             );
 
+            CREATE INDEX idx__product__gallery_id ON product USING btree (gallery_id);
+            CREATE INDEX idx__product__author_id ON product USING btree (author_id);
+            CREATE INDEX idx__product__category_id ON product USING btree (category_id);
+            CREATE INDEX idx__product__style_id ON product USING btree (style_id);
+            CREATE INDEX idx__product__material_id ON product USING btree (material_id);
+            CREATE INDEX idx__product__shape_format_id ON product USING btree (shape_format_id);
+
             CREATE INDEX idx__product__code ON product USING btree (code);
 
             CREATE TABLE product_color (
@@ -122,6 +129,9 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 CONSTRAINT fk__product_color__color_id__color FOREIGN KEY (color_id) REFERENCES color (id)
             );
 
+            CREATE INDEX idx__product_color__product_id ON product_color USING btree (product_id);
+            CREATE INDEX idx__product_color__color_id ON product_color USING btree (color_id);
+
             CREATE TABLE product_photo (  
                 id BIGSERIAL NOT NULL,
             
@@ -134,6 +144,8 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
             
                 CONSTRAINT fk__product_photo__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
+
+            CREATE INDEX idx__product_photo__product_id ON product_photo USING btree (product_id);
 
             CREATE VIEW view__product_filters AS (
                 SELECT

@@ -3,13 +3,14 @@ import * as React from 'react';
 import {useEffect} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
+import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {AuthorPageModel} from 'common/models/author-page';
 import {UserModel} from 'common/models/user';
-import {AboutAuthorSection} from 'desktop/components/about-author-section';
 import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
 
+import {AuthorSection} from './components/author-section';
 import {OtherProductsSection} from './components/other-products-section';
 
 import './index.scss';
@@ -32,26 +33,15 @@ export const AuthorPage = inject(
             authorPageModel?.load(match.params.code);
         }, []);
 
-        const author = authorPageModel?.author;
-        const products = authorPageModel?.products || [];
-
-        if (!author) {
+        if (!authorPageModel) {
             return <div />;
         }
 
         return (
             <div className={b()}>
                 <NavBar underline="dark" currentPath={props.match.path} />
-                <AboutAuthorSection
-                    author={{
-                        firstName: author.firstName,
-                        lastName: author.lastName,
-                        avatarUrl: author.avatarUrl,
-                        bio: author.bio,
-                        professions: author.professions
-                    }}
-                />
-                {products.length > 0 && <OtherProductsSection products={products} />}
+                <AuthorSection />
+                <OtherProductsSection />
                 <Footer />
             </div>
         );

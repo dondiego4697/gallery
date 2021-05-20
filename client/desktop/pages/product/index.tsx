@@ -34,27 +34,17 @@ export const ProductPage = inject(
             productPageModel?.load(match.params.code);
         }, []);
 
-        if (!productPageModel?.product || !productPageModel?.author) {
-            return <div className={b()} />;
+        if (!productPageModel) {
+            return <div />;
         }
 
         return (
             <div className={b()}>
                 <NavBar underline="dark" currentPath={props.match.path} />
-                <ContentSection product={productPageModel.product} author={productPageModel.author} />
+                <ContentSection />
                 <DescriptionSection />
-                {productPageModel.authorProducts.length > 0 && (
-                    <AuthorProductsSection
-                        authorCode={productPageModel.author.code}
-                        products={productPageModel.authorProducts}
-                    />
-                )}
-                <AuthorSection
-                    author={{
-                        ...productPageModel.author,
-                        professions: productPageModel.author.professions
-                    }}
-                />
+                <AuthorProductsSection />
+                <AuthorSection />
                 <Footer />
             </div>
         );

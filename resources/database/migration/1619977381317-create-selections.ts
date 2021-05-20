@@ -34,6 +34,8 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
                 CONSTRAINT check__selection__max_level CHECK (level > 0 AND level <= 2),
                 CONSTRAINT check__selection__parent_id_and_root CHECK ((is_root IS TRUE AND parent_id IS NULL) OR (is_root IS FALSE AND parent_id IS NOT NULL))
             );
+
+            CREATE INDEX idx__selection__parent_id ON selection USING btree (parent_id);
             
             CREATE INDEX idx__selection__code ON selection USING btree (code);
             
@@ -111,6 +113,9 @@ export class PostRefactoring1619977381317 implements MigrationInterface {
             
                 CONSTRAINT uq__product_selection__product_id__selection_id UNIQUE (product_id, selection_id)
             );
+
+            CREATE INDEX idx__product_selection__selection_id ON product_selection USING btree (selection_id);
+            CREATE INDEX idx__product_selection__product_id ON product_selection USING btree (product_id);
             
             CREATE OR REPLACE FUNCTION product_selection__check_constraints()
                 RETURNS TRIGGER AS $$

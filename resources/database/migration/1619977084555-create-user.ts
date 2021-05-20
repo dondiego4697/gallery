@@ -30,6 +30,9 @@ export class PostRefactoring1619977084555 implements MigrationInterface {
                 CONSTRAINT fk__product_like__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
 
+            CREATE INDEX idx__product_like__user_id ON product_like USING btree (user_id);
+            CREATE INDEX idx__product_like__product_id ON product_like USING btree (product_id);
+
             CREATE TABLE product_view (
                 id BIGSERIAL NOT NULL,  
 
@@ -42,6 +45,8 @@ export class PostRefactoring1619977084555 implements MigrationInterface {
 
                 CONSTRAINT fk__product_view__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
+
+            CREATE INDEX idx__product_view__product_id ON product_view USING btree (product_id);
 
             CREATE VIEW view__product_view AS (
                 SELECT prv.product_id, COUNT(*) as count

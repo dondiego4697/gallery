@@ -30,37 +30,23 @@ export const MordaPage = inject(
     'mordaPageModel'
 )(
     observer((props: Props) => {
+        const {mordaPageModel} = props;
+
         useEffect(() => {
-            props.mordaPageModel?.load();
+            mordaPageModel?.load();
         }, []);
+
+        if (!mordaPageModel) {
+            return <div />;
+        }
 
         return (
             <div className={b()}>
                 <NavBar underline="light" currentPath={props.match.path} />
                 <BannerSection />
-                <NewProductsSection
-                    products={(props.mordaPageModel?.products || []).map((it) => ({
-                        ...it,
-                        photo: it.photos[0]
-                    }))}
-                />
-                <SelectionsSection
-                    selections={(props.mordaPageModel?.selections || []).slice(0, 5).map((it) => ({
-                        code: it.code,
-                        imageUrl: it.imageUrl,
-                        name: it.name,
-                        description: it.description
-                    }))}
-                />
-                <AuthorsSection
-                    authors={(props.mordaPageModel?.authors || []).map((it) => ({
-                        firstName: it.firstName,
-                        lastName: it.lastName,
-                        professions: it.professions,
-                        code: it.code,
-                        avatarUrl: it.avatarUrl
-                    }))}
-                />
+                <NewProductsSection />
+                <SelectionsSection />
+                <AuthorsSection />
                 <PersonalSelectionsSection />
                 <PriceCategorySection />
                 <Footer />

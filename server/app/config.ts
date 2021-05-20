@@ -28,6 +28,7 @@ export interface Config {
     'private.key': string;
     'cookie.key.userToken': string;
     'cookie.key.fingerprint': string;
+    'mock.network': boolean;
     db: DB;
 }
 
@@ -49,6 +50,7 @@ const production: Config = {
     'private.key': process.env.PRIVATE_KEY!,
     'cookie.key.userToken': 'user_token',
     'cookie.key.fingerprint': 'client_fingerprint',
+    'mock.network': false,
     db: {
         hosts: ['localhost'],
         port: 6432,
@@ -76,6 +78,7 @@ const development: Config = {
     'csrf.enable': false,
     'app.host': 'https://gallery.loca.lt',
     'app.cache.enable': false,
+    'mock.network': true,
     db: {
         hosts: ['localhost', 'localhost'],
         port: 6432,
@@ -91,6 +94,7 @@ const test: Config = {
     'localtunnel.enable': false,
     'csrf.enable': true,
     'app.cache.enable': false,
+    'mock.network': false,
     db: {
         ...development.db,
         database: 'gallery_test'
