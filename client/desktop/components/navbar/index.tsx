@@ -33,13 +33,15 @@ function renderLogo() {
 }
 
 function renderMenu(props: Props) {
+    const {underline, currentPath} = props;
+
     return (
-        <ul className={cn(b('menu-container'), props.underline)}>
+        <ul className={cn(b('menu-container'), underline)}>
             {NAV_BUTTONS.map((it, i) => (
                 <li
                     key={`nav-btn-${i}`}
                     className={cn({
-                        ['active']: it[0] === props.currentPath
+                        ['active']: it[0] === currentPath
                     })}
                 >
                     <Link to={it[0]}>

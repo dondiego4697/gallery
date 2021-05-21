@@ -34,6 +34,7 @@ export interface Product {
 interface Props {
     product: Product;
     style?: React.CSSProperties;
+    className?: string;
 }
 
 const b = bevis('product-card');
@@ -43,7 +44,7 @@ function likeHandler() {
 }
 
 export function ProductCard(props: Props) {
-    const {product, style} = props;
+    const {product, style, className} = props;
     const {author, size, meta} = product;
 
     const [isLike, setLike] = React.useState(meta.isLike);
@@ -59,7 +60,7 @@ export function ProductCard(props: Props) {
     const to = RoutePaths.PRODUCT.replace(':code', product.code);
 
     return (
-        <div className={b()} style={style || {}}>
+        <div className={cn(b(), className)} style={style || {}}>
             <Link to={to}>
                 {/* TODO default photo */}
                 <img src={product.photo} width={250} />

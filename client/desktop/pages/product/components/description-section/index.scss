@@ -1,1 +1,36 @@
-.product-page__description-section {}
+@import 'common/const.scss';
+
+.product-page__description-section {
+    margin-top: 80px;
+
+    &__tabs-container {
+        
+    }
+
+    &__interior-title {
+        display: flex;
+
+        & p {
+            margin: auto 0;
+        }
+    }
+
+    &__devider {
+        &::after {
+            margin: 0;
+        }
+    }
+
+    &__control-container, &__content-container {
+        @include margin-container();
+
+        display: grid;
+        grid-template-columns: 50% 50%;
+        column-gap: 80px;
+    }
+
+    &__tab-content, &__interior-content {
+        margin-top: 25px;
+        font-family: $font-family-text-light;
+    }
+}
