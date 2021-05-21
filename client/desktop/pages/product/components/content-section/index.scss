@@ -26,10 +26,13 @@
             font-size: $font-size-l;
         }
 
-        & img {
+        & a {
+            margin-left: auto;
+        }
+
+        & a img {
             max-width: 65px;
             border-radius: 100%;
-            margin-left: auto;
         }
     }
 

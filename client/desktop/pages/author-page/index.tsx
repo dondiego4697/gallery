@@ -31,7 +31,7 @@ export const AuthorPage = inject(
 
         useEffect(() => {
             authorPageModel?.load(match.params.code);
-        }, []);
+        }, [match.params.code]);
 
         if (!authorPageModel) {
             return <div />;

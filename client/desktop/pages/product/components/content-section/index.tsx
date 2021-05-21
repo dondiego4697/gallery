@@ -1,8 +1,9 @@
 import {ProductGetInfoResponse} from '@server-types/response';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 
-import {LoadableDataStatus} from 'common/const';
+import {LoadableDataStatus, RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
 import {stringifyPrice} from 'common/utils/price';
@@ -52,7 +53,9 @@ export const ContentSection = inject('productPageModel')(
                 <div className={b('info-container')}>
                     <div className={b('title-container')}>
                         <h2>{product.name}</h2>
-                        <img src={author.avatarUrl} />
+                        <Link to={RoutePaths.ARTIST.replace(':code', author.code)}>
+                            <img src={author.avatarUrl} />
+                        </Link>
                     </div>
                     <Devider />
                     <div className={b('parameters-container')}>

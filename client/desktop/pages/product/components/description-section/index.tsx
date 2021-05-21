@@ -1,11 +1,12 @@
+import {ProductGetInfoResponse} from '@server-types/response';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 
 import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
-import {Devider} from 'desktop/components/devider';
 import {Tabs} from 'desktop/components/tabs';
+import {Tag} from 'desktop/components/tag';
 
 import './index.scss';
 
@@ -21,23 +22,31 @@ enum TabKey {
 
 const b = bevis('product-page__description-section');
 
-interface RenderTabContentParams {
-    description?: string;
-}
+function renderTabContent(key: TabKey, product: ProductGetInfoResponse.Product) {
+    const {description, tags} = product;
 
-function renderTabContent(key: TabKey, params: RenderTabContentParams = {}) {
     switch (key) {
         case TabKey.DESCRIPTION:
-            return params.description;
+            return (
+                <div className={b('description-container')}>
+                    {description}
+                    <div className={b('description-tags-container')}>
+                        {tags.map((it, i) => (
+                            <Tag key={`product-page-tag-${i}`} code={it.code} text={it.name} />
+                        ))}
+                    </div>
+                </div>
+            );
         case TabKey.DELIVERY:
             return 'delivery';
+        case TabKey.CERTIFICATE:
+            return 'cert';
         default:
             return '';
     }
 }
 
 // TODO
-// 2. Добавить теги
 // 3. Создать компонент просмотра фотографий
 // 4. Добавить кнопки покупки
 // 5. Добавить формирование интерьера
@@ -68,11 +77,9 @@ export const DescriptionSection = inject('productPageModel')(
                         keys={Object.values(TabKey)}
                         labels={['Описание', 'Условия доставки', 'Сертификат подлинности']}
                     >
-                        <div className={b('tab-content')}>
-                            {renderTabContent(TabKey.DESCRIPTION, {description: product.description})}
-                        </div>
-                        <div className={b('tab-content')}>{renderTabContent(TabKey.DELIVERY)}</div>
-                        <div className={b('tab-content')}>{renderTabContent(TabKey.CERTIFICATE)}</div>
+                        <div className={b('tab-content')}>{renderTabContent(TabKey.DESCRIPTION, product)}</div>
+                        <div className={b('tab-content')}>{renderTabContent(TabKey.DELIVERY, product)}</div>
+                        <div className={b('tab-content')}>{renderTabContent(TabKey.CERTIFICATE, product)}</div>
                     </Tabs>
                     <div className={b('interior-container')}>
                         <div className={b('interior-title')}>

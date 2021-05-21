@@ -34,4 +34,14 @@
     &__interior-content {
         margin-top: 25px;
     }
+
+    &__description-tags-container {
+        display: flex;
+        flex-wrap: wrap;
+
+        & .tag {
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+    }
 }
