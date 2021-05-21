@@ -49,4 +49,14 @@
             left: 0; 
         }
     }
+
+    &__content {
+        margin-top: 25px;
+    }
+
+    &__devider {
+        &::after {
+            margin: 0;
+        }
+    }
 }

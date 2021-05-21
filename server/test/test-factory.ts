@@ -180,6 +180,7 @@ async function createProduct(params: CreateProductParams) {
 
     const entity = manager.create(Product, {
         name: casual.words(3),
+        description: Math.random() > 0.5 ? casual.sentences(random(5, 10)) : undefined,
         price: casual.integer(5000, 10000000),
         authorId: params.authorId,
         categoryId: params.categoryId,

@@ -42,10 +42,7 @@ export const ProductPage = inject(
             <div className={b()}>
                 <NavBar underline="dark" currentPath={props.match.path} />
                 <ContentSection />
-                <DescriptionSection
-                    interiors={productPageModel.product.product?.photos || []}
-                    tags={productPageModel.product.product?.tags || []}
-                />
+                <DescriptionSection />
                 <AuthorProductsSection />
                 <AuthorSection />
                 <Footer />

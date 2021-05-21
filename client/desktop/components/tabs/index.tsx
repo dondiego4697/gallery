@@ -2,6 +2,7 @@ import cn from 'classnames';
 import * as React from 'react';
 
 import {bevis} from 'common/lib/bevis';
+import {Devider} from 'desktop/components/devider';
 
 import './index.scss';
 
@@ -11,7 +12,8 @@ interface Props<T> {
     keys: T[];
     labels: string[];
     defaultActiveKey: T;
-    onChange: (key: T) => void;
+    onChange?: (key: T) => void;
+    children: React.ReactNode;
 }
 
 const b = bevis('tabs');
@@ -20,6 +22,7 @@ export function Tabs<T>(props: Props<T>) {
     const {keys, labels, defaultActiveKey, style, className, onChange} = props;
 
     const [activeKey, setActiveKey] = React.useState(defaultActiveKey);
+    const children = React.Children.toArray(props.children);
 
     return (
         <div className={cn(b(), className)} style={style || {}}>
@@ -33,13 +36,15 @@ export function Tabs<T>(props: Props<T>) {
                         })}
                         onClick={() => {
                             setActiveKey(it);
-                            onChange(it);
+                            onChange && onChange(it);
                         }}
                     >
                         <p>{labels[i]}</p>
                     </li>
                 ))}
             </ul>
+            <Devider className={b('devider')} />
+            <div className={b('content')}>{children[keys.findIndex((it) => it === activeKey)]}</div>
         </div>
     );
 }

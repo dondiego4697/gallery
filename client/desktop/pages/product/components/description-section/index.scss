@@ -3,25 +3,7 @@
 .product-page__description-section {
     margin-top: 80px;
 
-    &__tabs-container {
-        
-    }
-
-    &__interior-title {
-        display: flex;
-
-        & p {
-            margin: auto 0;
-        }
-    }
-
-    &__devider {
-        &::after {
-            margin: 0;
-        }
-    }
-
-    &__control-container, &__content-container {
+    &__container {
         @include margin-container();
 
         display: grid;
@@ -29,8 +11,27 @@
         column-gap: 80px;
     }
 
-    &__tab-content, &__interior-content {
-        margin-top: 25px;
+    &__tabs-container {
+        & .tabs__devider::after {
+            position: absolute;
+            left: 0;
+        }
+    }
+
+    &__tab-content {
         font-family: $font-family-text-light;
+    }
+
+    &__interior-title {
+        display: flex;
+        height: 80px;
+
+        & p {
+            margin: auto 0;
+        }   
+    }
+
+    &__interior-content {
+        margin-top: 25px;
     }
 }

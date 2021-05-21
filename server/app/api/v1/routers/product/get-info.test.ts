@@ -90,6 +90,7 @@ describe(`GET ${PATH}`, () => {
             product: {
                 code: product.code,
                 name: product.name,
+                description: product.description,
                 size: product.size,
                 data: product.data,
                 price: product.price,

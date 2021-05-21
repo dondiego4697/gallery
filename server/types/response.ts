@@ -95,6 +95,7 @@ export namespace ProductGetInfoResponse {
     export interface Product {
         code: string;
         name: string;
+        description?: string;
         price: number;
         releaseYear?: number;
         isSold: boolean;

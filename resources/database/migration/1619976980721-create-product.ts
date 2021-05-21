@@ -84,6 +84,7 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
                 shape_format_id BIGINT,
 
                 name TEXT NOT NULL,
+                description TEXT,
 
                 size JSONB NOT NULL DEFAULT '{}',
                 data JSONB NOT NULL DEFAULT '{}',
