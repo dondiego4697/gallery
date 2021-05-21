@@ -8,6 +8,7 @@ import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
 import {stringifyPrice} from 'common/utils/price';
 import {Devider} from 'desktop/components/devider';
+import {ImageViewer} from 'desktop/components/image-viewer';
 
 import './index.scss';
 
@@ -48,7 +49,7 @@ export const ContentSection = inject('productPageModel')(
         return (
             <section className={b()}>
                 <div className={b('image-container')}>
-                    <img src={product.photos[0]} />
+                    <ImageViewer style={{margin: 'auto'}} urls={product.photos} align="center" />
                 </div>
                 <div className={b('info-container')}>
                     <div className={b('title-container')}>

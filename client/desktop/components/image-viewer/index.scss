@@ -1,0 +1,43 @@
+.image-viewer {
+
+    &__left &__current-image-container img {
+        margin: 0;
+    }
+
+    &__left &__small-images-container-wrapper {
+        margin: 0;
+    }
+
+    &__center &__current-image-container img {
+        margin: auto;
+    }
+
+    &__center &__small-images-container-wrapper {
+        margin: auto;
+    }
+
+    &__current-image-container {
+        display: flex;
+
+        & img {
+            object-fit: contain;
+        }
+    }
+
+    &__small-images-container {
+        display: flex;
+        margin-top: 25px;
+    }
+
+    &__small-images-container-wrapper {
+        & img {
+            object-fit: cover;
+            opacity: 0.6;
+            cursor: pointer;
+
+            &.active {
+                opacity: 1;
+            }
+        }
+    }
+}
