@@ -126,6 +126,14 @@ export namespace ProductGetInfoResponse {
             code: string;
             name: string;
         }[];
+        interiors: {
+            code: string;
+            photoUrl: string;
+            x: number;
+            y: number;
+            maxPictureHeight: number;
+            maxPictureWidth: number;
+        }[];
     }
 
     export interface Author {
@@ -138,5 +146,18 @@ export namespace ProductGetInfoResponse {
     export interface Meta {
         views: number;
         isLike: boolean;
+    }
+}
+
+export namespace InteriorRandomResponse {
+    export type Response = Interior[];
+
+    export interface Interior {
+        code: string;
+        photoUrl: string;
+        x: number;
+        y: number;
+        maxPictureHeight: number;
+        maxPictureWidth: number;
     }
 }

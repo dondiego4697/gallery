@@ -1,3 +1,4 @@
+import {range} from 'lodash';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 
@@ -6,6 +7,7 @@ import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
 import {HorizontalScrollContainer} from 'desktop/components/horizontal-scroll-container';
 import {ProductCard} from 'desktop/components/product-card';
+import {Skeleton} from 'desktop/components/skeleton';
 import {TitleSection} from 'desktop/components/title-section';
 
 import './index.scss';
@@ -26,20 +28,33 @@ export const NewProductsSection = inject('mordaPageModel')(
 
         const {data} = mordaPageModel;
 
+        const title = (
+            <TitleSection
+                title="Новинки"
+                description="Потребность красоты и творчества, воплощающего её"
+                to={RoutePaths.CATALOG}
+                isDevider={true}
+            />
+        );
+
         if (data.status === LoadableDataStatus.LOADING) {
-            return <div />;
+            return (
+                <section className={b()}>
+                    {title}
+                    <HorizontalScrollContainer marginHorizontal={140}>
+                        {range(10).map((i) => (
+                            <Skeleton key={`skeleton-product-card-${i}`} type="product-card" />
+                        ))}
+                    </HorizontalScrollContainer>
+                </section>
+            );
         }
 
         const {products} = data;
 
         return (
             <section className={b()}>
-                <TitleSection
-                    title="Новинки"
-                    description="Потребность красоты и творчества, воплощающего её"
-                    to={RoutePaths.CATALOG}
-                    isDevider={true}
-                />
+                {title}
                 <HorizontalScrollContainer marginHorizontal={140}>
                     {products.map((it, i) => (
                         <ProductCard

@@ -1,0 +1,64 @@
+@import 'common/const.scss';
+
+.btn-like {
+    &.liked svg path {
+        fill: $color-heart !important;
+    }
+}
+
+.btn {
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+
+    &__btn-control {
+        width: 100%;
+        display: flex;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &__light &__btn-control {
+        border: 1px solid $color-dark-1;
+        color: $color-dark-1;
+        background-color: white;
+
+        & svg {
+            fill: $color-dark-1;
+
+            & path {
+                fill: $color-dark-1;
+                stroke: $color-dark-1;
+            }
+        }
+    }
+
+    &__dark &__btn-control {
+        color: white;
+        background-color: $color-dark-1;
+
+        & svg {
+            fill: white;
+
+            & path {
+                fill: white;
+                stroke: white;
+            }
+        }
+    }
+
+    &__text-container {
+        margin: 15px auto;
+        text-align: center;
+        font-size: 12px;
+        display: flex;
+        flex-direction: row;
+
+        & svg {
+            height: 15px;
+            margin-left: 8px;
+        }
+    }
+}

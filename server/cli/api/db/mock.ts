@@ -237,7 +237,41 @@ export async function handle() {
 
     // Интерьеры
     console.log('interiors...');
-    await pMap(range(100), async () => TestFactory.createInterior(), {concurrency});
+
+    // https://storage.yandexcloud.net/gallerian/interiors/2047b6ec-07d1-4af2-b9d2-7e52adc7938c.jpeg
+
+    const interiorsPhotos = [
+        `${s3Prefix}/interiors/2047b6ec-07d1-4af2-b9d2-7e52adc7938c.jpeg`,
+        `${s3Prefix}/interiors/94162c57-e187-4157-95ba-30378d02a7c5.jpeg`,
+        `${s3Prefix}/interiors/bf861e7c-5d4b-4e7d-b5b6-da020eea93c2.jpeg`
+    ];
+
+    const interiorsCoords = [
+        [600, 230, 200, 300],
+        [620, 160, 230, 200],
+        [620, 200, 200, 200]
+    ];
+
+    await pMap(
+        interiorsPhotos,
+        async (url, i) => {
+            const coords = interiorsCoords[i];
+
+            return TestFactory.createInterior({
+                interior: {
+                    photoUrl: url,
+                    x: coords[0],
+                    y: coords[1],
+                    maxPictureHeight: coords[2],
+                    maxPictureWidth: coords[3]
+                }
+            });
+        },
+        {concurrency}
+    );
+
+    // Подборки
+    console.log('selections...');
 
     const selectionPhotos = [
         `${s3Prefix}/selections/00325eb0-680c-4624-aeb2-7d5a3bcd086e.png`,
@@ -247,8 +281,6 @@ export async function handle() {
         `${s3Prefix}/selections/bf10b779-55e6-4f4f-96cd-62df36efea21.png`
     ];
 
-    // Подборки
-    console.log('selections...');
     const selections = flatten(
         await pMap(
             [

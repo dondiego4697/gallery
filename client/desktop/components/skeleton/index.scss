@@ -1,0 +1,61 @@
+@import 'common/const.scss';
+
+.skeleton {
+    
+    &__product-card {
+        width: 250px;
+        background-color: $color-components-background;
+        display: flex;
+
+        & svg {
+            margin: 60px auto;
+            fill: $color-gray-1;
+            width: 60px;
+        }
+    }
+
+    &__text {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        & li {
+            width: 100%;
+            height: 16px;
+            list-style: none;
+            background-color: $color-components-background;
+            margin-top: 16px;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+
+    &__author-card {
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+
+        & svg {
+            margin: auto auto 30px auto;
+            width: 60px;
+
+            & path {
+                fill: $color-components-background;
+            }
+        }
+        
+        & li {
+            width: 100%;
+            height: 16px;
+            list-style: none;
+            background-color: $color-components-background;
+            margin-top: 16px;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+}

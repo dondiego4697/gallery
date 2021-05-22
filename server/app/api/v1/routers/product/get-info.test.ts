@@ -34,6 +34,7 @@ describe(`GET ${PATH}`, () => {
         const city = await TestFactory.createCity({countryId: country.id});
         const author = await TestFactory.createAuthor({cityId: city.id});
         const profession = await TestFactory.createProfession();
+        const interior = await TestFactory.createInterior();
 
         await TestFactory.createAuthorProfession({
             authorId: author.id,
@@ -104,7 +105,17 @@ describe(`GET ${PATH}`, () => {
                 shapeFormat: undefined,
                 material: undefined,
                 photos: expect.anything(),
-                tags: expect.anything()
+                tags: expect.anything(),
+                interiors: [
+                    {
+                        code: interior.code,
+                        photoUrl: interior.photoUrl,
+                        x: interior.x,
+                        y: interior.y,
+                        maxPictureHeight: interior.maxPictureHeight,
+                        maxPictureWidth: interior.maxPictureWidth
+                    }
+                ]
             }
         });
 

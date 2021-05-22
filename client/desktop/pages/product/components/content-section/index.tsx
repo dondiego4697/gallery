@@ -1,4 +1,5 @@
 import {ProductGetInfoResponse} from '@server-types/response';
+import {meta} from 'eslint/lib/rules/*';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
@@ -7,8 +8,10 @@ import {LoadableDataStatus, RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
 import {stringifyPrice} from 'common/utils/price';
+import {Button, LikeButton, ShareButton} from 'desktop/components/button';
 import {Devider} from 'desktop/components/devider';
 import {ImageViewer} from 'desktop/components/image-viewer';
+import {Skeleton} from 'desktop/components/skeleton';
 
 import './index.scss';
 
@@ -39,17 +42,21 @@ export const ContentSection = inject('productPageModel')(
         const {product: productData} = productPageModel;
 
         if (productData.status === LoadableDataStatus.LOADING) {
-            return <div />;
+            return (
+                <section className={b()}>
+                    <Skeleton type="text" style={{gridColumnStart: 1, gridColumnEnd: 3}} />
+                </section>
+            );
         }
 
-        const {product, author} = productData;
+        const {product, author, meta} = productData;
 
         const parameters = makeProductParameter(product, author);
 
         return (
             <section className={b()}>
                 <div className={b('image-container')}>
-                    <ImageViewer style={{margin: 'auto'}} urls={product.photos} align="center" />
+                    <ImageViewer style={{margin: 'auto'}} urls={product.photos} height={500} width={500} />
                 </div>
                 <div className={b('info-container')}>
                     <div className={b('title-container')}>
@@ -65,6 +72,16 @@ export const ContentSection = inject('productPageModel')(
                         ))}
                     </div>
                     <p className={b('price')}>{stringifyPrice(product.price)}</p>
+                    <div className={b('control-container')}>
+                        <Button
+                            onClick={() => {}}
+                            theme="dark"
+                            text="КУПИТЬ"
+                            style={{gridColumnStart: 1, gridColumnEnd: 3}}
+                        />
+                        <LikeButton onClick={() => productPageModel.like()} theme="light" isLike={meta.isLike} />
+                        <ShareButton onClick={() => {}} theme="light" />
+                    </div>
                 </div>
             </section>
         );

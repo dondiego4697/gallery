@@ -9,18 +9,14 @@ interface Props {
     style?: React.CSSProperties;
     className?: string;
     urls: string[];
-    align: 'center' | 'left';
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
 }
 
 const b = bevis('image-viewer');
 
 export function ImageViewer(props: Props) {
-    const {className, style, urls, align, height: heightRaw, width: widthRaw} = props;
-
-    const height = heightRaw || 500;
-    const width = widthRaw || 500;
+    const {className, style, urls, height, width} = props;
 
     const smallImageSize = 50;
     const smallImageMarginLeft = 30;
@@ -29,7 +25,7 @@ export function ImageViewer(props: Props) {
     const [currentUrl, setCurrentUrl] = React.useState(urls[0]);
 
     return (
-        <div className={cn(b(), b(align), className)} style={style || {}}>
+        <div className={cn(b(), className)} style={style || {}}>
             <div
                 className={b('current-image-container')}
                 style={{
@@ -43,6 +39,7 @@ export function ImageViewer(props: Props) {
                 <div className={b('small-images-container-wrapper')}>
                     {urls.slice(0, maxSmallImages).map((it, i) => (
                         <img
+                            key={`img-viewer-${i}`}
                             src={it}
                             width={smallImageSize}
                             height={smallImageSize}

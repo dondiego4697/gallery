@@ -33,6 +33,7 @@ type Author =
       };
 
 export class ProductPageModel {
+    private code: string | undefined;
     private productInit: Product = {
         status: LoadableDataStatus.LOADING,
         product: undefined,
@@ -59,26 +60,48 @@ export class ProductPageModel {
     }
 
     @action public load(code: string) {
+        this.code = code;
+
         this.initData();
+
+        RequestBook.product.setView(code);
 
         RequestBook.product
             .getInfo(code)
-            .then((response) => {
-                this.product = {
-                    status: LoadableDataStatus.DONE,
-                    meta: response.meta,
-                    author: response.author,
-                    product: response.product
-                };
+            .then((response) =>
+                runInAction(() => {
+                    this.product = {
+                        status: LoadableDataStatus.DONE,
+                        meta: response.meta,
+                        author: response.author,
+                        product: response.product
+                    };
 
-                return RequestBook.author.getInfo(response.author.code);
-            })
-            .then((response) => {
-                this.author = {
-                    status: LoadableDataStatus.DONE,
-                    author: response.author,
-                    products: response.products.filter((it) => it.code !== this.product.product?.code)
-                };
-            });
+                    return RequestBook.author.getInfo(response.author.code);
+                })
+            )
+            .then((response) =>
+                runInAction(() => {
+                    this.author = {
+                        status: LoadableDataStatus.DONE,
+                        author: response.author,
+                        products: response.products.filter((it) => it.code !== this.product.product?.code)
+                    };
+                })
+            );
+    }
+
+    @action public like() {
+        if (!this.code) {
+            return;
+        }
+
+        RequestBook.product.setLike(this.code).then(() => {
+            if (this.product.status === LoadableDataStatus.LOADING) {
+                return;
+            }
+
+            this.product.meta.isLike = !this.product.meta.isLike;
+        });
     }
 }

@@ -2,6 +2,7 @@ import {wrap} from 'async-middleware';
 import {Request, Response} from 'express';
 import {pick} from 'lodash';
 
+import {getRandomInteriors} from 'entity/interior/api/get-random-interiors';
 import {getProductByCode} from 'entity/product/api/get-product-by-code';
 import {getProductLikesForUser} from 'entity/product-like/api/get-product-likes-for-user';
 import {getProductViewsCount} from 'entity/view-of-product-view/api/get-product-views-count';
@@ -22,9 +23,10 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
 
     const user = await req.context.getUser();
 
-    const [views, likes] = await Promise.all([
+    const [views, likes, interiors] = await Promise.all([
         getProductViewsCount([product.id]),
-        user ? getProductLikesForUser({userId: user.id, productIds: [product.id]}) : Promise.resolve(new Set<number>())
+        user ? getProductLikesForUser({userId: user.id, productIds: [product.id]}) : Promise.resolve(new Set<number>()),
+        getRandomInteriors(3)
     ]);
 
     const {author} = product;
@@ -44,7 +46,10 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
             tags: (product.tags || []).map((it) => ({
                 code: it.code,
                 name: it.name
-            }))
+            })),
+            interiors: interiors.map((it) =>
+                pick(it, ['code', 'photoUrl', 'x', 'y', 'maxPictureHeight', 'maxPictureWidth'])
+            )
         },
         author: {
             avatarUrl: author.avatarUrl,

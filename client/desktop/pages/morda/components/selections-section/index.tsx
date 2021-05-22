@@ -1,9 +1,11 @@
+import {range} from 'lodash';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 
 import {LoadableDataStatus, RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {MordaPageModel} from 'common/models/morda-page';
+import {Skeleton} from 'desktop/components/skeleton';
 import {TitleSection} from 'desktop/components/title-section';
 
 import {MordaPageSelectionCard} from './components/selection-card';
@@ -26,20 +28,33 @@ export const SelectionsSection = inject('mordaPageModel')(
 
         const {data} = mordaPageModel;
 
+        const title = (
+            <TitleSection
+                title="Подборки"
+                description="Потребность красоты и творчества, воплощающего её"
+                to={RoutePaths.SELECTIONS}
+                isDevider={true}
+            />
+        );
+
         if (data.status === LoadableDataStatus.LOADING) {
-            return <div />;
+            return (
+                <section className={b()}>
+                    {title}
+                    <div className={b('container')}>
+                        {range(5).map((i) => (
+                            <Skeleton key={`skeleton-selection-${i}`} type="text" />
+                        ))}
+                    </div>
+                </section>
+            );
         }
 
         const {selections} = data;
 
         return (
             <section className={b()}>
-                <TitleSection
-                    title="Подборки"
-                    description="Потребность красоты и творчества, воплощающего её"
-                    to={RoutePaths.SELECTIONS}
-                    isDevider={true}
-                />
+                {title}
                 <div className={b('container')}>
                     {selections.slice(0, 5).map((it, i) => (
                         <MordaPageSelectionCard

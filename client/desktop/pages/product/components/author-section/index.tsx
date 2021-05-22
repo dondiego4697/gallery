@@ -5,6 +5,7 @@ import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
 import {AboutAuthorSection} from 'desktop/components/about-author-section';
+import {Skeleton} from 'desktop/components/skeleton';
 import {TitleSection} from 'desktop/components/title-section';
 
 import './index.scss';
@@ -25,15 +26,29 @@ export const AuthorSection = inject('productPageModel')(
 
         const {author: authorData} = productPageModel;
 
+        const title = <TitleSection title="Об авторе" isDevider={true} />;
+
         if (authorData.status === LoadableDataStatus.LOADING) {
-            return <div />;
+            return (
+                <section className={b()}>
+                    {title}
+                    <Skeleton
+                        type="text"
+                        style={{
+                            marginLeft: 140,
+                            marginRight: 140,
+                            marginBottom: 80
+                        }}
+                    />
+                </section>
+            );
         }
 
         const {author} = authorData;
 
         return (
             <section className={b()}>
-                <TitleSection title="Об авторе" isDevider={true} />
+                {title}
                 <AboutAuthorSection
                     author={{
                         code: author.code,

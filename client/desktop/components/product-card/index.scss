@@ -20,7 +20,7 @@
 
         &_liked {
             & svg path {
-                fill: #EE6451;
+                fill: $color-heart;
                 opacity: 0.9;
             }
         }
@@ -33,7 +33,7 @@
 
         &_liked:hover {
             & svg path {
-                fill: #EE6451;
+                fill: $color-heart;
                 opacity: 1;
             }
         }

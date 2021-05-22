@@ -1,0 +1,13 @@
+.interior-viewer {
+
+    &__image-container {
+        position: relative;
+        cursor: zoom-in;
+    }
+
+    &__product-image {
+        -webkit-box-shadow: 0 0 15px 0 rgb(0 0 0 / 25%);
+        -moz-box-shadow: 0 0 15px 0 rgba(0,0,0,.25);
+        box-shadow: 0 0 15px 0 rgb(0 0 0 / 25%);
+    }
+}

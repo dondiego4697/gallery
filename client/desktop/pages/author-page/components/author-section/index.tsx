@@ -4,6 +4,7 @@ import * as React from 'react';
 import {LoadableDataStatus} from 'common/const';
 import {AuthorPageModel} from 'common/models/author-page';
 import {AboutAuthorSection} from 'desktop/components/about-author-section';
+import {Skeleton} from 'desktop/components/skeleton';
 
 interface Props {
     authorPageModel?: AuthorPageModel;
@@ -20,7 +21,16 @@ export const AuthorSection = inject('authorPageModel')(
         const {author: authorData} = authorPageModel;
 
         if (authorData.status === LoadableDataStatus.LOADING) {
-            return <div />;
+            return (
+                <Skeleton
+                    type="text"
+                    style={{
+                        marginTop: 80,
+                        marginLeft: 140,
+                        marginRight: 140
+                    }}
+                />
+            );
         }
 
         const {author} = authorData;

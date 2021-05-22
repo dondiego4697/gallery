@@ -32,6 +32,7 @@ export const ProductPage = inject(
 
         useEffect(() => {
             productPageModel?.load(match.params.code);
+            // TODO send view request
         }, [match.params.code]);
 
         if (!productPageModel) {

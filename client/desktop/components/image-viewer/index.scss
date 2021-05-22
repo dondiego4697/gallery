@@ -1,25 +1,10 @@
 .image-viewer {
-
-    &__left &__current-image-container img {
-        margin: 0;
-    }
-
-    &__left &__small-images-container-wrapper {
-        margin: 0;
-    }
-
-    &__center &__current-image-container img {
-        margin: auto;
-    }
-
-    &__center &__small-images-container-wrapper {
-        margin: auto;
-    }
-
     &__current-image-container {
         display: flex;
+        cursor: zoom-in;
 
         & img {
+            margin: auto;
             object-fit: contain;
         }
     }
@@ -30,6 +15,8 @@
     }
 
     &__small-images-container-wrapper {
+        margin: auto;
+
         & img {
             object-fit: cover;
             opacity: 0.6;

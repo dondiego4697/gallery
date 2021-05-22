@@ -6,12 +6,12 @@ export const renderHTML = wrap<Request, Response>(async (req, res) => {
     const mobileDetect = new MobileDetect(req.headers['user-agent'] || '');
     const deviceType = mobileDetect.mobile() ? 'touch' : 'desktop';
 
-    const clientConfig = JSON.stringify({});
+    const clientData = JSON.stringify({});
 
     res.render(deviceType, {
         config: {
             bundleJsPath: `/public/bundles/${deviceType}.bundle.js`
         },
-        clientConfig
+        clientData
     });
 });

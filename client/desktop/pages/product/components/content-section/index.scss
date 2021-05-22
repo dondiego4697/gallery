@@ -43,4 +43,15 @@
         font-family: $font-family-text-bold;
         font-size: $font-size-m;
     }
+
+    &__control-container {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 45px 45px;
+        column-gap: 15px;
+        row-gap: 15px;
+
+        margin-top: 30px;
+        max-width: 400px;
+    }
 }

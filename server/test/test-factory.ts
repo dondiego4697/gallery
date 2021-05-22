@@ -131,8 +131,8 @@ async function createInterior(params: CreateInteriorParams = {}) {
         photoUrl: casual.url + uuidv4(),
         x: casual.integer(1, 100),
         y: casual.integer(1, 100),
-        maxPictureHeightPercent: casual.integer(1, 100),
-        maxPictureWidthPercent: casual.integer(1, 100),
+        maxPictureHeight: casual.integer(1, 100),
+        maxPictureWidth: casual.integer(1, 100),
         ...(params.interior || {})
     });
 

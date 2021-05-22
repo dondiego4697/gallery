@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 
 import {RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
+import {RequestBook} from 'common/request-book';
 import {SVG} from 'common/svg';
 import {stringifyPrice} from 'common/utils/price';
 import {ButtonArrowLink} from 'desktop/components/button-arrow-link';
@@ -39,10 +40,6 @@ interface Props {
 
 const b = bevis('product-card');
 
-function likeHandler() {
-    // TODO логика лайка
-}
-
 export function ProductCard(props: Props) {
     const {product, style, className} = props;
     const {author, size, meta} = product;
@@ -73,8 +70,7 @@ export function ProductCard(props: Props) {
                         [b('heart-container_liked')]: isLike
                     })}
                     onClick={() => {
-                        setLike(!isLike);
-                        likeHandler();
+                        RequestBook.product.setLike(product.code).then(() => setLike(!isLike));
                     }}
                 >
                     {SVG.FilledHeart}

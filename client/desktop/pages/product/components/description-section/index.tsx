@@ -5,7 +5,7 @@ import * as React from 'react';
 import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
-import {ImageViewer} from 'desktop/components/image-viewer';
+import {InteriorViewer} from 'desktop/components/interior-viewer';
 import {Tabs} from 'desktop/components/tabs';
 import {Tag} from 'desktop/components/tag';
 
@@ -48,7 +48,7 @@ function renderTabContent(key: TabKey, product: ProductGetInfoResponse.Product) 
 }
 
 // TODO
-// 4. Добавить кнопки покупки
+// 4. Добавить кнопки: купить нравится поделиться
 // 5. Добавить формирование интерьера finalImgSrc = mycanvas.toDataURL();
 
 export const DescriptionSection = inject('productPageModel')(
@@ -66,7 +66,7 @@ export const DescriptionSection = inject('productPageModel')(
         }
 
         const {product} = productData;
-        const {photos} = product;
+        const {photos, interiors} = product;
 
         return (
             <section className={b()}>
@@ -86,7 +86,7 @@ export const DescriptionSection = inject('productPageModel')(
                             <p>Примерка в интерьере</p>
                         </div>
                         <div className={b('interior-content')}>
-                            <ImageViewer urls={photos} align="left" height={300} />
+                            <InteriorViewer productUrl={photos[0]} interior={interiors[0]} height={300} />
                         </div>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ export function AuthorCard(props: Props) {
         <div className={cn(b(), className)} style={style || {}}>
             <Link className={b('image-link')} to={RoutePaths.ARTIST.replace(':code', author.code)}>
                 {/* TODO default photo */}
-                <img src={author.avatarUrl} width={150} />
+                <img src={author.avatarUrl} width={150} height={150} />
             </Link>
             <h3 className={b('full-name')}>{fullName}</h3>
             <p className={b('professions')}>{professions}</p>

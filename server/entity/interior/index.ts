@@ -24,8 +24,8 @@ export class Interior {
     y: number;
 
     @Column({type: 'integer'})
-    maxPictureHeightPercent: number;
+    maxPictureHeight: number;
 
     @Column({type: 'integer'})
-    maxPictureWidthPercent: number;
+    maxPictureWidth: number;
 }

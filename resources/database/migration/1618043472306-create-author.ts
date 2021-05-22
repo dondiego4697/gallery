@@ -107,13 +107,11 @@ export class PostRefactoring1618043472306 implements MigrationInterface {
                 x INTEGER NOT NULL,
                 y INTEGER NOT NULL,
 
-                max_picture_height_percent INTEGER NOT NULL,
-                max_picture_width_percent INTEGER NOT NULL,
+                max_picture_height INTEGER NOT NULL,
+                max_picture_width INTEGER NOT NULL,
         
                 CONSTRAINT uq__interior__photo_url UNIQUE (photo_url),
-                CONSTRAINT uq__interior__code UNIQUE (code),
-
-                CONSTRAINT check__interior__percent CHECK (max_picture_height_percent > 0 AND max_picture_height_percent <= 100 AND max_picture_width_percent > 0 AND max_picture_width_percent <= 100)
+                CONSTRAINT uq__interior__code UNIQUE (code)
             );
         `);
     }
