@@ -14,9 +14,9 @@ interface Props {
     authorPageModel?: AuthorPageModel;
 }
 
-const b = bevis('author-page__other-products-section');
+const b = bevis('author-page__products-section');
 
-export const OtherProductsSection = inject('authorPageModel')(
+export const ProductsSection = inject('authorPageModel')(
     observer((props: Props) => {
         const {authorPageModel} = props;
 
@@ -34,7 +34,7 @@ export const OtherProductsSection = inject('authorPageModel')(
 
         return (
             <section className={b()}>
-                <TitleSection title="Другие работы автора" isDevider={true} />
+                <TitleSection title="Работы автора" isDevider={true} />
                 <div className={b('container')}>
                     <WaterfallContainer itemMaxWidth={250} minColumnGap={30} rowGap={80}>
                         {products.map((it, i) => (

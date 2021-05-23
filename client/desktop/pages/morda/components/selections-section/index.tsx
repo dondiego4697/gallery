@@ -41,11 +41,7 @@ export const SelectionsSection = inject('mordaPageModel')(
             return (
                 <section className={b()}>
                     {title}
-                    <div className={b('container')}>
-                        {range(5).map((i) => (
-                            <Skeleton key={`skeleton-selection-${i}`} type="text" />
-                        ))}
-                    </div>
+                    <Skeleton style={{width: 1200, margin: 'auto'}} />
                 </section>
             );
         }

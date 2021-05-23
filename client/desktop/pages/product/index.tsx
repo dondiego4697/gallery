@@ -1,6 +1,5 @@
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {useEffect} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {bevis} from 'common/lib/bevis';
@@ -30,7 +29,7 @@ export const ProductPage = inject(
     observer((props: Props) => {
         const {match, productPageModel} = props;
 
-        useEffect(() => {
+        React.useEffect(() => {
             productPageModel?.load(match.params.code);
             // TODO send view request
         }, [match.params.code]);

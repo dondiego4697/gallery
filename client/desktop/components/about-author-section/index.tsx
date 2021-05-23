@@ -31,21 +31,23 @@ export function AboutAuthorSection(props: Props) {
 
     return (
         <section className={cn(b(), className)} style={style || {}}>
-            <div className={b('image-container')}>
-                {/* TODO default image */}
-                <img src={author.avatarUrl} />
-            </div>
-            <div className={b('info-container')}>
-                <h2 className={b('name')}>{name}</h2>
-                <p className={b('professions')}>{professions}</p>
-                {author.bio && <p className={b('bio')}>{author.bio}</p>}
-                {author.code && (
-                    <ButtonArrowLink
-                        text="Профиль художника"
-                        className={b('link')}
-                        to={RoutePaths.ARTIST.replace(':code', author.code)}
-                    />
-                )}
+            <div className={b('wrapper')}>
+                <div className={b('image-container')}>
+                    {/* TODO default image */}
+                    <img src={author.avatarUrl} />
+                </div>
+                <div className={b('info-container')}>
+                    <h2 className={b('name')}>{name}</h2>
+                    <p className={b('professions')}>{professions}</p>
+                    {author.bio && <p className={b('bio')}>{author.bio}</p>}
+                    {author.code && (
+                        <ButtonArrowLink
+                            text="Профиль художника"
+                            className={b('link')}
+                            to={RoutePaths.ARTIST.replace(':code', author.code)}
+                        />
+                    )}
+                </div>
             </div>
         </section>
     );

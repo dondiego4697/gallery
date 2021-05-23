@@ -2,12 +2,13 @@
 
 .product-page__description-section {
     margin-top: 80px;
+    display: flex;
 
     &__container {
-        @include margin-container();
-
+        width: 1200px;
+        margin: auto;
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: auto auto;
         column-gap: 80px;
     }
 
@@ -40,8 +41,8 @@
         flex-wrap: wrap;
 
         & .tag {
-            margin-right: 20px;
-            margin-top: 20px;
+            margin-right: 10px;
+            margin-top: 10px;
         }
     }
 }

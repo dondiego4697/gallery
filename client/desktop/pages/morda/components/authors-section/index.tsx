@@ -39,11 +39,7 @@ export const AuthorsSection = inject('mordaPageModel')(
             return (
                 <section className={b()}>
                     {title}
-                    <div className={b('container')}>
-                        {range(6).map((i) => (
-                            <Skeleton key={`skeleton-author-card-${i}`} type="author-card" />
-                        ))}
-                    </div>
+                    <Skeleton style={{width: 1200, margin: 'auto'}} />
                 </section>
             );
         }

@@ -1,11 +1,13 @@
 @import 'common/const.scss';
 
-.author-page__other-products-section {
+.author-page__products-section {
     margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
 
     &__container {
-        @include margin-container();
-
+        width: 1200px;
+        margin: auto;
         display: flex;
         flex-direction: row;
     }

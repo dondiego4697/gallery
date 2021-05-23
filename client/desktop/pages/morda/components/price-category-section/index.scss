@@ -1,16 +1,16 @@
 @import 'common/const.scss';
 
 .morda-page__price-category-section {
-    @include margin-container();
-
     margin-top: 80px;
     margin-bottom: 80px;
+    display: flex;
 
     &__container {
         display: flex;
         flex-direction: row;
         max-width: $max-width;
         margin: auto;
+        width: 1200px;
     }
 
     &__btn-container {

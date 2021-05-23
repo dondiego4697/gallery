@@ -2,7 +2,7 @@ import {range} from 'lodash';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 
-import {LoadableDataStatus, RoutePaths} from 'common/const';
+import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
 import {HorizontalScrollContainer} from 'desktop/components/horizontal-scroll-container';
@@ -29,24 +29,14 @@ export const AuthorProductsSection = inject('productPageModel')(
         const {author: authorData} = productPageModel;
 
         const title = (code?: string) => {
-            return (
-                <TitleSection
-                    title="Другие работы автора"
-                    to={code && RoutePaths.ARTIST.replace(':code', code)}
-                    isDevider={true}
-                />
-            );
+            return <TitleSection title="Другие работы автора" isDevider={true} />;
         };
 
         if (authorData.status === LoadableDataStatus.LOADING) {
             return (
                 <section className={b()}>
                     {title()}
-                    <HorizontalScrollContainer marginHorizontal={140}>
-                        {range(10).map((i) => (
-                            <Skeleton key={`skeleton-product-card-${i}`} type="product-card" />
-                        ))}
-                    </HorizontalScrollContainer>
+                    <Skeleton style={{width: 1200, margin: 'auto'}} />
                 </section>
             );
         }
@@ -56,7 +46,7 @@ export const AuthorProductsSection = inject('productPageModel')(
         return (
             <section className={b()}>
                 {title(author.code)}
-                <HorizontalScrollContainer marginHorizontal={140}>
+                <HorizontalScrollContainer>
                     {products.map((it, i) => (
                         <ProductCard key={`product-page-product-${i}`} product={it} />
                     ))}

@@ -1,11 +1,15 @@
 @import 'common/const.scss';
 
 .about-author-section {
-    @include margin-container();
-
     display: flex;
-    flex-direction: row;
     margin-top: 80px;
+
+    &__wrapper {
+        width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+    }
 
     &__image-container {
         & img {

@@ -12,7 +12,17 @@ interface Props extends RouteComponentProps {
 const b = bevis('root');
 
 function App(props: Props) {
-    return <div className={b()}>{props.children}</div>;
+    const {children, history} = props;
+
+    React.useEffect(() => {
+        const unlisten = history.listen(() => {
+            window.scrollTo(0, 0);
+        });
+
+        return () => unlisten();
+    }, []);
+
+    return <div className={b()}>{children}</div>;
 }
 
 export default withRouter(App);

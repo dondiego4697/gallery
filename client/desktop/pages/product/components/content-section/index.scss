@@ -1,11 +1,15 @@
 @import 'common/const.scss';
 
 .product-page__content-section {
-    @include margin-container();
     margin-top: 60px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    column-gap: 30px;
+    display: flex;
+
+    &__wrapper {
+        margin: auto;
+        width: 1200px;
+        display: grid;
+        grid-template-columns: auto 450px;
+    }
 
     &__image-container {
         display: flex;
@@ -37,8 +41,16 @@
         margin-top: 30px;
     }
 
+    &__parameter-item {
+        margin-top: 16px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
     &__price {
-        margin-top: 80px;
+        margin: 80px 0 0 0;
         font-weight: 700;
         font-family: $font-family-text-bold;
         font-size: $font-size-m;
@@ -46,12 +58,21 @@
 
     &__control-container {
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: auto auto;
         grid-template-rows: 45px 45px;
         column-gap: 15px;
         row-gap: 15px;
 
         margin-top: 30px;
-        max-width: 400px;
+    }
+
+    &__views {
+        display: flex;
+        margin: 0;
+
+        & svg {
+            width: 16px;
+            margin: auto 8px auto 0;
+        }
     }
 }

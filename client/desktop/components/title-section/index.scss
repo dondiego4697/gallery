@@ -3,10 +3,12 @@
 .title-section {
     margin-top: 80px;
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
 
     &__title-container {
-        @include margin-container();
-
+        width: 1200px;
+        margin: auto;
         display: flex;
         flex-direction: row;
     }
@@ -17,7 +19,8 @@
     }
 
     &__description {
-        @include margin-container();
+        width: 1200px;
+        margin: auto;
 
         font-size: $font-size-m;
         margin-top: 30px;

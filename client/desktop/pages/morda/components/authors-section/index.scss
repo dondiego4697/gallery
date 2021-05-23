@@ -1,10 +1,12 @@
 @import 'common/const.scss';
 
 .morda-page__authors-section {
+    display: flex;
+    flex-direction: column;
 
     &__container {
-        @include margin-container();
-
+        width: 1200px;
+        margin: auto;
         display: flex;
         flex-direction: row;
         justify-content: space-between;

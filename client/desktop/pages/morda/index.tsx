@@ -1,6 +1,5 @@
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {useEffect} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {bevis} from 'common/lib/bevis';
@@ -32,7 +31,7 @@ export const MordaPage = inject(
     observer((props: Props) => {
         const {mordaPageModel} = props;
 
-        useEffect(() => {
+        React.useEffect(() => {
             mordaPageModel?.load();
         }, []);
 

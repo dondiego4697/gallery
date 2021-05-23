@@ -1,6 +1,5 @@
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {useEffect} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
 import {LoadableDataStatus} from 'common/const';
@@ -11,7 +10,7 @@ import {Footer} from 'desktop/components/footer';
 import {NavBar} from 'desktop/components/navbar';
 
 import {AuthorSection} from './components/author-section';
-import {OtherProductsSection} from './components/other-products-section';
+import {ProductsSection} from './components/products-section';
 
 import './index.scss';
 
@@ -29,7 +28,7 @@ export const AuthorPage = inject(
     observer((props: Props) => {
         const {match, authorPageModel} = props;
 
-        useEffect(() => {
+        React.useEffect(() => {
             authorPageModel?.load(match.params.code);
         }, [match.params.code]);
 
@@ -41,7 +40,7 @@ export const AuthorPage = inject(
             <div className={b()}>
                 <NavBar underline="dark" currentPath={props.match.path} />
                 <AuthorSection />
-                <OtherProductsSection />
+                <ProductsSection />
                 <Footer />
             </div>
         );

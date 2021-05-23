@@ -21,16 +21,7 @@ export const AuthorSection = inject('authorPageModel')(
         const {author: authorData} = authorPageModel;
 
         if (authorData.status === LoadableDataStatus.LOADING) {
-            return (
-                <Skeleton
-                    type="text"
-                    style={{
-                        marginTop: 80,
-                        marginLeft: 140,
-                        marginRight: 140
-                    }}
-                />
-            );
+            return <Skeleton style={{width: 1200, margin: '80px auto'}} />;
         }
 
         const {author} = authorData;

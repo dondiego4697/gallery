@@ -2,10 +2,14 @@
 
 .navbar {
     user-select: none;
-    border-bottom: 1px solid $color-gray-1;
+    -webkit-box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,.15);
+    box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+    display: flex;
 
     &__wrapper {
-        @include margin-container();
+        width: 1200px;
+        margin: 0 auto;
         display: grid;
         grid-template-columns: 20% 40% 40%;
         grid-template-rows: 100%;

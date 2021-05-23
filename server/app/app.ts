@@ -63,9 +63,9 @@ export const app = express()
             const code = error.clientErrorCode;
 
             if (code === 'UNAUTHORIZED') {
-                sendError(req, res, Boom.unauthorized(code), false);
+                sendError(req, res, Boom.unauthorized(code));
             } else if (code === 'ENTITY_NOT_FOUND') {
-                sendError(req, res, Boom.notFound(code), false);
+                sendError(req, res, Boom.notFound(code));
             } else if (code === 'ACCESS_FORBIDDEN') {
                 sendError(req, res, Boom.forbidden(code));
             } else {
@@ -76,11 +76,8 @@ export const app = express()
         }
     });
 
-function sendError(req: express.Request, res: express.Response, error: Boom.Boom, writeLog = true): void {
-    if (writeLog) {
-        req.context.logger.error(`error: ${error.message}`);
-    }
-
+function sendError(req: express.Request, res: express.Response, error: Boom.Boom): void {
+    req.context.logger.error(error.message);
     res.status(error.output.statusCode).json(error.output.payload);
 }
 

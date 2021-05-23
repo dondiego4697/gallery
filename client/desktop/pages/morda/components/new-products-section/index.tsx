@@ -41,11 +41,7 @@ export const NewProductsSection = inject('mordaPageModel')(
             return (
                 <section className={b()}>
                     {title}
-                    <HorizontalScrollContainer marginHorizontal={140}>
-                        {range(10).map((i) => (
-                            <Skeleton key={`skeleton-product-card-${i}`} type="product-card" />
-                        ))}
-                    </HorizontalScrollContainer>
+                    <Skeleton style={{width: 1200, margin: 'auto'}} />
                 </section>
             );
         }
@@ -55,7 +51,7 @@ export const NewProductsSection = inject('mordaPageModel')(
         return (
             <section className={b()}>
                 {title}
-                <HorizontalScrollContainer marginHorizontal={140}>
+                <HorizontalScrollContainer>
                     {products.map((it, i) => (
                         <ProductCard
                             key={`morda-page-product-${i}`}

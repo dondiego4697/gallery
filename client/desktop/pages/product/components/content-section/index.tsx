@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import {LoadableDataStatus, RoutePaths} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {ProductPageModel} from 'common/models/product-page';
+import {SVG} from 'common/svg';
 import {stringifyPrice} from 'common/utils/price';
 import {Button, LikeButton, ShareButton} from 'desktop/components/button';
 import {Devider} from 'desktop/components/devider';
@@ -21,13 +22,20 @@ interface Props {
 
 const b = bevis('product-page__content-section');
 
-function makeProductParameter(product: ProductGetInfoResponse.Product, author: ProductGetInfoResponse.Author) {
+function makeProductParameter(
+    product: ProductGetInfoResponse.Product,
+    meta: ProductGetInfoResponse.Meta,
+    author: ProductGetInfoResponse.Author
+) {
     return [
         `Автор: ${author.firstName} ${author.lastName}`,
         `Размер: ${[product.size.width, product.size.height, product.size.length].filter(Boolean).join(' × ')} см`,
         product.material ? `Материал: ${product.material.name}` : undefined,
         `Категория: ${product.category.name}`,
-        product.releaseYear ? `Год: ${product.releaseYear}` : undefined
+        product.releaseYear ? `Год: ${product.releaseYear}` : undefined,
+        <p className={b('views')}>
+            {SVG.Eye} {meta.views}
+        </p>
     ].filter(Boolean);
 }
 
@@ -44,43 +52,47 @@ export const ContentSection = inject('productPageModel')(
         if (productData.status === LoadableDataStatus.LOADING) {
             return (
                 <section className={b()}>
-                    <Skeleton type="text" style={{gridColumnStart: 1, gridColumnEnd: 3}} />
+                    <Skeleton style={{width: 1200, margin: 'auto'}} />
                 </section>
             );
         }
 
         const {product, author, meta} = productData;
 
-        const parameters = makeProductParameter(product, author);
+        const parameters = makeProductParameter(product, meta, author);
 
         return (
             <section className={b()}>
-                <div className={b('image-container')}>
-                    <ImageViewer style={{margin: 'auto'}} urls={product.photos} height={500} width={500} />
-                </div>
-                <div className={b('info-container')}>
-                    <div className={b('title-container')}>
-                        <h2>{product.name}</h2>
-                        <Link to={RoutePaths.ARTIST.replace(':code', author.code)}>
-                            <img src={author.avatarUrl} />
-                        </Link>
+                <div className={b('wrapper')}>
+                    <div className={b('image-container')}>
+                        <ImageViewer style={{margin: 'auto'}} urls={product.photos} height={500} width={500} />
                     </div>
-                    <Devider />
-                    <div className={b('parameters-container')}>
-                        {parameters.map((it, i) => (
-                            <p key={`product-page-parameters-${i}`}>{it}</p>
-                        ))}
-                    </div>
-                    <p className={b('price')}>{stringifyPrice(product.price)}</p>
-                    <div className={b('control-container')}>
-                        <Button
-                            onClick={() => {}}
-                            theme="dark"
-                            text="КУПИТЬ"
-                            style={{gridColumnStart: 1, gridColumnEnd: 3}}
-                        />
-                        <LikeButton onClick={() => productPageModel.like()} theme="light" isLike={meta.isLike} />
-                        <ShareButton onClick={() => {}} theme="light" />
+                    <div className={b('info-container')}>
+                        <div className={b('title-container')}>
+                            <h2>{product.name}</h2>
+                            <Link to={RoutePaths.ARTIST.replace(':code', author.code)}>
+                                <img src={author.avatarUrl} />
+                            </Link>
+                        </div>
+                        <Devider />
+                        <div className={b('parameters-container')}>
+                            {parameters.map((it, i) => (
+                                <div key={`product-page-parameters-${i}`} className={b('parameter-item')}>
+                                    {it}
+                                </div>
+                            ))}
+                        </div>
+                        <p className={b('price')}>{stringifyPrice(product.price)}</p>
+                        <div className={b('control-container')}>
+                            <Button
+                                onClick={() => {}}
+                                theme="dark"
+                                text="КУПИТЬ"
+                                style={{gridColumnStart: 1, gridColumnEnd: 3}}
+                            />
+                            <LikeButton onClick={() => productPageModel.like()} theme="light" isLike={meta.isLike} />
+                            <ShareButton onClick={() => {}} theme="light" />
+                        </div>
                     </div>
                 </div>
             </section>

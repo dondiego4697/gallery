@@ -32,14 +32,7 @@ export const AuthorSection = inject('productPageModel')(
             return (
                 <section className={b()}>
                     {title}
-                    <Skeleton
-                        type="text"
-                        style={{
-                            marginLeft: 140,
-                            marginRight: 140,
-                            marginBottom: 80
-                        }}
-                    />
+                    <Skeleton style={{width: 1200, margin: 'auto auto 80px auto'}} />
                 </section>
             );
         }

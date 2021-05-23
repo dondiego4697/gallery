@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import * as React from 'react';
+import useResizeObserver from 'use-resize-observer';
 
 import {bevis} from 'common/lib/bevis';
 
@@ -7,20 +8,23 @@ import './index.scss';
 
 interface Props {
     children: React.ReactNode;
-    marginHorizontal: number;
     style?: React.CSSProperties;
     className?: string;
 }
 
 const b = bevis('horizontal-scroll-container');
+const MAX_WIDTH = 1200;
 
 export function HorizontalScrollContainer(props: Props) {
-    const {className, style, children, marginHorizontal} = props;
+    const {className, style, children} = props;
+
+    const {ref: containerRef, width: containerWidth = 1} = useResizeObserver<HTMLDivElement>();
+    const offset = (containerWidth - MAX_WIDTH) / 2;
 
     return (
-        <section className={cn(b(), className)} style={style || {}}>
+        <section className={cn(b(), className)} style={style || {}} ref={containerRef}>
             <div className={b('container')}>
-                <div style={{minWidth: marginHorizontal}} />
+                <div style={{minWidth: offset}} />
                 {React.Children.toArray(children).map((child, i) =>
                     React.cloneElement(child as any, {
                         style: {
@@ -28,7 +32,7 @@ export function HorizontalScrollContainer(props: Props) {
                         }
                     })
                 )}
-                <div style={{minWidth: marginHorizontal}} />
+                <div style={{minWidth: offset}} />
             </div>
         </section>
     );
