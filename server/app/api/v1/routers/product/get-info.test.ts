@@ -58,7 +58,7 @@ describe(`GET ${PATH}`, () => {
 
         await Promise.all(range(0, viewsCount).map(() => TestFactory.createProductView({productId: product.id})));
         const photos = await Promise.all(
-            range(0, 3).map(() => TestFactory.createProductPhoto({productId: product.id}))
+            range(0, 3).map((i) => TestFactory.createProductPhoto({productId: product.id, isDefault: i === 0}))
         );
 
         const isLike = Math.random() > 0.5 ? true : false;
@@ -104,6 +104,7 @@ describe(`GET ${PATH}`, () => {
                 style: undefined,
                 shapeFormat: undefined,
                 material: undefined,
+                defaultPhoto: photos[0].photoUrl,
                 photos: expect.anything(),
                 tags: expect.anything(),
                 interiors: [
@@ -123,7 +124,7 @@ describe(`GET ${PATH}`, () => {
         expect(
             xor(
                 body.product.photos,
-                photos.map((it) => it.photoUrl)
+                photos.slice(1).map((it) => it.photoUrl)
             ).length
         ).toBe(0);
     });

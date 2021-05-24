@@ -22,7 +22,7 @@ const productSchema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().required(),
     releaseYear: Joi.number(),
-    photos: Joi.array().items(Joi.string()).required(),
+    photo: Joi.string().required(),
     size: Joi.object({
         width: Joi.number().required(),
         height: Joi.number().required(),
@@ -93,6 +93,10 @@ describe(`GET ${PATH}`, () => {
 
         await pMap(products, async (product) =>
             Promise.all([
+                TestFactory.createProductPhoto({
+                    productId: product.id,
+                    isDefault: true
+                }),
                 TestFactory.createProductPhoto({
                     productId: product.id
                 })

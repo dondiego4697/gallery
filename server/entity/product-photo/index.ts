@@ -13,6 +13,9 @@ export class ProductPhoto {
     @Column({type: 'text'})
     photoUrl: string;
 
+    @Column({type: 'boolean'})
+    isDefault: boolean;
+
     @ManyToOne(() => Product, (product) => product.photos)
     product: Product;
 }

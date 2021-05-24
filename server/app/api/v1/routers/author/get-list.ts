@@ -33,7 +33,7 @@ export const getList = wrap<Request, Response>(async (req, res) => {
                 : null,
             products: (athr.products || []).map((it) => ({
                 code: it.code,
-                photos: (it.photos || []).map((it) => it.photoUrl).sort()
+                photo: (it.photos || []).find((it) => it.isDefault)?.photoUrl
             }))
         })),
         totalCount

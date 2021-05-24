@@ -31,7 +31,6 @@ export const ProductPage = inject(
 
         React.useEffect(() => {
             productPageModel?.load(match.params.code);
-            // TODO send view request
         }, [match.params.code]);
 
         if (!productPageModel) {

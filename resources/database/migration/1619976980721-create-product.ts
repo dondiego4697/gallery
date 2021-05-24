@@ -138,13 +138,16 @@ export class PostRefactoring1619976980721 implements MigrationInterface {
             
                 product_id BIGINT NOT NULL,
                 photo_url TEXT NOT NULL,
-            
+                is_default BOOLEAN DEFAULT FALSE NOT NULL,
+
                 CONSTRAINT pk__product_photo PRIMARY KEY (id),
             
                 CONSTRAINT uq__product_photo__product_id__photo_url UNIQUE (product_id, photo_url),
             
                 CONSTRAINT fk__product_photo__product_id__product FOREIGN KEY (product_id) REFERENCES product (id)
             );
+
+            CREATE UNIQUE INDEX idx__product_photo__product_id__is_default ON product_photo (product_id, is_default) WHERE (is_default);
 
             CREATE INDEX idx__product_photo__product_id ON product_photo USING btree (product_id);
 

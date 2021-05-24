@@ -47,10 +47,6 @@ function renderTabContent(key: TabKey, product: ProductGetInfoResponse.Product) 
     }
 }
 
-// TODO
-// 4. Добавить кнопки: купить нравится поделиться
-// 5. Добавить формирование интерьера finalImgSrc = mycanvas.toDataURL();
-
 export const DescriptionSection = inject('productPageModel')(
     observer((props: Props) => {
         const {productPageModel} = props;

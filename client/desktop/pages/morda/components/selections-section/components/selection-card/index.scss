@@ -33,20 +33,20 @@
     &__text-container {
         display: flex;
         flex-direction: column;
-        margin: 150px 50px 50px 50px;
+        margin: auto 40px 40px 40px;
         z-index: 1;
 
         & h2 {
             margin: auto 0 0 0;
             color: white;
-            font-size: $font-size-l;
+            font-size: $font-size-m;
             font-family: $font-family-text-bold;
         }
 
         & p {
             margin: 12px 0 0 0;
             color: white;
-            font-size: $font-size-m;
+            font-size: $font-size-s;
             font-family: $font-family-text-light;
         }
     }

@@ -1,4 +1,5 @@
 import {MordaMainResponse} from '@server-types/response';
+import {cloneDeep} from 'lodash';
 import {action, makeObservable, observable, runInAction} from 'mobx';
 
 import {LoadableDataStatus} from 'common/const';
@@ -19,18 +20,26 @@ type Data =
       };
 
 export class MordaPageModel {
-    @observable public data: Data = {
+    @observable private dataInit: Data = {
         status: LoadableDataStatus.LOADING,
         products: undefined,
         authors: undefined,
         selections: undefined
     };
 
+    @observable public data = cloneDeep(this.dataInit);
+
     constructor() {
         makeObservable(this);
     }
 
+    @action private initData() {
+        this.data = cloneDeep(this.dataInit);
+    }
+
     @action public load() {
+        this.initData();
+
         RequestBook.morda.main().then((response) =>
             runInAction(() => {
                 this.data = {

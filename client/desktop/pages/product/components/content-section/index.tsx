@@ -61,11 +61,13 @@ export const ContentSection = inject('productPageModel')(
 
         const parameters = makeProductParameter(product, meta, author);
 
+        const photos = [product.defaultPhoto, ...product.photos].filter(Boolean) as string[];
+
         return (
             <section className={b()}>
                 <div className={b('wrapper')}>
                     <div className={b('image-container')}>
-                        <ImageViewer style={{margin: 'auto'}} urls={product.photos} height={500} width={500} />
+                        <ImageViewer style={{margin: 'auto'}} urls={photos} height={500} width={500} />
                     </div>
                     <div className={b('info-container')}>
                         <div className={b('title-container')}>

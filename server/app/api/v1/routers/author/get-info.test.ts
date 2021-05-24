@@ -56,7 +56,8 @@ describe(`GET ${PATH}`, () => {
                 await Promise.all(range(0, i + 1).map(() => TestFactory.createProductView({productId: product.id})));
                 const photos = await Promise.all([
                     TestFactory.createProductPhoto({productId: product.id}),
-                    TestFactory.createProductPhoto({productId: product.id})
+                    TestFactory.createProductPhoto({productId: product.id}),
+                    TestFactory.createProductPhoto({productId: product.id, isDefault: true})
                 ]);
 
                 const isLike = Math.random() > 0.5 ? true : false;
@@ -68,7 +69,11 @@ describe(`GET ${PATH}`, () => {
                     });
                 }
 
-                return {product, photos, isLike};
+                return {
+                    product,
+                    photos: photos.map((it) => it.photoUrl),
+                    isLike
+                };
             },
             {concurrency: 4}
         );
@@ -114,7 +119,7 @@ describe(`GET ${PATH}`, () => {
                 },
                 professions: [profession.name]
             },
-            products: products.map(({product, isLike}, i) => ({
+            products: products.map(({product, photos, isLike}, i) => ({
                 code: product.code,
                 name: product.name,
                 price: product.price,
@@ -124,17 +129,10 @@ describe(`GET ${PATH}`, () => {
                     isLike,
                     views: products.length - i
                 },
-                photo: expect.anything(),
+                photo: photos[2],
                 releaseYear: product.releaseYear
             }))
         });
-
-        const productsPhotos = products.map(({photos}) => photos.map((it) => it.photoUrl));
-        const isAllPhotoIncluded = productsPhotos
-            .map((photos, i) => photos.includes(body.products[i].photo))
-            .every((it) => it === true);
-
-        expect(isAllPhotoIncluded).toBe(true);
     });
 
     it('should throw 404', async () => {

@@ -3,9 +3,10 @@
 .author-card {
     display: flex;
     flex-direction: column;
+    max-width: 150px;
 
     &__image-link {
-        margin: auto;
+        margin: 0 auto;
         border-radius: 100%;
 
         img {

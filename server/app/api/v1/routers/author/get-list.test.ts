@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import casual from 'casual';
 import got from 'got';
-import {range, sortBy, xorBy} from 'lodash';
+import {range, sortBy, xor, xorBy} from 'lodash';
 import pMap from 'p-map';
 
 import {TestFactory} from 'test/test-factory';
@@ -43,15 +43,13 @@ describe(`GET ${PATH}`, () => {
                 ]);
 
                 const photos = await pMap(products, async (product) => {
-                    const result = await Promise.all(
-                        range(0, 3).map(() =>
-                            TestFactory.createProductPhoto({
-                                productId: product.id
-                            })
-                        )
-                    );
+                    const photosRaw = await Promise.all([
+                        TestFactory.createProductPhoto({productId: product.id}),
+                        TestFactory.createProductPhoto({productId: product.id}),
+                        TestFactory.createProductPhoto({productId: product.id, isDefault: true})
+                    ]);
 
-                    return result.map((it) => it.photoUrl);
+                    return photosRaw.map((it) => it.photoUrl);
                 });
 
                 return {author, products, photos};
@@ -95,6 +93,15 @@ describe(`GET ${PATH}`, () => {
         );
 
         expect(productsDiff).toStrictEqual([0, 0]);
+
+        const productsPhotosDiff = expectedAuthors.map(({photos}, i) => {
+            return xor(
+                photos.map((it) => it[2]),
+                body.authors[i].products.map((it: any) => it.photo)
+            ).length;
+        });
+
+        expect(productsPhotosDiff).toStrictEqual([0, 0]);
     });
 
     it('should search by query', async () => {

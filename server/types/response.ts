@@ -26,7 +26,7 @@ export namespace MordaMainResponse {
         name: string;
         price: number;
         releaseYear?: number;
-        photos: string[];
+        photo: string;
         size: {
             width: number;
             height: number;
@@ -98,6 +98,7 @@ export namespace ProductGetInfoResponse {
         description?: string;
         price: number;
         releaseYear?: number;
+        defaultPhoto?: string;
         isSold: boolean;
         createdAt: Date;
         size: {

@@ -34,7 +34,7 @@ export const main = wrap<Request, Response>(async (req, res) => {
         selections: selectionsToTree(selections).map((it) => it.item),
         products: products.map((product) => ({
             ...pick(product, ['code', 'price', 'name', 'size', 'releaseYear']),
-            photos: product.photos.map((it) => it.photoUrl),
+            photo: product.photos.find((it) => it.isDefault)?.photoUrl || product.photos[0].photoUrl,
             author: {
                 firstName: product.author.firstName,
                 lastName: product.author.lastName

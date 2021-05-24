@@ -53,13 +53,7 @@ export const NewProductsSection = inject('mordaPageModel')(
                 {title}
                 <HorizontalScrollContainer>
                     {products.map((it, i) => (
-                        <ProductCard
-                            key={`morda-page-product-${i}`}
-                            product={{
-                                ...it,
-                                photo: it.photos[0]
-                            }}
-                        />
+                        <ProductCard key={`morda-page-product-${i}`} product={it} />
                     ))}
                 </HorizontalScrollContainer>
             </section>

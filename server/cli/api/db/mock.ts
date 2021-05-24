@@ -212,10 +212,11 @@ export async function handle() {
         products,
         async (product) => {
             await Promise.all(
-                getRandomItem(productPhotos, random(1, productPhotos.length - 1)).map((photoUrl) =>
+                getRandomItem(productPhotos, random(1, productPhotos.length - 1)).map((photoUrl, i) =>
                     TestFactory.createProductPhoto({
                         productId: product.id,
-                        photoUrl
+                        photoUrl,
+                        isDefault: i === 0
                     })
                 )
             );

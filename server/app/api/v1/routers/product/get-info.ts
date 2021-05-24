@@ -29,7 +29,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         getRandomInteriors(3)
     ]);
 
-    const {author} = product;
+    const {author, photos} = product;
 
     const data: ProductGetInfoResponse.Response = {
         meta: {
@@ -42,7 +42,8 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
             style: product.style ? pick(product.style, ['code', 'name']) : undefined,
             material: product.material ? pick(product.material, ['code', 'name']) : undefined,
             shapeFormat: product.shapeFormat ? pick(product.shapeFormat, ['code', 'name']) : undefined,
-            photos: (product.photos || []).map((it) => it.photoUrl).sort(),
+            defaultPhoto: (photos || []).find((it) => it.isDefault)?.photoUrl,
+            photos: (product.photos || []).filter((it) => !it.isDefault).map((it) => it.photoUrl),
             tags: (product.tags || []).map((it) => ({
                 code: it.code,
                 name: it.name

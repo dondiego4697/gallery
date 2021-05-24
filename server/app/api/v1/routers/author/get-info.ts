@@ -47,7 +47,7 @@ export const getInfo = wrap<Request, Response>(async (req, res) => {
         products: sortBy(
             products.map((product) => ({
                 ...pick(product, ['code', 'name', 'price', 'isSold', 'size', 'releaseYear']),
-                photo: (product.photos || []).map((it) => it.photoUrl).sort()[0],
+                photo: (product.photos || []).find((it) => it.isDefault)?.photoUrl,
                 meta: {
                     views: views[product.id]?.count || 0,
                     isLike: likes.has(product.id)
