@@ -1,0 +1,16 @@
+.author-list-page__header-section {
+
+    &__banner {
+        display: flex;
+        width: 100%;
+        min-height: 270px;
+        background-image: url('/public/image/morda-banner.png');
+
+        & h1 {
+            color: white;
+            font-size: 30px;
+            margin: auto;
+            text-align: center;
+        }
+    }
+}

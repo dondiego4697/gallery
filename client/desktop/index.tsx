@@ -1,7 +1,8 @@
 import {Provider} from 'mobx-react';
 import * as React from 'react';
 import {render} from 'react-dom';
-import {Router} from 'react-router-dom';
+import {Route, Router} from 'react-router-dom';
+import {QueryParamProvider} from 'use-query-params';
 
 import {history} from 'common/lib/history';
 import * as models from 'common/models';
@@ -11,7 +12,9 @@ render(
     <Provider {...models}>
         <>
             <Router history={history}>
-                <RoutesApp />
+                <QueryParamProvider ReactRouterRoute={Route}>
+                    <RoutesApp />
+                </QueryParamProvider>
             </Router>
         </>
     </Provider>,

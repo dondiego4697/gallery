@@ -18,7 +18,7 @@ const b = bevis('input-search');
 
 export function InputSearch(props: Props) {
     const {className, value, name, onChange, style} = props;
-    const [hideSearchIcon, setHideSearchIcon] = React.useState((props.value.length ?? 0) > 0);
+    const [hideSearchIcon, setHideSearchIcon] = React.useState((value.length ?? 0) > 0);
 
     return (
         <div className={cn(b(), className)} style={style || {}}>

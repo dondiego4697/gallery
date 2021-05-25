@@ -54,12 +54,13 @@ describe(`GET ${PATH}`, () => {
 
         const products = await TestFactory.getProducts();
 
-        const width = sortBy(products.map((it) => it.size.width));
-        const height = sortBy(products.map((it) => it.size.height));
-        const length = sortBy(
-            products.filter((it) => typeof it.size.length !== 'undefined').map((it) => it.size.length)
-        );
-        const price = sortBy(products.map((it) => it.price));
+        const width = products.map((it) => it.size.width).sort();
+        const height = products.map((it) => it.size.height).sort();
+        const length = products
+            .filter((it) => typeof it.size.length !== 'undefined')
+            .map((it) => it.size.length)
+            .sort();
+        const price = products.map((it) => it.price).sort();
 
         const color = await TestFactory.createColor();
 

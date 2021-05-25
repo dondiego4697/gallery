@@ -162,3 +162,39 @@ export namespace InteriorRandomResponse {
         maxPictureWidth: number;
     }
 }
+
+export namespace AuthorGetListResponse {
+    export interface Response {
+        authors: Author[];
+        totalCount: number;
+    }
+
+    export interface Author {
+        code: string;
+        firstName: string;
+        lastName: string;
+        avatarUrl?: string;
+        city?: {
+            code?: string;
+            name?: string;
+        };
+        country?: {
+            code?: string;
+            name?: string;
+        };
+        products: {
+            code: string;
+            photo?: string;
+        }[];
+        professions: string[];
+    }
+}
+
+export namespace ProfessionGetListResponse {
+    export type Response = Profession[];
+
+    export interface Profession {
+        code: string;
+        name: string;
+    }
+}

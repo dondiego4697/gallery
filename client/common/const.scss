@@ -18,13 +18,6 @@ $font-weight-l: 700;
 $font-weight-m: 600;
 $font-weight-s: 400;
 
-$max-width: 1600px;
-
-@mixin margin-container() {
-    margin-left: 140px;
-    margin-right: 140px;
-}
-
 $font-family-text-bold: 'ProximaNovaBold', Eina01, sans-serif;
 $font-family-text-regular: 'ProximaNovaRegular', Eina01, sans-serif;
 $font-family-text-light: 'ProximaNovaLight', Eina01, sans-serif;

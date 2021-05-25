@@ -84,7 +84,8 @@ describe(`GET ${PATH}`, () => {
                     code: country.code,
                     name: country.name
                 },
-                products: expect.anything()
+                products: expect.anything(),
+                professions: []
             }))
         );
 
@@ -152,9 +153,8 @@ describe(`GET ${PATH}`, () => {
                 avatarUrl: it.avatarUrl,
                 firstName: it.firstName,
                 lastName: it.lastName,
-                city: null,
-                country: null,
-                products: []
+                products: [],
+                professions: []
             }))
         );
     });
@@ -205,9 +205,47 @@ describe(`GET ${PATH}`, () => {
                 avatarUrl: it.avatarUrl,
                 firstName: it.firstName,
                 lastName: it.lastName,
-                city: null,
-                country: null,
-                products: []
+                products: [],
+                professions: []
+            }))
+        );
+    });
+
+    it('should search by profession', async () => {
+        const professions = await Promise.all([TestFactory.createProfession(), TestFactory.createProfession()]);
+
+        const authors = await pMap(range(0, 4), async () => TestFactory.createAuthor(), {concurrency: 1});
+
+        await Promise.all(
+            authors.map(async (author, i) =>
+                TestFactory.createAuthorProfession({
+                    authorId: author.id,
+                    professionId: professions[i % 2].id
+                })
+            )
+        );
+
+        const {statusCode, body} = await got.get<any>(`${url}${PATH}`, {
+            responseType: 'json',
+            throwHttpErrors: false,
+            searchParams: {
+                professionCode: professions[0].code
+            }
+        });
+
+        expect(statusCode).toBe(200);
+        expect(body.totalCount).toBe(2);
+
+        const expectedAuthors = sortBy([authors[0], authors[2]], (it) => it.firstName.toLowerCase());
+
+        expect(body.authors).toEqual(
+            expectedAuthors.map((it) => ({
+                code: it.code,
+                avatarUrl: it.avatarUrl,
+                firstName: it.firstName,
+                lastName: it.lastName,
+                products: [],
+                professions: [professions[0].name]
             }))
         );
     });

@@ -2,7 +2,6 @@ import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 
-import {LoadableDataStatus} from 'common/const';
 import {bevis} from 'common/lib/bevis';
 import {AuthorPageModel} from 'common/models/author-page';
 import {UserModel} from 'common/models/user';
@@ -38,7 +37,7 @@ export const AuthorPage = inject(
 
         return (
             <div className={b()}>
-                <NavBar underline="dark" currentPath={props.match.path} />
+                <NavBar underline="dark" currentPath={match.path} />
                 <AuthorSection />
                 <ProductsSection />
                 <Footer />

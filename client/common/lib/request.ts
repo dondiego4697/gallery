@@ -2,11 +2,12 @@ import axios, {AxiosRequestConfig} from 'axios';
 
 const VALID_ERRORS: Record<string, string> = {};
 
-function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+function get<T>(url: string, params: any, config?: AxiosRequestConfig): Promise<T> {
     return axios
         .get(url, {
             ...config,
-            withCredentials: true
+            withCredentials: true,
+            params
         })
         .then((res) => res.data)
         .catch((error) => makeError(error, {}, config));
