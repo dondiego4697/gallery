@@ -53,16 +53,25 @@ export const AuthorListPage = inject(
                 <ControlsSection
                     initFirstLetter={query.firstLetter || undefined}
                     initProfessionCode={query.professionCode || undefined}
-                    professions={professionModel.professions.map((it) => ({code: it.code, value: it.name}))}
+                    professions={professionModel.professions}
                     onProfessionChange={(professionCode) => {
                         setQuery({professionCode});
                         authorListPageModel.load(query);
                     }}
                     onLetterChange={(firstLetter) => {
-                        setQuery({firstLetter});
+                        setQuery({
+                            firstLetter,
+                            text: undefined
+                        });
                         authorListPageModel.load(query);
                     }}
-                    onSearchSubmit={() => {}}
+                    onSearchSubmit={() => {
+                        setQuery({
+                            text: 'some_value',
+                            firstLetter: undefined
+                        });
+                        authorListPageModel.load(query);
+                    }}
                 />
                 <ContentSection />
                 <Footer />

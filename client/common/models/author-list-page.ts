@@ -16,7 +16,7 @@ export class AuthorListPageModel {
     @observable public status = LoadableDataStatus.LOADING;
     @observable public authors: AuthorGetListResponse.Author[] = [];
     @observable public totalCount = 0;
-    @observable public lastParams: Params = {};
+    @observable private lastParams: Params = {};
 
     constructor() {
         makeObservable(this);

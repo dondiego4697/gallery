@@ -9,23 +9,23 @@ import './index.scss';
 interface Props {
     style?: React.CSSProperties;
     className?: string;
-    defaultCode?: string;
+    defaultKey?: string;
     placeholder: string;
     items: {
-        code: string;
+        key: string;
         value: string;
     }[];
-    onChange: (value: string) => void;
+    onKeyChange: (value: string) => void;
 }
 
 const b = bevis('simple-select');
 
 export function SimpleSelect(props: Props) {
-    const {style, className, items, defaultCode, placeholder, onChange} = props;
+    const {style, className, items, defaultKey, placeholder, onKeyChange} = props;
 
     const [show, setShow] = React.useState(false);
-    const [selectedCode, setSelectedCode] = React.useState(defaultCode);
-    const selectedValue = items.find((it) => it.code === selectedCode)?.value;
+    const [selectedKey, setSelectedKey] = React.useState(defaultKey);
+    const selectedValue = items.find((it) => it.key === selectedKey)?.value;
 
     return (
         <div className={cn(b(), className)} style={style || {}}>
@@ -56,12 +56,12 @@ export function SimpleSelect(props: Props) {
                     <option
                         className={cn({
                             [b('option')]: true,
-                            [b('option_selected')]: it.code === selectedCode
+                            [b('option_selected')]: it.key === selectedKey
                         })}
                         key={`select-option-${i}`}
                         onMouseDown={() => {
-                            onChange(it.code);
-                            setSelectedCode(it.code);
+                            onKeyChange(it.key);
+                            setSelectedKey(it.key);
                         }}
                     >
                         {it.value}

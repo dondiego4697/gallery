@@ -14,7 +14,7 @@ interface Props {
     initProfessionCode?: string;
     professions: {
         code: string;
-        value: string;
+        name: string;
     }[];
     onProfessionChange: (value: string) => void;
     onLetterChange: (value: string) => void;
@@ -160,10 +160,10 @@ export function ControlsSection(props: Props) {
             <div className={b('container')}>
                 <SimpleSelect
                     className={b('profession-select')}
-                    items={professions}
-                    defaultCode={initProfessionCode || undefined}
+                    items={professions.map((it) => ({key: it.code, value: it.name}))}
+                    defaultKey={initProfessionCode || undefined}
                     placeholder="Направление"
-                    onChange={(value) => onProfessionChange(value)}
+                    onKeyChange={(value) => onProfessionChange(value)}
                 />
                 {renderAlphabet({
                     initFirstLetter,
